@@ -11,7 +11,7 @@ class Category extends Model
     const IMAGE_UPLOAD_PATH = 'uploads/category';
     protected $fillable = ['name', 'description', 'image'];
 
-    public function products() {
-        return $this->hasMany(Product::class);
-    }
+    // public function products() {
+    //     return $this->hasMany(Product::class);
+    // }
 }

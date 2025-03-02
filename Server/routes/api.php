@@ -26,24 +26,25 @@ Route::middleware('jwt.auth')->group(function () {
     // Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('me', [AuthController::class, 'me']);
 
+    Route::get('categories', [CategoryController::class, 'index']);
+    Route::post('/category/create', [CategoryController::class, 'create']);
+    Route::put('category/update/{id}', [CategoryController::class, 'update']);
+    Route::delete('category/delete/{id}', [CategoryController::class, 'delete']);
 
     // Route::get('/event/list', [EventController::class, 'list']);
    
-    // Route::put('/event/update/{id}', [EventController::class, 'update']);
-    // Route::delete('/event/delete/{id}', [EventController::class, 'delete']);
 
   
 
     // Route::get('/statistical', [UserController::class, 'statistical']);
 
 });
-Route::post('/category/create', [CategoryController::class, 'create']);
 
 
 //_______________________________TEST_______________________________
 // Route::get('/blog/get/{id}', [BlogController::class, 'get']);
 // Route::get('/event/get/{id}', [EventController::class, 'get']);
-Route::get('/categories', [CategoryController::class, 'index']);
+
 //________________________________________________________________
 
 

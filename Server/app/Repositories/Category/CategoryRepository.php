@@ -41,47 +41,26 @@ class CategoryRepository implements IRepository {
             $data['image'] = $imagePath;
         }
         $category = Category::create($data);
-
-        return response()->json([
-            'message' => 'Blog created successfully!',
-            'category' => $category,
-            'success' => true
-        ], 201);
+        return $category;
     }
 
     public function update($id, $request) {
-        $category = $this->find($id);
-        // $category = Category::with('images')->with('children')->findOrFail($id);
+        $category =  Category::find($id);
         $data = $request->all();
-        $data['is_active'] = empty($data['is_active']) ? false : true;
+        if($request->hasFile('image')) {
 
-        if($request->hasFile('images')) {
-            foreach ($category->images as $image) {
-                $filePath = public_path(Category::IMAGE_UPLOAD_PATH . '/' . $image->name);
-                if (file_exists($filePath)) {
-                    unlink($filePath);
-                }
-                CategoryImage::destroy($image->id);
-            }
-            $images = $request->file('images');
-            foreach ($images as $index => $image) {
-                $fileName = $category->id . '_' . $index . '_' . time() . '.' . $image->getClientOriginalExtension();
-                $image->move(public_path(Category::IMAGE_UPLOAD_PATH), $fileName);
-                CategoryImage::create([
-                    'category_id' => $category->id,
-                    'name' => $fileName
-                ]);
-            }
         }
-       
-        $category->update($data);
+        $result =  $category->update($data);
+
+        return $result;
     }
 
     public function delete($id) {
         // Tìm category cha và tất cả category con của nó
-        $category = Category::with('children')->findOrFail($id);
-        $category->products()->detach();
-        
+        // $category = Category::with('children')->findOrFail($id);
+        // $category->products()->detach();
+
+        return Category::destroy($id);
     }
 
     public function deleteCategoryWithChildren($categoryId) {

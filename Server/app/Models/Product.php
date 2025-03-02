@@ -13,39 +13,39 @@ class Product extends Model
 
     protected $fillable = [
         'name',
-        // 'category_id',
+        'category_id',
         'price',
         'quantity',
         'description',
-        'is_active',
+        'status',
         'sku'
     ];
 
-    public function images()
-    {
-        return $this->hasMany(ProductImage::class);
-    }
-    public function attributes() {
-        return $this->hasMany(ProductAttribute::class);
-    }
-    public function categories() {
+    public function category() {
         return $this->belongsTo(Category::class);
     }
 
-    public function orders()
-    {
-        return $this->belongsToMany(Order::class);
-    }
-
-    public function ratings() {
-        return $this->hasMany(Rating::class);
-    }
-
-    public function averageRating() {
-        return $this->ratings()->avg('rating');
-    }
-
-    // public function shortDescription() {
-    //     return $this->des
+    // public function images()
+    // {
+    //     return $this->hasMany(ProductImage::class);
     // }
+    // public function attributes() {
+    //     return $this->hasMany(ProductAttribute::class);
+    // }
+    
+
+    // public function orders()
+    // {
+    //     return $this->belongsToMany(Order::class);
+    // }
+
+    // public function ratings() {
+    //     return $this->hasMany(Rating::class);
+    // }
+
+    // public function averageRating() {
+    //     return $this->ratings()->avg('rating');
+    // }
+
+   
 }

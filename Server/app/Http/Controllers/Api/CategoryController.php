@@ -27,34 +27,40 @@ class CategoryController extends Controller
         $request->validate([
             'file' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-        return $this->categoryRepository->create($request);
+        $category = $this->categoryRepository->create($request);
+        return response()->json([
+            'message' => 'Blog created successfully!',
+            'category' => $category,
+            'success' => true
+        ], 201);
+        // return $this->categoryRepository->create($request);
     }
 
     public function delete($id) {
-        $this->categoryRepository->deleteCategoryWithChildren($id);
-
-        return response()->json(['message' => 'Item deleted successfully']);
-        // return redirect()->back()->with('message', 'xóa thành công');
-    }
-
-    public function edit($id) {
-        $category = $this->categoryRepository->find($id);
-        
-        $categories = Category::where('id', '!=', $id)->get();
-        return view('admin.category.edit')->with([
-            'category' => $category,
-            'categories' => $categories,
+        $category =  Category::find($id);
+        if( $category && $this->categoryRepository->delete($id)) {
+            return response()->json([
+               'message' => 'Item deleted successfully',
+                'category' => $category,
+               'success' => true
+            ]);
+        }
+        return response()->json([
+            'message' => 'Item deleted failed',
+            'success' =>  false,
         ]);
     }
 
-    public function update($id, Request $request) {
+
+    public function update(int $id, Request $request) {
         $request->validate([
             'file' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-        $this->categoryRepository->update($id, $request);
-        
-        return redirect(route('admin.category'))->with([
-            'message' => 'cập nhật thành công'
+        $result = $this->categoryRepository->update($id, $request);
+        return response()->json([
+           'success' => $result,
+           'message' => 'Item updated successfully',
+           'category' => Category::find($id),
         ]);
     }
 }
