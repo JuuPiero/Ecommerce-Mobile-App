@@ -1,0 +1,21 @@
+td, th {
+    align-content: center;
+}
+
+.dot {
+    width: 15px;
+    height: 15px;
+    border-radius: 5rem;
+    display: inline-block;
+}
+.dot-green {
+    background-color: green;
+}
+
+.dot-red {
+    background-color: red;
+}
+
+.color-blue {
+    color: rgb(18, 154, 251);
+}
