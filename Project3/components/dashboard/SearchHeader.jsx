@@ -1,12 +1,20 @@
 import { useState } from 'react';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Searchbar } from 'react-native-paper';
+
+const styles = StyleSheet.create({
+  searchContainer: {
+    backgroundColor: 'transparent',
+    // marginTop: 20,
+    paddingBottom: 10
+  }
+})
 
 const SearchHeader = () => {
   const [searchQuery, setSearchQuery] = useState('');
 
   return (
-    <View style={{ padding: 10, backgroundColor: 'white', marginTop: 20 }}>
+    <View style={styles.searchContainer}>
       <Searchbar 
         placeholder="Tìm kiếm..." 
         value={searchQuery} 

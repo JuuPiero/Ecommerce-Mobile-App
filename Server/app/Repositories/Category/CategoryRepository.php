@@ -2,7 +2,6 @@
 namespace App\Repositories\Category;
 
 use App\Models\Category;
-use App\Models\CategoryImage;
 use App\Models\Product;
 use App\Models\ProductAttribute;
 use App\Models\ProductImage;
@@ -56,7 +55,6 @@ class CategoryRepository implements IRepository {
     }
 
     public function delete($id) {
-        // Tìm category cha và tất cả category con của nó
         // $category = Category::with('children')->findOrFail($id);
         // $category->products()->detach();
 
@@ -68,14 +66,14 @@ class CategoryRepository implements IRepository {
         $category = Category::with('children')->findOrFail($categoryId);
 
         // Xóa tất cả hình ảnh liên kết với category
-        $images = CategoryImage::where('category_id', $categoryId)->get();
-        foreach ($images as $image) {
-            $filePath = public_path( Category::IMAGE_UPLOAD_PATH . '/' . $image->name);
-            if (file_exists($filePath)) {
-                unlink($filePath);
-                $image->delete();
-            }
-        }
+        // $images = CategoryImage::where('category_id', $categoryId)->get();
+        // foreach ($images as $image) {
+        //     $filePath = public_path( Category::IMAGE_UPLOAD_PATH . '/' . $image->name);
+        //     if (file_exists($filePath)) {
+        //         unlink($filePath);
+        //         $image->delete();
+        //     }
+        // }
         // Xóa tệp hình ảnh từ thư mục được upload prouduct
         $productImages = ProductImage::whereIn('product_id', $category->products()->pluck('id'))->get();
         foreach ($productImages as $productImage) {

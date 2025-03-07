@@ -29,7 +29,7 @@ class CategoryController extends Controller
         ]);
         $category = $this->categoryRepository->create($request);
         return response()->json([
-            'message' => 'Blog created successfully!',
+            'message' => 'Category created successfully!',
             'category' => $category,
             'success' => true
         ], 201);

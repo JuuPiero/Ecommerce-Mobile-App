@@ -17,7 +17,7 @@ export default function DashboardTab() {
         tabBarIcon: ({ color, size }) => {
           let iconName;
           if (route.name === 'Dashboard') iconName = 'stats-chart';
-          else if (route.name === 'Categories') iconName = 'grid';
+          else if (route.name === 'Category') iconName = 'grid';
           else if (route.name === 'Products') iconName = 'pricetag';
           else if (route.name === 'Orders') iconName = 'cart';
           else if (route.name === 'Users') iconName = 'person'
@@ -26,7 +26,9 @@ export default function DashboardTab() {
       })}
     >
       <Tab.Screen name="Dashboard" component={Dashboard} />
-      <Tab.Screen name="Categories" component={CategoryStack} />
+      
+      <Tab.Screen name="Category" component={CategoryStack} />
+
       <Tab.Screen name="Products" component={Products} />
       <Tab.Screen name="Orders" component={Orders} />
       <Tab.Screen name="Users" component={Users} />

@@ -1,7 +1,7 @@
 import { Image, ScrollView, View } from 'react-native';
-import Table from '../../components/Table';
 import { Button, Text } from 'react-native-paper';
-import ProductCard from '../../components/ProductCard';
+import Table from '../../components/dashboard/Table';
+import ProductCard from '../../components/dashboard/ProductCard';
 import DefaultLayout from '../../layouts/dashboard/DefaultLayout';
 
 
@@ -23,7 +23,7 @@ export default function Products() {
           <ProductCard />
           <ProductCard />
           <View style={{ padding: 20, display: 'flex', justifyContent: 'center', flexDirection: 'row' }}>
-            <Button mode='contained'>back</Button> 
+            <Button mode='contained'> B </Button> 
             <Button mode='text'>1</Button>
             <Button mode='text' textColor='gray'>2</Button>
             <Button mode='text' textColor='gray'>10</Button> 

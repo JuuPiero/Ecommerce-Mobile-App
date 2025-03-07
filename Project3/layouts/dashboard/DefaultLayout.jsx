@@ -1,13 +1,17 @@
-import { View } from "react-native";
-import SearchHeader from "../../components/SearchHeader";
+import { SafeAreaView, StyleSheet, View } from "react-native";
+import SearchHeader from "../../components/dashboard/SearchHeader";
 
+
+const styles = StyleSheet.create({
+
+})
 
 export default function DefaultLayout({ children }) {
 
     return (
-        <View style={{ padding: 10 }}>
+        <SafeAreaView style={{padding: 10}}>
             <SearchHeader />
             {children}
-        </View>
+        </SafeAreaView>
     )
 }

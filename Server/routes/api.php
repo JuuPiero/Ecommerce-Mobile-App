@@ -19,26 +19,27 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::post('/login', [AuthController::class, 'login']);
-Route::post('/signup', [AuthController::class, 'signup']);
+Route::prefix('v1')->group(function () {
+    Route::post('login', [AuthController::class, 'login']);
+    Route::post('signup', [AuthController::class, 'signup']);
+    Route::middleware('jwt.auth')->group(function () {
+        // Route::post('/logout', [AuthController::class, 'logout']);
+        Route::get('me', [AuthController::class, 'me']);
+    
+        Route::get('categories', [CategoryController::class, 'index']);
+        Route::put('category/update/{id}', [CategoryController::class, 'update']);
+        Route::delete('category/delete/{id}', [CategoryController::class, 'delete']);
+    
+        // Route::get('/statistical', [UserController::class, 'statistical']);
+    
+    });
 
-Route::middleware('jwt.auth')->group(function () {
-    // Route::post('/logout', [AuthController::class, 'logout']);
-    Route::get('me', [AuthController::class, 'me']);
-
-    Route::get('categories', [CategoryController::class, 'index']);
-    Route::post('/category/create', [CategoryController::class, 'create']);
-    Route::put('category/update/{id}', [CategoryController::class, 'update']);
-    Route::delete('category/delete/{id}', [CategoryController::class, 'delete']);
-
-    // Route::get('/event/list', [EventController::class, 'list']);
-   
-
-  
-
-    // Route::get('/statistical', [UserController::class, 'statistical']);
+    Route::post('category/create', [CategoryController::class, 'create']);
 
 });
+
+
+
 
 
 //_______________________________TEST_______________________________
