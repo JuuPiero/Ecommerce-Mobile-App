@@ -1,10 +1,11 @@
+import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, SafeAreaView } from "react-native";
 import { TextInput, Button, Card, Title, Paragraph, Text } from "react-native-paper";
 
 const Login = () => {
+    const navigation = useNavigation()
     const [formData, setFormData] = useState({
-        name: "",
         email: "",
         phone: "",
     });
@@ -14,21 +15,29 @@ const Login = () => {
     };
 
     const handleSubmit = () => {
-        console.log("Submitted Data:", formData);
+      navigation.navigate('Admin')
     };
     return (
-        <View >
-            <Card >
+        <SafeAreaView style={{
+          margin: 10,
+          position: 'absolute',
+          left: 0,
+          right: 0,
+          top: '20%',
+          transform: 'translateY(-50%)',
+        }}>
+            <Card style={{
+              paddingVertical: 30
+            }}>
                 <Card.Content>
-                <Title style={styles.title}>Nhập Thông Tin Sản Phẩm</Title>
-                <TextInput
-                    // label="Họ và Tên"
-                    placeholder="Enter name"
+                <Title style={styles.title}>ĐĂNG NHẬP</Title>
+                {/* <TextInput
+                    label="Họ và Tên"
                     value={formData.name}
                     onChangeText={(text) => handleChange("name", text)}
                     style={styles.input}
                     mode="outlined"
-                />
+                /> */}
                 <TextInput
                     label="Email"
                     value={formData.email}
@@ -38,7 +47,7 @@ const Login = () => {
                     mode="outlined"
                 />
                 <TextInput
-                    label="Số Điện Thoại"
+                    label="Mật khẩu"
                     value={formData.phone}
                     onChangeText={(text) => handleChange("phone", text)}
                     keyboardType="phone-pad"
@@ -46,11 +55,11 @@ const Login = () => {
                     mode="outlined"
                 />
                 <Button mode="contained" onPress={handleSubmit} style={styles.button}>
-                    Gửi
+                    Login
                 </Button>
                 </Card.Content>
             </Card>
-        </View>
+        </SafeAreaView>
     );
 };
 

@@ -68,8 +68,7 @@ const CreateCategory = () => {
     return (
         <DefaultLayout>
             <View >
-                <Card >
-                 
+                <Card>
                     <Card.Content>
                         <Title style={styles.title}>Thêm danh mục</Title>
                         <TextInput

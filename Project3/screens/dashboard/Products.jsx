@@ -3,16 +3,19 @@ import { Button, Text } from 'react-native-paper';
 import Table from '../../components/dashboard/Table';
 import ProductCard from '../../components/dashboard/ProductCard';
 import DefaultLayout from '../../layouts/dashboard/DefaultLayout';
+import { useNavigation } from '@react-navigation/native';
 
 
 export default function Products() {
+  const navigation = useNavigation()
+
     return (
       <DefaultLayout>
         <ScrollView >
           <View style={{ padding: 10, display: 'flex', justifyContent: 'space-between', flexDirection: 'row' }}>
             <Text role='heading' style={{fontSize: 30}} >Products</Text>
             <Button mode='contained' onPress={e => {
-              alert("new")
+              navigation.navigate('CreateProduct')
             }}>New Products</Button>        
           </View>
           <ProductCard />

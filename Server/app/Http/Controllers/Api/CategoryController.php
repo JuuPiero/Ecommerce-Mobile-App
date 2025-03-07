@@ -23,6 +23,14 @@ class CategoryController extends Controller
         ]);
     }
 
+    public function all() {
+        $categories =  $this->categoryRepository->all();
+        return response()->json([
+            'categories' => $categories,
+            'message' => 'Danh sách danh mục',
+        ]);
+    }
+
     public function create(Request $request) {
         $request->validate([
             'file' => 'image|mimes:jpeg,png,jpg,gif|max:2048',

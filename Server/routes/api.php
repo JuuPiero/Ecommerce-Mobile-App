@@ -25,17 +25,17 @@ Route::prefix('v1')->group(function () {
     Route::middleware('jwt.auth')->group(function () {
         // Route::post('/logout', [AuthController::class, 'logout']);
         Route::get('me', [AuthController::class, 'me']);
-    
-        Route::get('categories', [CategoryController::class, 'index']);
+
+        //__________________DANH MỤC__________________
         Route::put('category/update/{id}', [CategoryController::class, 'update']);
         Route::delete('category/delete/{id}', [CategoryController::class, 'delete']);
     
         // Route::get('/statistical', [UserController::class, 'statistical']);
     
     });
-
+    Route::get('categories', [CategoryController::class, 'index']);
     Route::post('category/create', [CategoryController::class, 'create']);
-
+    Route::get('category/all', [CategoryController::class, 'all']);
 });
 
 

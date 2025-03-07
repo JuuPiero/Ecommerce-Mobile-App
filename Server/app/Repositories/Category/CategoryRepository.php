@@ -26,7 +26,7 @@ class CategoryRepository implements IRepository {
     }
 
     public function all() {
-
+        return Category::all();
     }
 
     public function find($id) {

@@ -21,10 +21,9 @@ const styles = StyleSheet.create({
         objectFit: 'contain'
     }
 
-
 })
 
-function ProductCard(props) {
+function ProductCard(product) {
     return (
         <View style={styles.productCard}>
             <Image
@@ -34,7 +33,7 @@ function ProductCard(props) {
             />
             <View>
                 <Text style={{ fontWeight: 'bold' }}>TEst sản phẩm</Text>
-                <Text style={{ }}>188$ * 10 in stocks</Text>
+                <Text>188$ * 10 in stocks</Text>
             </View>
             <Button onPress={() => { alert('edit') }}>Edit</Button>
         </View>

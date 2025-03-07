@@ -9,13 +9,14 @@ export default function Dashboard({ navigation }) {
       <Card>
         <Card.Title title="Test card" />
         <Card.Content>
-          <Text>Bố Thành vĩ đại</Text>
+          <Text>Test asjdk </Text>
         </Card.Content>
         <Card.Actions>
           <Button mode="contained" onPress={() => alert('Click me!')}>
             Click me!
           </Button>
-          <Button onPress={() => navigation.navigate('Customer')}>navigate</Button>
+          <Button onPress={() => navigation.navigate('Login')}>go to login</Button>
+
         </Card.Actions>
       </Card>
     </View>

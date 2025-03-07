@@ -6,6 +6,7 @@ import Orders from "../screens/dashboard/Orders";
 import Categories from "../screens/dashboard/Categories";
 import Users from "../screens/dashboard/Users";
 import CategoryStack from "./dashboard/CategoryStack";
+import ProductStack from "./dashboard/ProductStack";
 
 const Tab = createBottomTabNavigator();
 
@@ -18,7 +19,7 @@ export default function DashboardTab() {
           let iconName;
           if (route.name === 'Dashboard') iconName = 'stats-chart';
           else if (route.name === 'Category') iconName = 'grid';
-          else if (route.name === 'Products') iconName = 'pricetag';
+          else if (route.name === 'Product') iconName = 'pricetag';
           else if (route.name === 'Orders') iconName = 'cart';
           else if (route.name === 'Users') iconName = 'person'
           return <Ionicons name={iconName} size={size} color={color} />;
@@ -26,10 +27,10 @@ export default function DashboardTab() {
       })}
     >
       <Tab.Screen name="Dashboard" component={Dashboard} />
-      
       <Tab.Screen name="Category" component={CategoryStack} />
+      <Tab.Screen name="Product" component={ProductStack} />
 
-      <Tab.Screen name="Products" component={Products} />
+
       <Tab.Screen name="Orders" component={Orders} />
       <Tab.Screen name="Users" component={Users} />
 

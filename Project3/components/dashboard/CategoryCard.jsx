@@ -1,18 +1,25 @@
 import React from 'react';
 import { Image, View } from 'react-native';
 import { Button, Text } from 'react-native-paper';
+import { API_URL } from '../../api/api';
 
-function CategoryCard(props) {
+function CategoryCard({category}) {
+    console.log(category.image);
+    
     return (
-        <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', padding: 10, backgroundColor: 'white', marginBottom: 10, borderRadius: 15}}>
+        <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', paddingVertical: 10, backgroundColor: 'white', marginBottom: 10, borderRadius: 15}}>
             <Image
                 style={{width: 50, height: 50}}
-                source={{uri: 'https://www.shipbob.com/au/wp-content/uploads/sites/33/2022/07/PRODUCT-RANGE.jpg'}}
+                source={{uri: category.image?.includes('https') ? category.image : (API_URL + "/storage/" + category.image)}}
                 resizeMode={'cover'} // cover or contain its upto you view look
-            />
+                />
             <View>
-                <Text style={{ fontWeight: 'bold' }}>Danh mục test</Text>
-                <Text style={{ }}>Parent: Test</Text>
+                <Text style={{ 
+                    fontWeight: 'bold',
+                    fontSize: 20
+                    
+                }}>{category.name}</Text>
+                <Text >{category.description?.substring(0, 10)}...</Text>
             </View>
             <Button onPress={() => { alert('edit') }}>Edit</Button>
         </View>
