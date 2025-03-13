@@ -7,6 +7,7 @@ export default function Home() {
     return (
         <View>
             <Text>Home</Text>
+            
             <Button mode="contained" onPress={() => {
                 navigation.replace("Admin");
             }}>Test chuyển sang admin</Button>
