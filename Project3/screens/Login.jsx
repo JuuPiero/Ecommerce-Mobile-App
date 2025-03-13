@@ -16,6 +16,13 @@ const Login = () => {
 
     const handleSubmit = () => {
       navigation.navigate('Admin')
+
+      try {
+        
+      } catch (error) {
+        
+      }
+
     };
     return (
         <SafeAreaView style={{
@@ -24,7 +31,6 @@ const Login = () => {
           left: 0,
           right: 0,
           top: '20%',
-          transform: 'translateY(-50%)',
         }}>
             <Card style={{
               paddingVertical: 30

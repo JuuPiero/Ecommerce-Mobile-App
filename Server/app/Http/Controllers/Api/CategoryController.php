@@ -23,6 +23,14 @@ class CategoryController extends Controller
         ]);
     }
 
+    public function get($id) {
+        $category =  $this->categoryRepository->find($id);
+        return response()->json([
+            'category' => $category,
+            // 'message' => 'Danh sách danh mục',
+        ]);
+    }
+
     public function all() {
         $categories =  $this->categoryRepository->all();
         return response()->json([

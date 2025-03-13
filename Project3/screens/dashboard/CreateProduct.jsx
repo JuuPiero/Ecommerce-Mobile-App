@@ -6,22 +6,22 @@ import { Picker } from "@react-native-picker/picker";
 import axios from "axios";
 import { API_URL } from "../../api/api";
 
-const styles = StyleSheet.create({
-    dropdown: {
-        borderWidth: 1,
-        borderRadius: 5,
-        borderStyle: 'solid'
-    },
-    title: {
-        fontWeight: 'bold'
-    }
-    
-})
+
 
 export default function CreateProduct() {
 
     const [categories, setCategories] = useState([])
     const [isLoaded, setIsLoaded] = useState(false)
+
+    // const [formData, setFormData] = useState({
+    //     name: "",
+    //     category_id: null,
+    //     sku: "",
+    //     price: 0.0,
+    //     quantity: 0,
+    //     descrtiption: "",
+    //     attributes: []
+    // })
 
     useEffect(() => {
         const getCategories = async () => {
@@ -43,13 +43,20 @@ export default function CreateProduct() {
         sku: "",
         price: 0,
         quantity: 0,
-        status: true
+        description: "",
+        status: true,
+        attributes: [
+            {
+                name: "",
+                value: ""
+            }
+        ]
     })
 
     const onSubmit = async () => {
         Alert.alert("thêm sản phẩm")
     }
-    if(!isLoaded) return <Text>Loading ...</Text>
+    if(!isLoaded) return <Text>LOadding</Text>
 
     return (
         <DefaultLayout>
@@ -94,6 +101,29 @@ export default function CreateProduct() {
                                 }}>Status</Text>
                                 <Switch value={formData.status} />;
                             </View>
+
+                            <View style={styles.attributeContainer}>
+                                <Title>Thêm thuộc tính</Title>
+                                <View style={{
+                                    display: 'flex',
+                                    flexDirection: 'row',
+                                    gap: 10
+                                }}>
+                                    <TextInput
+                                        style={styles.attributeInput}
+                                        placeholder="Attribute Name"
+                                        mode="outlined"
+                                    />
+                                    <TextInput
+                                        style={styles.attributeInput}
+                                        placeholder="Value"
+                                        mode="outlined"
+                                    />
+                                </View>
+                                <Button style={{
+                                    width: '50%'
+                                }} mode="outlined">new attribute</Button>
+                            </View>
                             <Button onPress={e => {
                                 onSubmit()
                             }} mode="contained">Submit</Button>
@@ -104,3 +134,23 @@ export default function CreateProduct() {
         </DefaultLayout>
     )
 }
+const styles = StyleSheet.create({
+    dropdown: {
+        borderWidth: 1,
+        borderRadius: 5,
+        borderStyle: 'solid'
+    },
+    title: {
+        fontWeight: 'bold'
+    },
+    attributeContainer: {
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 10
+    },
+    attributeInput: {
+        // display: 'flex',
+        width: '50%'
+    }
+    
+})

@@ -17,7 +17,6 @@ export default function Categories() {
         const getCategories = async () => {
             try {
                 const response = await axios.get(API_URL + "/api/v1/category/all")
-                
                 setCategories(response.data.categories)
                 setIsLoaded(true)
             } catch (error) {
@@ -25,9 +24,9 @@ export default function Categories() {
             }
         }
         getCategories()
-    })
+    }, [])
 
-    if(!isLoaded) return <Text>Loading ...</Text>
+    if(!isLoaded) return <Text>{"Loading ..."}</Text>
 
     return (
         <DefaultLayout >

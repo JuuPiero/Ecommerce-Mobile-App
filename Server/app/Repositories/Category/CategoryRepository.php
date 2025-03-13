@@ -30,7 +30,7 @@ class CategoryRepository implements IRepository {
     }
 
     public function find($id) {
-        return Category::with('children')->with('images')->with('products')->findOrFail($id);
+        return Category::find($id);
     }
 
     public function create($request) {

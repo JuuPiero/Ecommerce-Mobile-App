@@ -34,6 +34,7 @@ Route::prefix('v1')->group(function () {
     
     });
     Route::get('categories', [CategoryController::class, 'index']);
+    Route::get('category/get/{id}', [CategoryController::class, 'get']);
     Route::post('category/create', [CategoryController::class, 'create']);
     Route::get('category/all', [CategoryController::class, 'all']);
 });

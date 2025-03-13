@@ -1,16 +1,15 @@
 import { createContext, useEffect, useState } from "react";
 import axios from 'axios';
 import { Text } from "react-native-paper";
-import api from "../api/api";
+import api, { API_URL } from "../api/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const AuthContext = createContext();
 
-const API_URL = 'http://127.0.0.1:8082';
 
 const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
-    const [token, setToken] = useState(localStorage.getItem('token') || null);
+    const [token, setToken] = useState(AsyncStorage.getItem('token') || null);
     const [role, setRole] = useState(null);
     const [loading, setLoading] = useState(true);
 
@@ -60,7 +59,7 @@ const AuthProvider = ({ children }) => {
                     setRole(response.data.role);
                 } catch (error) {
                     console.error('Token invalid or expired');
-                    logout();
+                    await logout();
                 }
             }
             setLoading(false);

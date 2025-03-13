@@ -1,8 +1,8 @@
 import { useNavigation } from '@react-navigation/native';
 import { Image, View } from 'react-native';
 import { Card, Button, Text } from 'react-native-paper';
-export default function Dashboard({ navigation }) {
-  
+export default function Dashboard() {
+  const navigation = useNavigation()
   return (
     <View style={{ flex: 1, justifyContent: 'center', padding: 20, backgroundColor: 'white' }}>
      
@@ -12,8 +12,8 @@ export default function Dashboard({ navigation }) {
           <Text>Test asjdk </Text>
         </Card.Content>
         <Card.Actions>
-          <Button mode="contained" onPress={() => alert('Click me!')}>
-            Click me!
+          <Button mode="contained" onPress={() => navigation.navigate('Customer')}>
+            Go Home
           </Button>
           <Button onPress={() => navigation.navigate('Login')}>go to login</Button>
 
