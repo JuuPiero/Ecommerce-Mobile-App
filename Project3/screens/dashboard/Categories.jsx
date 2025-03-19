@@ -6,42 +6,47 @@ import { useNavigation } from "@react-navigation/native";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { API_URL } from "../../api/api";
+import Loading from "../../components/Loading";
 
-export default function Categories() {
+export default function Categories({onReset}) {
     const navigation = useNavigation();
 
     const [categories, setCategories] = useState([])
-    const [isLoaded, setIsLoaded] = useState(false)
+    const [refreshing, setRefreshing] = useState(false);
 
-    useEffect(() => {
-        const getCategories = async () => {
-            try {
-                const response = await axios.get(API_URL + "/api/v1/category/all")
-                setCategories(response.data.categories)
-                setIsLoaded(true)
-            } catch (error) {
-                console.log(error)
-            }
-        }
+    const onRefresh = async () => {
+        setRefreshing(true);
         getCategories()
+    };
+
+    async function getCategories() {
+        try {
+            const response = await axios.get(API_URL + "/api/v1/category/all")
+            setCategories(response.data.categories)
+            setRefreshing(false);
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    useEffect(() => {
+        onRefresh()
     }, [])
 
-    if(!isLoaded) return <Text>{"Loading ..."}</Text>
+    if(refreshing) return <Loading />
 
     return (
-        <DefaultLayout >
-            <ScrollView >
-                <View style={{ padding: 10, display: 'flex', justifyContent: 'space-between', flexDirection: 'row' }}>
-                    <Text role='heading' style={{fontSize: 30}} >Categories</Text>
-                    <Button mode='contained' onPress={e => {
-                        navigation.navigate('CreateCategory')
-                    }}>New Category</Button>        
-                </View>
-                {
-                    categories.map(category => <CategoryCard key={category.id} category={category} />)
-                }
+        <DefaultLayout onRefresh={onRefresh} refreshing={refreshing}>
+            {/* <Button mode="contained" onPress={getCategories}>Reset</Button> */}
+            <View style={{ padding: 10, display: 'flex', justifyContent: 'space-between', flexDirection: 'row' }}>
+                <Text role='heading' style={{fontSize: 30}} >Categories</Text>
+                <Button mode='contained' onPress={e => {
+                    navigation.navigate('CreateCategory')
+                }}>New Category</Button>        
+            </View>
+            {
+                categories.map(category => <CategoryCard key={category.id} category={category} />)
+            }
 
-            </ScrollView>
         </DefaultLayout>
     )
 }

@@ -1,6 +1,6 @@
-import { useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { Button, Card, Text, TextInput, Title } from "react-native-paper";
-import { Image, StyleSheet, View } from "react-native";
+import { Alert, Image, StyleSheet, View } from "react-native";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { API_URL } from "../../api/api";
@@ -9,6 +9,7 @@ import DefaultLayout from "../../layouts/dashboard/DefaultLayout";
 
 export default function EditCategory() {
     const route = useRoute();
+    const navigation = useNavigation()
     const { id } = route.params; // Lấy id từ params
     const [category, setCategory] = useState(null)
     const pickImage = async () => {
@@ -31,6 +32,18 @@ export default function EditCategory() {
         getCategory(id)
 
     }, [])
+    const handleDelete = async (e) => {
+        try {
+            const response = await axios.delete(API_URL + "/api/v1/category/delete/" + id)
+            if(response.data) {
+                Alert.alert("Xóa thành công")
+                navigation.navigate('Categories')
+            }             
+        } catch (error) {
+            console.log(error)
+            Alert.alert("Xóa thất bại")
+        }
+    }
     
     if(!category) return <Loading />
 
@@ -39,7 +52,7 @@ export default function EditCategory() {
             <View >
                 <Card>
                     <Card.Content>
-                        <Title style={styles.title}>Thêm danh mục</Title>
+                        <Button onPress={handleDelete} style={{backgroundColor: 'red', marginBottom: 20, width: '50%'}}>Delete</Button>
                         <TextInput
                             // label="Họ và Tên"
                             placeholder="Enter name"

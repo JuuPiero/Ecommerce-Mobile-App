@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\ProductController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,11 +26,8 @@ Route::prefix('v1')->group(function () {
     Route::middleware('jwt.auth')->group(function () {
         // Route::post('/logout', [AuthController::class, 'logout']);
         Route::get('me', [AuthController::class, 'me']);
-
         //__________________DANH MỤC__________________
         Route::put('category/update/{id}', [CategoryController::class, 'update']);
-        Route::delete('category/delete/{id}', [CategoryController::class, 'delete']);
-    
         // Route::get('/statistical', [UserController::class, 'statistical']);
     
     });
@@ -37,6 +35,14 @@ Route::prefix('v1')->group(function () {
     Route::get('category/get/{id}', [CategoryController::class, 'get']);
     Route::post('category/create', [CategoryController::class, 'create']);
     Route::get('category/all', [CategoryController::class, 'all']);
+    Route::delete('category/delete/{id}', [CategoryController::class, 'delete']);
+
+
+    //PRODUCT
+    Route::get('products', [ProductController::class, 'index']);
+    Route::post('product/create', [ProductController::class, 'create']);
+
+
 });
 
 
@@ -48,7 +54,6 @@ Route::prefix('v1')->group(function () {
 // Route::get('/event/get/{id}', [EventController::class, 'get']);
 
 //________________________________________________________________
-
 
 
 
@@ -67,12 +72,3 @@ Route::prefix('user')->middleware('jwt.auth')
 
 
 
-// Route::get('user/findByEmail', function($request) {
-//     $user = User::where('email', $request->email)->first();
-//     if ($user) {
-//         return response()->json($user);
-//     }
-//     return response()->json([
-//         'message' => 'User not found'
-//     ], 404);
-// });

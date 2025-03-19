@@ -4,10 +4,33 @@ import Table from '../../components/dashboard/Table';
 import ProductCard from '../../components/dashboard/ProductCard';
 import DefaultLayout from '../../layouts/dashboard/DefaultLayout';
 import { useNavigation } from '@react-navigation/native';
-
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import { API_URL } from '../../api/api';
+import Loading from '../../components/Loading';
+const data = [
+  { id: 1, name: "Sản phẩm A", price: 100000, quantity: 10 },
+  { id: 2, name: "Sản phẩm B", price: 150000, quantity: 5 },
+  { id: 3, name: "Sản phẩm C", price: 200000, quantity: 20 },
+  { id: 4, name: "Sản phẩm D", price: 50000, quantity: 15 },
+  { id: 5, name: "Sản phẩm E", price: 75000, quantity: 8 },
+];
 
 export default function Products() {
-  const navigation = useNavigation()
+    const navigation = useNavigation()
+    const [products, setProducts] = useState([])
+    const [isLoaded, setLoaded] = useState(false)
+
+    const getProducts = async () => {
+      const response = await axios.get(API_URL + "/api/v1/products")
+      setProducts(response.data.data)
+      setLoaded(true)
+    }
+    useEffect(() => {
+      getProducts()
+      console.log(products);
+    }, [])
+    if(!isLoaded) return <Loading />
 
     return (
       <DefaultLayout>
@@ -18,21 +41,22 @@ export default function Products() {
               navigation.navigate('CreateProduct')
             }}>New Products</Button>        
           </View>
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
+          {
+            products.map(product => <ProductCard product={product} key={product.id} />)
+          }
+
+          {
+            data.map(product => <ProductCard product={product} key={product.id} />)
+          }
+       
           <View style={{ padding: 20, display: 'flex', justifyContent: 'center', flexDirection: 'row' }}>
-            <Button mode='contained'> B </Button> 
+            {/* <Button mode='contained'>First</Button>  */}
             <Button mode='text'>1</Button>
             <Button mode='text' textColor='gray'>2</Button>
             <Button mode='text' textColor='gray'>10</Button> 
-            <Button mode='contained'>Next</Button>        
+            {/* <Button mode='contained'>Next</Button>         */}
           </View>
-          <Table />
+          {/* <Table /> */}
         </ScrollView>
       </DefaultLayout>
     )     

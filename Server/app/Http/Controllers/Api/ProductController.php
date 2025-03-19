@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Repositories\Product\ProductRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
@@ -18,24 +19,19 @@ class ProductController extends Controller
     public function index() {
         $products = $this->productRepository->paginate(10);
 
-        return response()->json([
-            
-        ]);
+        return response()->json($products);
         // return view('admin.product.index', compact('products'));
     }
-    public function create() {
-        $categories = Category::where('parent_id', 0)->get();
-        return view('admin.product.create')->with([
-            'categories' => $categories
-        ]);
-    }
 
-    public function store(Request $request) {
-        $request->validate([
-            'file' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+    public function create(Request $request) {
+        $t = $this->productRepository->create($request);
+        //Log::info('Debug info:', ['data' => $request->all()]);
+
+        
+        return response()->json([
+            'message' => "ok",
+            "data" => $t
         ]);
-        $this->productRepository->create($request);
-        return redirect()->back()->with('message', 'tạo thành công');
     }
 
     public function edit($id) {

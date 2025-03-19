@@ -1,28 +1,22 @@
-import { SafeAreaView, StyleSheet, View } from "react-native";
+import { RefreshControl, SafeAreaView, ScrollView, StyleSheet, View } from "react-native";
 import SearchHeader from "../../components/dashboard/SearchHeader";
+import { useCallback, useState } from "react";
+import { useFocusEffect } from "@react-navigation/native";
 
 
-// const styles = StyleSheet.create({
-//     sidebar: {
-//         position: 'absolute',
-//         left: -100
-//     }
-// })
 
-export default function DefaultLayout({ children }) {
-
+export default function DefaultLayout({ children, refreshing, onRefresh }) {
+   
     return (
-        <SafeAreaView  style={{
-            padding: 10, 
-            marginBottom: 60,
-            marginTop: 20
-        
-        }}>
-            <SearchHeader />
-            {/* <View style={styles.sidebar}>
-                SIDEBAR
-            </View> */}
-            {children}
-        </SafeAreaView>
+        <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
+            <SafeAreaView style={{
+                padding: 10, 
+                marginBottom: 60,
+                marginTop: 20
+            }}>
+                <SearchHeader />
+                {children}
+            </SafeAreaView>
+        </ScrollView>
     )
 }

@@ -7,6 +7,7 @@ use App\Models\ProductAttribute;
 use App\Models\ProductImage;
 use App\Repositories\IRepository;
 use App\Repositories\Product\ProductRepository;
+use Illuminate\Support\Facades\Storage;
 
 class CategoryRepository implements IRepository {
     private $productRepository;
@@ -55,8 +56,11 @@ class CategoryRepository implements IRepository {
     }
 
     public function delete($id) {
-        // $category = Category::with('children')->findOrFail($id);
+        $category = Category::findOrFail($id);
         // $category->products()->detach();
+        if($category->image) {
+            Storage::disk('public')->delete($category->image);
+        }
 
         return Category::destroy($id);
     }

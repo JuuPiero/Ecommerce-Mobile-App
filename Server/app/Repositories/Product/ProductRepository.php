@@ -16,14 +16,14 @@ class ProductRepository implements IRepository {
     public function paginate(int $perPage = 10, bool $onlyActive = true) {
         if($onlyActive) {
             return  Product::
-                    where('is_active', 1)
+                    with('images')->
+                    where('status', 1)
                     ->where('quantity', '>', 0)
                     ->orderByDesc('updated_at')
                     ->paginate($perPage);
         }
         
         return Product::with('images')
-        ->with('categories')
         ->with('attributes')
         ->orderByDesc('updated_at')
         ->paginate($perPage);;
@@ -35,36 +35,30 @@ class ProductRepository implements IRepository {
 
     public function create($request) {
         $data = $request->all();
-        $data['is_active'] = empty($data['is_active']) ? false : true;
-        $product = Product::create($data);
+        $data['status'] = $data ? 1 : 0;
+        $test = [];
         if ($request->hasFile('images')) {
-            $images = $request->file('images');
-            foreach ($images as $index => $image) {
-                $fileName = $product->id . '_' . $index . '_' . time() . '.' . $image->getClientOriginalExtension();
-                $image->move(public_path(Product::IMAGE_UPLOAD_PATH), $fileName);
+            $product = Product::create($data);
+
+            foreach ($request->file('images') as $image) {
+                $imagePath = $image->store('images', 'public');
+                $test[] =  $image;
                 ProductImage::create([
                     'product_id' => $product->id,
-                    'name' => $fileName
+                    'name' => $imagePath
                 ]);
             }
         }
-        foreach ($data['categoryIds'] as $categoryId) {
-            $category = Category::find($categoryId);
-            if ($category) {
-                $product->categories()->attach($category);
-            }
-        }
-
-        if($data['attributes'] != null) {
-            foreach (json_decode($data['attributes']) as $nameAttribute => $value) {
-                $product->attributes()->create([
-                    'product_id' => $product->id,
-                    'name' => $nameAttribute,
-                    'value' => $value
-                ]);
-            }
-        }
-
+        return $test;
+        // if($data['attributes']) {
+        //     foreach (json_decode($data['attributes']) as $attribute) {
+        //         ProductAttribute::create([
+        //             'product_id' => $product->id,
+        //             'name' => $attribute->name,
+        //             'value' => $attribute->value
+        //         ]);
+        //     }
+        // }
     }
 
     public function update($id, $request) {

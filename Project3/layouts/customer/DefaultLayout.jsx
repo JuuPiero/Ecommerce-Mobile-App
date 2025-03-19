@@ -1,19 +1,19 @@
-import { SafeAreaView, StyleSheet, View } from "react-native";
+import { SafeAreaView, ScrollView, StyleSheet, View } from "react-native";
 import SearchHeader from "../../components/dashboard/SearchHeader";
+import { Title } from "react-native-paper";
 
 
 export default function DefaultLayout({ children }) {
 
     return (
-        <SafeAreaView style={{
-            margin: 15,
-            marginTop: 20
-        }}>
-            {/* <SearchHeader /> */}
-            {/* <View style={styles.sidebar}>
-                SIDEBAR
-            </View> */}
-            {children}
-        </SafeAreaView>
+        <ScrollView>
+            <SafeAreaView  style={{
+                margin: 15,
+                marginTop: 50,
+            }}>
+                {children}
+            </SafeAreaView>
+        </ScrollView>
+       
     )
 }

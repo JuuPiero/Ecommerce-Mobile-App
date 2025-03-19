@@ -1,19 +1,20 @@
 import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { Button } from 'react-native-paper';
+import { API_URL } from '../../api/api';
 
 
-function ProductCard(product) {
+function ProductCard({product}) {
     return (
         <View style={styles.productCard}>
             <Image
                 style={styles.cardImage}
-                source={{uri: 'https://www.shipbob.com/au/wp-content/uploads/sites/33/2022/07/PRODUCT-RANGE.jpg'}}
+                source={{uri: product.images ? (API_URL + '/storage/' + product.images[0].name) : 'https://www.shipbob.com/au/wp-content/uploads/sites/33/2022/07/PRODUCT-RANGE.jpg'}}
                 resizeMode={'contain'} // cover or contain its upto you view look
             />
             <View>
-                <Text style={{ fontWeight: 'bold' }}>Test sản phẩm</Text>
-                <Text>188$ * 10 in stocks</Text>
+                <Text style={{ fontWeight: 'bold' }}>{product.name}</Text>
+                <Text>{product.price}$ * 10 in stocks</Text>
             </View>
             <Button onPress={() => { alert('edit') }}>Edit</Button>
         </View>
