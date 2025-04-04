@@ -1,9 +1,12 @@
+import { useNavigation } from "@react-navigation/native";
 import { Alert, Button, Image, Pressable, StyleSheet, Text, View } from "react-native";
 
-export default function ProductItem() {
+export default function ProductItem({product}) {
+    const navigation = useNavigation()
+
     return (
         <Pressable onPress={e => {
-            Alert.alert("Go to product detail")
+            navigation.navigate('ProductDetail', {id: 1})
         }} style={styles.productItem}>
 
             <Image
@@ -25,7 +28,7 @@ const styles = StyleSheet.create({
     productImage: {
         width: '100%',
         height: 150,
-        borderRadius: 15
+        borderRadius: 8
     },
     productPrice: {
         fontWeight: 'bold',

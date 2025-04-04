@@ -6,10 +6,8 @@ const Stack = createNativeStackNavigator();
 export default function ProfileStack() {
     return (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-            {/* <Stack.Screen name="Home" component={Home} /> */}
-            {/* <Stack.Screen name="ProductDetail" component={ProudctDetail} /> */}
-            {/* <Stack.Screen name="CategoryDetail" component={{}} /> */}
-            {/* <Stack.Screen name="CreateProduct" component={CreateProduct} /> */}
+
+            <Stack.Screen name="Home" component={Home} />
         </Stack.Navigator>
     );
 }

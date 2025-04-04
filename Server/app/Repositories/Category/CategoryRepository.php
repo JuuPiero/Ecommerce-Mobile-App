@@ -48,7 +48,9 @@ class CategoryRepository implements IRepository {
         $category =  Category::find($id);
         $data = $request->all();
         if($request->hasFile('image')) {
-
+            Storage::disk('public')->delete($category->image);
+            $imagePath = $request->file('image')->store('images', 'public');
+            $data['image'] = $imagePath;
         }
         $result =  $category->update($data);
 

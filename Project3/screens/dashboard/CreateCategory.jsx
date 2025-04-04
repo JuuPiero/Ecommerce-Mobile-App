@@ -30,7 +30,7 @@ const CreateCategory = () => {
     }
 
     const handleSubmit = async () => {
-        console.log("Submitted Data:", formData)
+        // console.log("Submitted Data:", formData) 
         if (!formData.name || !formData.description || !formData.image) {
             Alert.alert("Lỗi", "Vui lòng điền đầy đủ thông tin!")
             return
@@ -45,7 +45,7 @@ const CreateCategory = () => {
             name: `${Date.now()}.${fileType}`,
             type: `image/${fileType}`,
         });
-
+        
         try {
             const response = await axios.post(API_URL + "/api/v1/category/create", data, {
                 headers: {
@@ -82,14 +82,12 @@ const CreateCategory = () => {
                         placeholder="Enter description"
                         value={formData.description}
                         onChangeText={(text) => handleChange("description", text)}
-                        style={styles.input}
+                        style={[styles.input, {height : 100}]}
                         multiline={true} // Cho phép nhập nhiều dòng
                         numberOfLines={20} // Số dòng hiển thị mặc định
                         mode="outlined"
                     />
-                    <Button style={{
-                        borderRadius: 0
-                    }} mode="contained-tonal" onPress={pickImage}>
+                    <Button mode="contained-tonal" onPress={pickImage}>
                         Chọn Ảnh
                     </Button>
                     {formData.image && <Image source={{ uri: formData.image }} style={{ width: 'auto', height: 100, marginTop: 10 }} />}

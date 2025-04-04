@@ -6,11 +6,23 @@ import DefaultLayout from "../../layouts/customer/DefaultLayout";
 import CategoryItem from "../../components/customer/CategoryItem";
 import CategorySlider from "../../components/customer/CategorySlider";
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useEffect } from "react";
 
 
 export default function Home() {
     const navigation = useNavigation();
     
+    // useEffect(() => {
+    //     AsyncStorage.setItem("test", JSON.stringify([
+    //         1, 2, 3
+    //     ]))
+
+    //     const test = AsyncStorage.getItem('test')
+    //     console.log(test);
+        
+    // }, [])
+
     return (
         <DefaultLayout>
             <CategorySlider />
@@ -29,7 +41,6 @@ export default function Home() {
                 <ProductItem />
                 <ProductItem />
                 <ProductItem />
-
             </View>
           
             <Button mode="contained" onPress={() => {

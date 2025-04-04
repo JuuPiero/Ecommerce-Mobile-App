@@ -1,5 +1,4 @@
 import { Button, Card, Switch, Text, TextInput, Title } from "react-native-paper"
-import DefaultLayout from "../../layouts/dashboard/DefaultLayout"
 import { Alert, Image, StyleSheet, View } from "react-native"
 import { useEffect, useState } from "react"
 import { Picker } from "@react-native-picker/picker"
@@ -9,8 +8,15 @@ import Loading from "../../components/Loading"
 import NewAtributeInput from "../../components/dashboard/NewAtributeInput"
 
 import * as ImagePicker from 'expo-image-picker'
+import DefaultLayout from "../../layouts/customer/DefaultLayout"
 
-export default function CreateProduct() {
+const paymentMethods = [
+    {id: 1, name: "Thanh toán khi nhận hàng"},
+    {id: 2, name: "Momo"},
+    {id: 2, name: "VNPay"},
+]
+
+export default function Checkout() {
     const [categories, setCategories] = useState([])
     const [isLoaded, setIsLoaded] = useState(false)
     useEffect(() => {
@@ -26,10 +32,9 @@ export default function CreateProduct() {
         getCategories()
     }, [])
 
-    //product
     const [formData, setFormData] = useState({
         name: "",
-        category_id: null,
+        category_id: 0,
         sku: "",
         price: 0,
         quantity: 0,
@@ -55,20 +60,6 @@ export default function CreateProduct() {
         })
     }
 
-    const pickImages = async () => {
-        let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            allowsMultipleSelection: true,
-            quality: 1,
-        })
-
-        if (!result.canceled) {
-            setFormData({ 
-                ...formData, 
-                images: [...(formData.images || []), ...result.assets.map(asset => asset.uri)] 
-            })
-        }
-    }
 
     const onSubmit = async () => {
         const { name, category_id, sku, price, quantity, description, images } = formData;
@@ -88,7 +79,6 @@ export default function CreateProduct() {
         data.append("price", price)
         data.append("quantity", quantity)
         data.append("description", description)
-        data.append("attributes", JSON.stringify(attributes))
 
         images.forEach((uri, index) => {
             const fileName = uri.split('/').pop();
@@ -99,17 +89,15 @@ export default function CreateProduct() {
                 type: `image/${fileType}`,
             });
         });
+        data.append("attributes", JSON.stringify(attributes))
         
         try {
-            setIsLoaded(false)
             const response = await axios.post(API_URL + "/api/v1/product/create", data, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
             })
-            Alert.alert("Thành công", `Server phản hồi: ${response.data.message}`)
-            setIsLoaded(true)
-            
+            Alert.alert("Thành công", `Server phản hồi: ${response.data}`)
             setFormData({
                 name: "",
                 category_id: 0,
@@ -132,48 +120,56 @@ export default function CreateProduct() {
 
     return (
         <DefaultLayout>
+            <Text style={{
+                fontWeight: 'bold',
+                fontSize: 30
+            }}>Checkout</Text>
             <Card>
                 <Card.Content>
-                    <Title style={styles.title}>Thêm Sản phẩm</Title>
                     <View style={styles.formContainer}>
                         <TextInput onChangeText={text => {
                             setFormData({...formData, name: text})
-                        }}  placeholder="Tên sản phẩm" mode="outlined" />
+                        }}  placeholder="Tên người nhận" mode="outlined" />
                         <View style={styles.dropdown}>
                             <Picker onValueChange={categoryId => {
                                 setFormData({...formData, category_id: categoryId})
                             }} placeholder="Danh mục" style={styles.dropdown}>
                                 {
-                                    categories.map(category => <Picker.Item key={category.id} label={category.name} value={category.id} />)
+                                    paymentMethods.map(paymentMethod => <Picker.Item key={paymentMethod.id} label={paymentMethod.name} value={paymentMethod.id} />)
                                 }
                             </Picker>
                         </View>
                         <TextInput onChangeText={text => {
                             setFormData({...formData, sku: text})
-                        }} placeholder="SKU" mode="outlined" />
-                        <TextInput onChangeText={text => {
-                            setFormData({...formData, price: parseFloat(text)})
-                        }} placeholder="Giá sản phẩm" mode="outlined" keyboardType="numeric" />
-                        <TextInput onChangeText={text => {
-                            setFormData({...formData, quantity: parseInt(text)})
-                        }} placeholder="Số lượng" mode="outlined"  keyboardType="numeric" />
-
+                        }} placeholder="Số điện thoại" mode="outlined" />
+                   
                         <TextInput
+                            style={{
+                                minHeight: 180
+                            }}
                             onChangeText={text => {
                                 setFormData({...formData, description: text})
                             }}
-                            placeholder="Enter description"
+                            placeholder="Địa chỉ nhận hàng"
                             multiline={true} 
                             numberOfLines={100} 
                             mode="outlined"
                         />
 
-                        <Button mode="contained-tonal" onPress={pickImages}>
-                            Chọn Ảnh
-                        </Button>
-                        {formData.images.map((image, index) => 
-                            <Image key={index} source={{ uri: image }} style={{ width: 'auto', height: 100, }} />
-                        )}
+                        <TextInput
+                            style={{
+                                minHeight: 150
+                            }}
+                            onChangeText={text => {
+                                setFormData({...formData, description: text})
+                            }}
+                            placeholder="Ghi chú"
+                            multiline={true} 
+                            numberOfLines={100} 
+                            mode="outlined"
+                        />
+
+
 
                         <View style={{
                             display: 'flex',
@@ -188,7 +184,7 @@ export default function CreateProduct() {
                         </View>
 
                         <View style={styles.attributeContainer}>
-                            <Title>Thêm thuộc tính</Title>
+                            <Title>Order Items</Title>
                             {Array.from({ length: attributeInputCount }).map((_, index) => (
                                 <NewAtributeInput key={index} id={index} setNewAttribute={handleNewAttribute} />
                             ))}
@@ -201,8 +197,10 @@ export default function CreateProduct() {
 
                     </View>
                     <Button style={{
-                        marginTop: 15
-                    }} mode="contained" onPress={onSubmit} >Submit</Button>
+                        marginTop: 15,
+                        borderRadius: 10,
+                        paddingVertical: 8,
+                    }} mode="contained" onPress={onSubmit} >Checkout</Button>
                 </Card.Content>
             </Card>
         </DefaultLayout>

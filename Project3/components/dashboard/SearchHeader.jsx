@@ -19,7 +19,7 @@ const SearchHeader = () => {
         placeholder="Tìm kiếm..." 
         value={searchQuery} 
         onChangeText={setSearchQuery} 
-        style={{ borderRadius: 50 }}
+        style={{ borderRadius: 8 }}
       />
     </View>
   );

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\ProductController;
 use Illuminate\Support\Facades\Route;
 
@@ -27,20 +28,26 @@ Route::prefix('v1')->group(function () {
         // Route::post('/logout', [AuthController::class, 'logout']);
         Route::get('me', [AuthController::class, 'me']);
         //__________________DANH MỤC__________________
-        Route::put('category/update/{id}', [CategoryController::class, 'update']);
         // Route::get('/statistical', [UserController::class, 'statistical']);
     
     });
+
     Route::get('categories', [CategoryController::class, 'index']);
+    Route::get('category/all', [CategoryController::class, 'all']);
     Route::get('category/get/{id}', [CategoryController::class, 'get']);
     Route::post('category/create', [CategoryController::class, 'create']);
-    Route::get('category/all', [CategoryController::class, 'all']);
     Route::delete('category/delete/{id}', [CategoryController::class, 'delete']);
-
+    Route::put('category/update/{id}', [CategoryController::class, 'update']);
 
     //PRODUCT
     Route::get('products', [ProductController::class, 'index']);
+    Route::get('product/get/{id}', [ProductController::class, 'get']);
     Route::post('product/create', [ProductController::class, 'create']);
+    Route::delete('product/delete/{id}', [ProductController::class, 'delete']);
+    Route::put('product/update/{id}', [ProductController::class, 'update']);
+
+
+    Route::get('orders', [OrderController::class, 'index']);
 
 
 });

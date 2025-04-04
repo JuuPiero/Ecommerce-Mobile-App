@@ -6,12 +6,14 @@ import axios from "axios";
 import { API_URL } from "../../api/api";
 import Loading from "../../components/Loading";
 import DefaultLayout from "../../layouts/dashboard/DefaultLayout";
+import * as ImagePicker from 'expo-image-picker'
 
 export default function EditCategory() {
     const route = useRoute();
     const navigation = useNavigation()
     const { id } = route.params; // Lấy id từ params
     const [category, setCategory] = useState(null)
+    const [image, setImage] = useState(null)
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -20,13 +22,14 @@ export default function EditCategory() {
         });
 
         if (!result.canceled) {
-            // setFormData({ ...formData, image: result.assets[0].uri });
+            setImage(result.assets[0].uri);
         }
     };
     useEffect(() => {
         const getCategory = async (id) => {
             const response = await axios.get(API_URL + "/api/v1/category/get/" + id)
             setCategory(response.data.category)
+            console.log(response.data.category);
             
         } 
         getCategory(id)
@@ -45,6 +48,40 @@ export default function EditCategory() {
         }
     }
     
+    const onUpdate = async (e) => {
+        const data = new FormData()
+      
+        const { name, description } = category
+        if(!name || !description) {
+            Alert.alert("Không được để trống")
+            return;
+        }
+        data.append('_method', 'PUT')
+        data.append('name', name)
+        data.append('description', description)
+        if(image) {
+            const fileName = image.split('/').pop();
+            const fileType = fileName.split('.').pop();
+            data.append('image', {
+                uri: image,
+                name: `${Date.now()}.${fileType}`,
+                type: `image/${fileType}`,
+            })
+        }
+        console.log(data);
+        try {
+            const response = await axios.post(API_URL + "/api/v1/category/update/" + id, data, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            })
+            Alert.alert("Thành công", `Server phản hồi: ${response.data.message}`)
+        } catch (error) {
+            console.error("Lỗi khi tải lên:", error)
+            Alert.alert("Lỗi", "Không thể tải dữ liệu lên")
+        }
+    }
+
     if(!category) return <Loading />
 
     return (
@@ -52,19 +89,18 @@ export default function EditCategory() {
             <View >
                 <Card>
                     <Card.Content>
-                        <Button onPress={handleDelete} style={{backgroundColor: 'red', marginBottom: 20, width: '50%'}}>Delete</Button>
+                        <Button textColor="#fff" onPress={handleDelete} style={{backgroundColor: 'red', marginBottom: 20, width: '50%'}}>Delete</Button>
                         <TextInput
-                            // label="Họ và Tên"
                             placeholder="Enter name"
                             value={category.name}
-                            // onChangeText={(text) => handleChange("name", text)}
+                            onChangeText={text => setCategory({...category, name: text})}
                             style={styles.input}
                             mode="outlined"
                         />
                         <TextInput
                             placeholder="Enter description"
                             value={category.description}
-                            // onChangeText={(text) => handleChange("description", text)}
+                            onChangeText={text => setCategory({...category, description: text})}
                             style={styles.input}
                             multiline={true} // Cho phép nhập nhiều dòng
                             numberOfLines={20} // Số dòng hiển thị mặc định
@@ -75,11 +111,19 @@ export default function EditCategory() {
                         }} mode="contained-tonal" onPress={pickImage}>
                             Chọn Ảnh
                         </Button>
-                        <Image  
+                        {
+                            image !== null ? (<Image  
+                            source={{uri: image}} 
+                            style={{ width: 'auto', height: 100, marginTop: 10 }} />) : (<Image  
                             source={{uri: category.image?.includes('https') ? category.image : (API_URL + "/storage/" + category.image)}} 
-                            style={{ width: 'auto', height: 100, marginTop: 10 }} />
+                            style={{ width: 'auto', height: 100, marginTop: 10 }} />)
+                            
+                        }
+                        {/* <Image  
+                            source={{uri: category.image?.includes('https') ? category.image : (API_URL + "/storage/" + category.image)}} 
+                            style={{ width: 'auto', height: 100, marginTop: 10 }} /> */}
                         <Button mode="contained" 
-                        // onPress={handleSubmit} 
+                        onPress={onUpdate} 
                         style={styles.button}>
                             Submit
                         </Button>

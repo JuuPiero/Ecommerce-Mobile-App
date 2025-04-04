@@ -12,7 +12,7 @@ export default function DefaultLayout({ children, refreshing, onRefresh }) {
             <SafeAreaView style={{
                 padding: 10, 
                 marginBottom: 60,
-                marginTop: 20
+                marginTop: 25
             }}>
                 <SearchHeader />
                 {children}

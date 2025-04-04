@@ -14,10 +14,8 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->string('first_name');
-            $table->string('last_name');
+            $table->string('name');
             $table->string('phone_number');
-            $table->string('email');
             $table->string('address');
             $table->string('note')->nullable();
             $table->decimal('total_amount', 10, 2);

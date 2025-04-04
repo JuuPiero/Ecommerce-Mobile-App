@@ -36,7 +36,7 @@ const Login = () => {
               paddingVertical: 30
             }}>
                 <Card.Content>
-                <Title style={styles.title}>ĐĂNG NHẬP</Title>
+                  <Title style={styles.title}>Login</Title>
                 {/* <TextInput
                     label="Họ và Tên"
                     value={formData.name}
@@ -44,25 +44,29 @@ const Login = () => {
                     style={styles.input}
                     mode="outlined"
                 /> */}
-                <TextInput
-                    label="Email"
-                    value={formData.email}
-                    onChangeText={(text) => handleChange("email", text)}
-                    keyboardType="email-address"
-                    style={styles.input}
-                    mode="outlined"
-                />
-                <TextInput
-                    label="Mật khẩu"
-                    value={formData.phone}
-                    onChangeText={(text) => handleChange("phone", text)}
-                    keyboardType="phone-pad"
-                    style={styles.input}
-                    mode="outlined"
-                />
-                <Button mode="contained" onPress={handleSubmit} style={styles.button}>
-                    Login
-                </Button>
+                  <TextInput
+                      label="Email"
+                      value={formData.email}
+                      onChangeText={(text) => handleChange("email", text)}
+                      keyboardType="email-address"
+                      style={styles.input}
+                      mode="outlined"
+                  />
+                  <TextInput
+                      label="Mật khẩu"
+                      value={formData.phone}
+                      onChangeText={(text) => handleChange("phone", text)}
+                      keyboardType="phone-pad"
+                      style={styles.input}
+                      mode="outlined"
+                  />
+
+                  <Button mode="contained" onPress={handleSubmit} style={styles.button}>
+                      Login
+                  </Button>
+                  <Button style={{
+                    marginTop: 20
+                  }}>Create new Account</Button>
                 </Card.Content>
             </Card>
         </SafeAreaView>
@@ -85,10 +89,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
   },
   title: {
-    textAlign: "center",
-    fontSize: 20,
+    // textAlign: "center",
+    fontSize: 30,
     fontWeight: "bold",
-    marginBottom: 5,
+    marginBottom: 15,
   },
   subtitle: {
     textAlign: "center",
@@ -97,6 +101,7 @@ const styles = StyleSheet.create({
   },
   input: {
     marginBottom: 15,
+    borderWidth: 0,
   },
   button: {
     marginTop: 10,

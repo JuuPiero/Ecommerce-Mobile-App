@@ -3,13 +3,13 @@ import SearchHeader from "../../components/dashboard/SearchHeader";
 import { Title } from "react-native-paper";
 
 
-export default function DefaultLayout({ children }) {
+export default function DefaultLayout({ children, style }) {
 
     return (
-        <ScrollView>
-            <SafeAreaView  style={{
+        <ScrollView style={style}>
+            <SafeAreaView style={{
                 margin: 15,
-                marginTop: 50,
+                marginTop: 40,
             }}>
                 {children}
             </SafeAreaView>

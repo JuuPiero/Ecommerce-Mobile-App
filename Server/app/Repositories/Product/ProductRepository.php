@@ -7,6 +7,7 @@ use App\Models\ProductAttribute;
 use App\Models\ProductImage;
 use App\Repositories\IRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Storage;
 
 class ProductRepository implements IRepository {
     
@@ -30,80 +31,53 @@ class ProductRepository implements IRepository {
     }
 
     public function find($id) {
-        return Product::findOrFail($id);
+        return Product::with('images')->with('attributes')->findOrFail($id);
     }
 
     public function create($request) {
         $data = $request->all();
         $data['status'] = $data ? 1 : 0;
-        $test = [];
+        $product = Product::create($data);
         if ($request->hasFile('images')) {
-            $product = Product::create($data);
-
             foreach ($request->file('images') as $image) {
                 $imagePath = $image->store('images', 'public');
-                $test[] =  $image;
+             
                 ProductImage::create([
                     'product_id' => $product->id,
                     'name' => $imagePath
                 ]);
             }
         }
-        return $test;
-        // if($data['attributes']) {
-        //     foreach (json_decode($data['attributes']) as $attribute) {
-        //         ProductAttribute::create([
-        //             'product_id' => $product->id,
-        //             'name' => $attribute->name,
-        //             'value' => $attribute->value
-        //         ]);
-        //     }
-        // }
+        if($data['attributes']) {
+            foreach (json_decode($data['attributes']) as $attribute) {
+                ProductAttribute::create([
+                    'product_id' => $product->id,
+                    'name' => $attribute->name,
+                    'value' => $attribute->value
+                ]);
+            }
+        }
+        return $this->find($product->id);
     }
 
     public function update($id, $request) {
         $product = Product::findOrFail($id);
-        $data = $request->all();
-        $data['is_active'] = !empty($data['is_active']);
+        $data = $request->product;
 
-        // Handle images
+        $data['status'] = $data ? 1 : 0;
         if($request->hasFile('images')) {
             foreach ($product->images as $image) {
-                $filePath = public_path(Product::IMAGE_UPLOAD_PATH . '/' . $image->name);
-                if (file_exists($filePath)) unlink($filePath);
+                Storage::disk('public')->delete($image);
                 ProductImage::destroy($image->id);
             }
-
             $images = $request->file('images');
             foreach ($images as $index => $image) {
-                $fileName = $product->id . '_' . $index . '_' . time() . '.' .  $image->getClientOriginalExtension();
-                $image->move(public_path(Product::IMAGE_UPLOAD_PATH), $fileName);
+                $imagePath = $image->store('images', 'public');
                 ProductImage::create([
                     'product_id' => $product->id,
-                    'name' => $fileName
+                    'name' => $imagePath
                 ]);
             }
-        }
-
-        // Handle categories
-        {
-            $existingCategoryIds = $product->categories->pluck('id')->toArray();
-            $newCategoryIds = $data['categoryIds'];
-
-            $categoriesToAttach = array_diff($newCategoryIds, $existingCategoryIds);
-            $categoriesToDetach = array_diff($existingCategoryIds, $newCategoryIds);
-
-            if ($categoriesToAttach) {
-                foreach ($categoriesToAttach as $categoryId) {
-                    $category = Category::find($categoryId);
-                    $product->categories()->attach($category);
-                }
-            }
-        
-            if ($categoriesToDetach) {
-                $product->categories()->detach($categoriesToDetach);
-            }
-
         }
 
         // Handle attributes
@@ -131,15 +105,11 @@ class ProductRepository implements IRepository {
 
     public function delete($id) {
         $product = Product::find($id);
-
+           
         // Xóa tất cả hình ảnh liên kết với các sản phẩm 
         $images = ProductImage::where('product_id', $id)->get();
         foreach ($images as $image) {
-            $filePath = public_path(Product::IMAGE_UPLOAD_PATH . '/' . $image->name);
-            if (file_exists($filePath)) {
-                unlink($filePath);
-                // $image->delete();
-            }
+            Storage::disk('public')->delete($image);
         }
         // Xóa sản phẩm
         $product->delete();

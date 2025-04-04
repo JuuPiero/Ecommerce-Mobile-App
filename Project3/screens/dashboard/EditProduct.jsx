@@ -9,14 +9,28 @@ import Loading from "../../components/Loading"
 import NewAtributeInput from "../../components/dashboard/NewAtributeInput"
 
 import * as ImagePicker from 'expo-image-picker'
+import { useNavigation, useRoute } from "@react-navigation/native"
 
-export default function CreateProduct() {
+export default function EditProduct() {
+    const route = useRoute()
+    const navigation = useNavigation()
+    
+    const { id } = route.params
+
     const [categories, setCategories] = useState([])
     const [isLoaded, setIsLoaded] = useState(false)
+    const [product, setProduct] = useState(null)
+    const [attributeInputCount, setAttributeInputCount] = useState(1);
+    const [attributes, setAttributes] = useState([])
+
+
+    
+
+
     useEffect(() => {
         const getCategories = async () => {
             try {
-                const response = await axios.get(API_URL + "/api/v1/category/all")
+                const response = await axios.get(API_URL + "/api/v1/category/get/")
                 setCategories(response.data.categories)
                 setIsLoaded(true)
             } catch (error) {
@@ -26,10 +40,9 @@ export default function CreateProduct() {
         getCategories()
     }, [])
 
-    //product
     const [formData, setFormData] = useState({
         name: "",
-        category_id: null,
+        category_id: 0,
         sku: "",
         price: 0,
         quantity: 0,
@@ -38,9 +51,6 @@ export default function CreateProduct() {
         status: true,
     })
 
-   
-    const [attributeInputCount, setAttributeInputCount] = useState(1);
-    const [attributes, setAttributes] = useState([])
 
     const handleNewAttribute = (id, data) => {
         setAttributes(prevAttributes => {
@@ -88,7 +98,6 @@ export default function CreateProduct() {
         data.append("price", price)
         data.append("quantity", quantity)
         data.append("description", description)
-        data.append("attributes", JSON.stringify(attributes))
 
         images.forEach((uri, index) => {
             const fileName = uri.split('/').pop();
@@ -99,17 +108,15 @@ export default function CreateProduct() {
                 type: `image/${fileType}`,
             });
         });
+        data.append("attributes", JSON.stringify(attributes))
         
         try {
-            setIsLoaded(false)
             const response = await axios.post(API_URL + "/api/v1/product/create", data, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
             })
-            Alert.alert("Thành công", `Server phản hồi: ${response.data.message}`)
-            setIsLoaded(true)
-            
+            Alert.alert("Thành công", `Server phản hồi: ${response.data}`)
             setFormData({
                 name: "",
                 category_id: 0,
@@ -192,6 +199,8 @@ export default function CreateProduct() {
                             {Array.from({ length: attributeInputCount }).map((_, index) => (
                                 <NewAtributeInput key={index} id={index} setNewAttribute={handleNewAttribute} />
                             ))}
+                            
+
                             <Button style={{
                                 width: '50%'
                             }} mode="outlined" onPress={() => setAttributeInputCount(attributeInputCount + 1)}

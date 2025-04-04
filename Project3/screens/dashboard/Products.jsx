@@ -19,21 +19,32 @@ const data = [
 export default function Products() {
     const navigation = useNavigation()
     const [products, setProducts] = useState([])
-    const [isLoaded, setLoaded] = useState(false)
+
+    const [refreshing, setRefreshing] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1)
+    const [pages, setPages] = useState([])
+
+    const onRefresh = async () => {
+        setRefreshing(true);
+        getProducts()
+    };
+
 
     const getProducts = async () => {
       const response = await axios.get(API_URL + "/api/v1/products")
+      console.log(response.data.data);
       setProducts(response.data.data)
-      setLoaded(true)
+      setRefreshing(false)
     }
     useEffect(() => {
       getProducts()
-      console.log(products);
-    }, [])
-    if(!isLoaded) return <Loading />
+     
+    }, [currentPage])
+
+    if(refreshing) return <Loading />
 
     return (
-      <DefaultLayout>
+      <DefaultLayout onRefresh={onRefresh} refreshing={refreshing}>
         <ScrollView >
           <View style={{ padding: 10, display: 'flex', justifyContent: 'space-between', flexDirection: 'row' }}>
             <Text role='heading' style={{fontSize: 30}} >Products</Text>

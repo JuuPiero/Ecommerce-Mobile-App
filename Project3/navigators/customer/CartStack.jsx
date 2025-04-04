@@ -1,14 +1,14 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Home from "../../screens/customer/Home";
+import Cart from "../../screens/customer/Cart";
+import Checkout from "../../screens/customer/Checkout";
 
 
 const Stack = createNativeStackNavigator();
 export default function CartStack() {
     return (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="Home" component={Home} />
-    
-            {/* <Stack.Screen name="CreateProduct" component={CreateProduct} /> */}
+            <Stack.Screen name="CartScreen" component={Cart} />
+            <Stack.Screen name="Checkout" component={Checkout} />
         </Stack.Navigator>
     );
 }

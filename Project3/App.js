@@ -6,22 +6,25 @@ import CustomerTab from './navigators/CustomerTab';
 import DashboardTab from './navigators/DashboardTab';
 import AuthProvider from './contexts/AuthContext';
 import Login from './screens/Login';
-
+import { PaperProvider, Button } from "react-native-paper";
+import theme from './theme';
 // const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
     // <AuthProvider>
+    <PaperProvider theme={theme}>
       <NavigationContainer >
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           {/* <Stack.Screen name="Login" component={Login} /> */}
           <Stack.Screen name="Customer" component={CustomerTab} />
           <Stack.Screen name="Admin" component={DashboardTab} />
           <Stack.Screen name="Login" component={Login} />
-
         </Stack.Navigator>
       </NavigationContainer>
+    </PaperProvider>
+      
     // </AuthProvider>
   );
 }

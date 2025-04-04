@@ -16,18 +16,14 @@ class CategoryController extends Controller
     }
 
     public function index() {
-        $categories =  $this->categoryRepository->paginate(3, false);
-        return response()->json([
-            'data' => $categories,
-            'message' => 'Danh sách danh mục',
-        ]);
+        $categories =  $this->categoryRepository->paginate(10, false);
+        return response()->json($categories);
     }
 
     public function get($id) {
         $category =  $this->categoryRepository->find($id);
         return response()->json([
             'category' => $category,
-            // 'message' => 'Danh sách danh mục',
         ]);
     }
 
@@ -72,6 +68,8 @@ class CategoryController extends Controller
         $request->validate([
             'file' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
+        // dd($request->all());
+
         $result = $this->categoryRepository->update($id, $request);
         return response()->json([
            'success' => $result,
