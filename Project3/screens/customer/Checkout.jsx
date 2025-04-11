@@ -9,6 +9,7 @@ import NewAtributeInput from "../../components/dashboard/NewAtributeInput"
 
 import * as ImagePicker from 'expo-image-picker'
 import DefaultLayout from "../../layouts/customer/DefaultLayout"
+import CartManager from "../../utils/CartManager"
 
 const paymentMethods = [
     {id: 1, name: "Thanh toán khi nhận hàng"},
@@ -17,60 +18,46 @@ const paymentMethods = [
 ]
 
 export default function Checkout() {
-    const [categories, setCategories] = useState([])
-    const [isLoaded, setIsLoaded] = useState(false)
-    useEffect(() => {
-        const getCategories = async () => {
-            try {
-                const response = await axios.get(API_URL + "/api/v1/category/all")
-                setCategories(response.data.categories)
-                setIsLoaded(true)
-            } catch (error) {
-                console.log(error)
-            }
-        }
-        getCategories()
-    }, [])
 
+    const [cart, setCart] = useState(null)
     const [formData, setFormData] = useState({
         name: "",
-        category_id: 0,
-        sku: "",
-        price: 0,
-        quantity: 0,
-        description: "",
-        images: [],
-        status: true,
+        payment_method: null,
+        phone_number: "",
+        address: "",
+        note: "",
+        order_items: [],
     })
+    useEffect(() => {
+        const getCart = async() => {
+            const cart = await CartManager.get()
+            setCart(cart)
 
-   
-    const [attributeInputCount, setAttributeInputCount] = useState(1);
-    const [attributes, setAttributes] = useState([])
-
-    const handleNewAttribute = (id, data) => {
-        setAttributes(prevAttributes => {
-            const existingIndex = prevAttributes.findIndex(attr => attr.id === id);
-            if (existingIndex !== -1) {
-                const updatedAttributes = [...prevAttributes];
-                updatedAttributes[existingIndex] = { ...prevAttributes[existingIndex], ...data };
-                return updatedAttributes;
-            } else {
-                return [...prevAttributes, { id, ...data }];
-            }
-        })
-    }
+            setFormData(prev => {
+                return {...prev, 
+                    order_items: cart.reduce((current, item) => {
+                        current.push({
+                        id: item.id,
+                        quantity: item.quantity
+                        });
+                        return current;
+                }, [])}
+            })
+        }
+        getCart()
+    }, [])
 
 
-    const onSubmit = async () => {
-        const { name, category_id, sku, price, quantity, description, images } = formData;
-        if (!name || !category_id || !sku || price <= 0 || quantity < 0 || !description || images.length === 0) {
+    const onCheckout = async () => {
+        console.log(formData);
+        
+
+        return
+        const { name, payment_method, phone_number, address } = formData;
+        if (!name || !payment_method || !phone_number || !address ) {
             Alert.alert("Vui lòng điền đầy đủ thông tin!");
             return;
         }
-        console.log(JSON.stringify({
-            ...formData,
-            attributes: JSON.stringify(attributes)
-        }))
 
         const data = new FormData();
         data.append("name", name)
@@ -89,7 +76,6 @@ export default function Checkout() {
                 type: `image/${fileType}`,
             });
         });
-        data.append("attributes", JSON.stringify(attributes))
         
         try {
             const response = await axios.post(API_URL + "/api/v1/product/create", data, {
@@ -98,25 +84,13 @@ export default function Checkout() {
                 },
             })
             Alert.alert("Thành công", `Server phản hồi: ${response.data}`)
-            setFormData({
-                name: "",
-                category_id: 0,
-                sku: "",
-                price: 0,
-                quantity: 0,
-                description: "",
-                images: [],
-                status: true,
-            })
-            setAttributes([])
-            setAttributeInputCount(1)
-
+           
         } catch (error) {
             console.error("Lỗi khi tải lên:", error)
             Alert.alert("Lỗi", "Không thể tải dữ liệu lên")
         }
     }
-    if(!isLoaded) return <Loading />
+    if(!cart) return <Loading />
 
     return (
         <DefaultLayout>
@@ -131,8 +105,8 @@ export default function Checkout() {
                             setFormData({...formData, name: text})
                         }}  placeholder="Tên người nhận" mode="outlined" />
                         <View style={styles.dropdown}>
-                            <Picker onValueChange={categoryId => {
-                                setFormData({...formData, category_id: categoryId})
+                            <Picker onValueChange={paymentMethod => {
+                                setFormData({...formData, payment_method: paymentMethod})
                             }} placeholder="Danh mục" style={styles.dropdown}>
                                 {
                                     paymentMethods.map(paymentMethod => <Picker.Item key={paymentMethod.id} label={paymentMethod.name} value={paymentMethod.id} />)
@@ -169,30 +143,13 @@ export default function Checkout() {
                             mode="outlined"
                         />
 
-
-
-                        <View style={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            gap: 10
-                        }}>
-                            <Text style={{ fontSize: 15 }}>Status</Text>
-                            <Switch value={formData.status} onValueChange={value => {
-                                setFormData({...formData, status: value})
-                            }} />
-                        </View>
-
-                        <View style={styles.attributeContainer}>
-                            <Title>Order Items</Title>
-                            {Array.from({ length: attributeInputCount }).map((_, index) => (
-                                <NewAtributeInput key={index} id={index} setNewAttribute={handleNewAttribute} />
+                        <View>
+                            {cart.map(item => (
+                                <Text key={item.id}>{item.product.name} x {item.quantity}</Text>
                             ))}
-                            <Button style={{
-                                width: '50%'
-                            }} mode="outlined" onPress={() => setAttributeInputCount(attributeInputCount + 1)}
-                            >new attribute</Button>
-                            <Text>{JSON.stringify(attributes, null, 2)}</Text>
+                            <Text style={styles.totalAmount}>Total Amount: {cart.reduce((sum, item) => {
+                                return sum + (item.product.price * item.quantity)
+                            }, 0)}đ</Text>
                         </View>
 
                     </View>
@@ -200,7 +157,7 @@ export default function Checkout() {
                         marginTop: 15,
                         borderRadius: 10,
                         paddingVertical: 8,
-                    }} mode="contained" onPress={onSubmit} >Checkout</Button>
+                    }} mode="contained" onPress={onCheckout} >Checkout</Button>
                 </Card.Content>
             </Card>
         </DefaultLayout>
@@ -226,4 +183,9 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         gap: 10
     },
+    totalAmount: {
+        fontWeight: 'bold',
+        fontSize: 20,
+        marginTop: 20
+    }
 })

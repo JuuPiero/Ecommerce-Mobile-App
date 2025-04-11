@@ -13,28 +13,17 @@ const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    // <AuthProvider>
     <PaperProvider theme={theme}>
-      <NavigationContainer >
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          {/* <Stack.Screen name="Login" component={Login} /> */}
-          <Stack.Screen name="Customer" component={CustomerTab} />
-          <Stack.Screen name="Admin" component={DashboardTab} />
-          <Stack.Screen name="Login" component={Login} />
-        </Stack.Navigator>
-      </NavigationContainer>
+      {/* <AuthProvider> */}
+        <NavigationContainer >
+          <Stack.Navigator screenOptions={{ headerShown: false }}>
+            {/* <Stack.Screen name="Login" component={Login} /> */}
+            <Stack.Screen name="Customer" component={CustomerTab} />
+            <Stack.Screen name="Admin" component={DashboardTab} />
+            <Stack.Screen name="Login" component={Login} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      {/* </AuthProvider> */}
     </PaperProvider>
-      
-    // </AuthProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    
-  },
-});

@@ -27,7 +27,7 @@ export default function Orders({onReset}) {
             const response = await axios.get(API_URL + "/api/v1/orders?page=" + currentPage + (statusFilter != null ? ('?status=' + statusFilter) : ''))
 
             setOrders(response.data.orders.data)
-            setStatus(Object.keys(response.data.orderStatus))
+            setStatus(Object.values(response.data.orderStatus))
             setPages(response.data.orders.links)
             
             setRefreshing(false);
@@ -55,7 +55,7 @@ export default function Orders({onReset}) {
                 <Picker onValueChange={status => {
                     setStatusFilter(status)
                 }} placeholder="Trạng thái" style={styles.dropdown}>
-                    <Picker.Item label="Trạng thái" value={null} />
+                    <Picker.Item label="Trạng thái"  />
                     {
                         status.map((status, index) => <Picker.Item key={status.index} label={status} value={status} />)
                     }
@@ -63,18 +63,18 @@ export default function Orders({onReset}) {
               
             </View>
             
-            {
+            {/* {
                 orders.map(category => <CategoryCard key={category.id} category={category} />)
-            }
+            } */}
 
             <View style={{
                 flexDirection: "row",
                 justifyContent: 'center'
             }}>
                 {
-                    pages.map((page, index) => <Button textColor={page.active ? 'red' : ''} style={page.active ? styles.active : {}} onPress={e => {
+                    pages.map((page, index) => <Button key={index} textColor={page.active ? 'red' : ''} style={page.active ? styles.active : {}} onPress={e => {
                         setCurrentPage(parseInt(page.label.substr(page.label.length - 1)))
-                    }} key={index}>{decodeEntities(page.label)}</Button>)
+                    }} >{decodeEntities(page.label)}</Button>)
                 }
             </View>
         </DefaultLayout>
@@ -96,4 +96,3 @@ const styles = StyleSheet.create({
     },
    
 })
-

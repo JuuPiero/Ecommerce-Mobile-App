@@ -56,8 +56,7 @@
 <body>
     <div class="container">
         <div class="title">Order-{{ $order->id }}</div>
-        {{-- <p><strong>User order : </strong>{{  $order->user->email . ' - ' . $order->user->first_name . ' ' . $order->user->last_name}}</p> --}}
-        <p><strong>Customer : </strong>{{ $order->first_name . ' ' . $order->last_name }}</p>
+        <p><strong>Customer : </strong>{{ $order->name }}</p>
         <p><strong>Phone Number : </strong>{{ $order->phone_number }}</p>
         <strong>Address :</strong>
         <p>{{ $order->address }}</p>
@@ -98,6 +97,3 @@
     </div>
 </body>
 </html>
-{{-- <script>
-    print()
-</script> --}}

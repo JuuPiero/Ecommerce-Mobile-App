@@ -1,46 +1,39 @@
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-// [
-//     {
-//         id: 1
-//         product : product,
-//         quantity : 2
-//     }
-// ]
-// {
-//     {product : quantity}
-// }
-
 export default class CartManager {
-    #key = 'cart'
-    constructor() {
-        // AsyncStorage.setItem(this.#key, [])
+    static key = 'cart'
+
+    static async get() {
+        const cart = await AsyncStorage.getItem(this.key) ?? "[]"
+        // cart = JSON.parse(cart)
+        return JSON.parse(cart)
     }
 
-    get() {
-        const cart = JSON.parse(AsyncStorage.getItem(this.#key)) ?? []
-        return cart  
+    static async clear() {
+        await AsyncStorage.setItem(this.key, [])
+    }
+    static async save(cart) {
+        await AsyncStorage.setItem(this.key, JSON.stringify(cart))
     }
 
-    clear() {
-        AsyncStorage.setItem(this.#key, [])
-    }
-
-    add(product, quantity = 1) {
-        const cart = this.get()
-
-        // for (const element of object) {
-            
-        // }
-
-        cart.forEach(item => {
-            if(item.id === product.id) {
-
+    static async add(product, quantity = 1) {
+        // AsyncStorage.clear()
+        const cart = await this.get()
+        for (const item of cart) {
+            if(item.id == product.id) {
+                item.quantity += quantity
+                await AsyncStorage.setItem(this.key, JSON.stringify(cart))
+                // console.log(this.#cart);
+                return
             }
-        });
-        // cart.push()
-
-        // AsyncStorage.setItem('ca')
+        }
+        cart.push({
+            id: product.id,
+            product,
+            quantity
+        })
+        // console.log(cart);
+        await AsyncStorage.setItem(this.key, JSON.stringify(cart))
     }
 } 

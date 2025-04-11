@@ -1,7 +1,9 @@
-import { Dimensions, FlatList, ImageBackground, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Alert, Dimensions, FlatList, ImageBackground, ScrollView, StyleSheet, Text, View } from "react-native";
 import DefaultLayout from "../../layouts/customer/DefaultLayout";
 import { useState } from "react";
 import {Button, Title } from "react-native-paper";
+import { useRoute } from "@react-navigation/native";
+import CartManager from "../../utils/CartManager";
 const { width } = Dimensions.get('window');
 const data = [
     { id: '1', image: 'https://woodentwist.com/cdn/shop/products/91pjix_sL5L._SL1500.jpg' },
@@ -11,7 +13,21 @@ const data = [
 
 
 export default function ProductDetail() {
+    const route = useRoute()
+    const {id, product} = route.params
+
     const [quanity, setQuantity] = useState(1)
+
+
+    const addToCart = async () => {
+        try {
+            await CartManager.add(product, quanity)
+            Alert.alert("Add item to cart successfully")
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
 
     return (
         <DefaultLayout>
@@ -21,14 +37,14 @@ export default function ProductDetail() {
                 backgroundColor: '#ccc'
             }}>
                 <FlatList
-                    data={data}
+                    data={product.images}
                     horizontal
                     pagingEnabled
                     showsHorizontalScrollIndicator={false}
                     keyExtractor={item => item.id}
                     renderItem={({ item }) => ( // Thêm destructuring { item }
                         <ImageBackground 
-                            source={{ uri: item.image }} 
+                            source={{ uri: item.name }} 
                             style={styles.card}
                         />
                     )}/>
@@ -39,16 +55,19 @@ export default function ProductDetail() {
             }}>
                 <Text style={{
                     fontWeight: '500',
-                    fontSize: 30
+                    fontSize: 30,
+                    marginTop: 15
                 }}>Tên sản phẩm</Text>
                 <View style={{
                     flexDirection: 'row',
-                    justifyContent:'space-between'
+                    justifyContent:'space-between',
+                    gap: 10
                 }}>
                     <Text style={{
                         fontWeight: 'bold',
-                        fontSize: 40
-                    }}>$200</Text>
+                        fontSize: 26,
+                        maxWidth: '45%'
+                    }}>{product.price}đ</Text>
                     <View style={{
                         flexDirection: 'row',
                         alignItems: 'center',
@@ -62,47 +81,34 @@ export default function ProductDetail() {
                         <Text style={{
                             fontSize: 20
                         }}>{quanity}</Text>
-                        <Button onPress={e => {
+                        <Button style={{
+
+                        }} onPress={e => {
                             setQuantity(prev => prev + 1)
                         }} mode="outlined">+</Button>
                     </View>
                 </View>
                 <Button style={{
                     paddingVertical: 5,
-                }} mode="contained" >Add To Cart</Button>      
+                }} mode="contained" onPress={addToCart} >Add To Cart</Button>      
                 <Text style={{
                     fontWeight: 'bold',
                     fontSize: 20,
-                    // color: 'purple'
                 }}>Description</Text>
 
-                <Text>Unreal Engine:
-                    Nhận được nhiều giải thưởng công nghệ quan trọng:
-                    Giải Emmy về Công nghệ & Kỹ thuật cho "Phần mềm Engine 3D trong sản xuất hoạt hình" năm 2018.
-                    Giải Annie cho đóng góp kỹ thuật trong lĩnh vực hoạt hình năm 2021. 
-                    EN.WIKIPEDIA.ORG
-                    Nhiều trò chơi sử dụng Unreal Engine đã đạt giải thưởng lớn, như The Witcher 3: Wild Hunt và BioShock Infinite.
-                </Text>
+                <Text>{product.description}</Text>
                 <Text style={{
                     fontWeight: 'bold',
                     fontSize: 20,
-                    // color: 'purple'
                 }}>Thông số</Text>
-                <Text><Text style={{
-                    fontWeight: 'bold',
-                    fontSize: 15,
-                    // color: 'purple'
-                }}>Color</Text>: red</Text>
-                <Text><Text style={{
-                    fontWeight: 'bold',
-                    fontSize: 15,
-                    // color: 'purple'
-                }}>Color</Text>: red</Text>
-                <Text><Text style={{
-                    fontWeight: 'bold',
-                    fontSize: 15,
-                }}>Color</Text>: red</Text>
-             
+
+                {
+                    product.attributes.map(attr =>  <Text key={attr.name}><Text style={{
+                        fontWeight: 'bold',
+                        fontSize: 15,
+                    }}>{attr.name}</Text>: {attr.value}</Text>)
+                }
+
             <View stickyHeaderIndices={[0]}></View>
             </View>
             <Text style={{
@@ -128,4 +134,5 @@ const styles = StyleSheet.create({
         overflow: 'hidden'
     },
     title: { color: '#fff', fontSize: 24, fontWeight: 'bold' },
+    
 })

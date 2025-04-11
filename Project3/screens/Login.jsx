@@ -7,7 +7,7 @@ const Login = () => {
     const navigation = useNavigation()
     const [formData, setFormData] = useState({
         email: "",
-        phone: "",
+        pasword: "",
     });
 
     const handleChange = (name, value) => {
@@ -32,48 +32,44 @@ const Login = () => {
           right: 0,
           top: '20%',
         }}>
-            <Card style={{
-              paddingVertical: 30
-            }}>
-                <Card.Content>
-                  <Title style={styles.title}>Login</Title>
-                {/* <TextInput
-                    label="Họ và Tên"
-                    value={formData.name}
-                    onChangeText={(text) => handleChange("name", text)}
-                    style={styles.input}
-                    mode="outlined"
-                /> */}
-                  <TextInput
-                      label="Email"
-                      value={formData.email}
-                      onChangeText={(text) => handleChange("email", text)}
-                      keyboardType="email-address"
-                      style={styles.input}
-                      mode="outlined"
-                  />
-                  <TextInput
-                      label="Mật khẩu"
-                      value={formData.phone}
-                      onChangeText={(text) => handleChange("phone", text)}
-                      keyboardType="phone-pad"
-                      style={styles.input}
-                      mode="outlined"
-                  />
 
-                  <Button mode="contained" onPress={handleSubmit} style={styles.button}>
-                      Login
-                  </Button>
-                  <Button style={{
-                    marginTop: 20
-                  }}>Create new Account</Button>
-                </Card.Content>
-            </Card>
+          <Text style={styles.title}>Login</Text>
+
+
+          <TextInput
+              label="Email"
+              value={formData.email}
+              onChangeText={(text) => handleChange("email", text)}
+              keyboardType="email-address"
+              style={styles.input}
+              mode="outlined"
+          />
+          <TextInput
+              label="Mật khẩu"
+              value={formData.pasword}
+              onChangeText={(text) => handleChange("pasword", text)}
+              keyboardType="phone-pad"
+              style={styles.input}
+              mode="outlined"
+          />
+
+          <Button mode="contained" onPress={handleSubmit} style={styles.button}>
+            Login
+          </Button>
+          <Button style={{
+            marginTop: 20
+          }}>Create new Account</Button>
         </SafeAreaView>
     );
 };
 
 const styles = StyleSheet.create({
+  title : {
+    fontSize: 30,
+    fontWeight: 'bold',
+    textAlign: 'center',
+
+  },
   container: {
     flex: 1,
     justifyContent: "center",
@@ -89,7 +85,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
   },
   title: {
-    // textAlign: "center",
     fontSize: 30,
     fontWeight: "bold",
     marginBottom: 15,

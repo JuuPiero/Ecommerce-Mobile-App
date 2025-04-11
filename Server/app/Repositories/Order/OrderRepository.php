@@ -38,18 +38,20 @@ class OrderRepository implements IRepository {
     }
 
     public function find($id) {
-        return $order = Order::with('order_items')->findOrFail($id);
+        return Order::with('order_items')->findOrFail($id);
     }
 
     public function create($request) {
         $data = $request->all();
 
         $order = Order::create([
-            'user_id' => Auth::user()->id,
-            'status' => OrderStatus::PENDING,
+            // 'user_id' => Auth::user()->id,
+            // 'status' => OrderStatus::PENDING,
+            'status' => 'Pending',
             ...$data,
-            'address' => $data['city'] . ' ' . $data['address'],
         ]);
+
+
 
         $cart = Cart::getCart();
         foreach ($cart as $productId => $quantity) {
@@ -68,7 +70,6 @@ class OrderRepository implements IRepository {
             $product->update([
                 'quantity' => $product->quantity - $quantity,
             ]);
-            
         }
         //đặt xong thì xóa giỏ
         return $order;

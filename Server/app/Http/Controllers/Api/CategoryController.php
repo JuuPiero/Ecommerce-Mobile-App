@@ -53,7 +53,7 @@ class CategoryController extends Controller
         if( $category && $this->categoryRepository->delete($id)) {
             return response()->json([
                'message' => 'Item deleted successfully',
-                'category' => $category,
+               'category' => $category,
                'success' => true
             ]);
         }

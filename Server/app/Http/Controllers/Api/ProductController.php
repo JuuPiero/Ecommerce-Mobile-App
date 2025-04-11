@@ -7,7 +7,6 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Repositories\Product\ProductRepository;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
@@ -18,9 +17,8 @@ class ProductController extends Controller
     }
 
     public function index() {
-        $products = $this->productRepository->paginate(10);
+        $products = $this->productRepository->paginate(10, false);
         return response()->json($products);
-        // return view('admin.product.index', compact('products'));
     }
 
     public function get($id) {
@@ -31,40 +29,21 @@ class ProductController extends Controller
     }
 
     public function create(Request $request) {
-        $t = $this->productRepository->create($request);
-        //Log::info('Debug info:', ['data' => $request->all()]);
+        $product = $this->productRepository->create($request);
 
         
         return response()->json([
             'message' => "ok",
-            "data" => $t
+            'product' => $product
         ]);
     }
 
-    // public function edit($id) {
-    //     $product = $this->productRepository->find($id);
-    //     $categories = Category::where('parent_id', 0)->get();
-    //     // array of category's id of product
-    //     $productCategories = [];
-
-    //     foreach ($product->categories as $category) {
-    //         $productCategories[] = $category->id;
-    //     }
-    //     return view('admin.product.edit')->with([
-    //         'product' => $product,
-    //         'productCategories' => $productCategories,
-    //         'categories' => $categories
-    //     ]);
-    // }
 
     public function update($id, Request $request) {
         $request->validate([
             'file' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-        $product = $this->productRepository->find($id);
-        if($product) {
-            $this->productRepository->update($id, $request);
-        }
+        $product = $this->productRepository->update($id, $request);
 
         return response()->json([
             'product' => $product,
@@ -74,8 +53,11 @@ class ProductController extends Controller
 
     public function delete($id) {
         try {
-            $this->productRepository->delete($id);
-            return response()->json(['message' => 'Item deleted successfully']);
+            $product = $this->productRepository->delete($id);
+            return response()->json([
+                'message' => 'Item deleted successfully',
+                'product' => $product
+            ]);
         } catch (\Throwable $th) {
             return response()->json(['message' => $th->getMessage()]);
         }

@@ -56,6 +56,7 @@ export default function CreateProduct() {
     }
 
     const pickImages = async () => {
+        formData.images = []
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsMultipleSelection: true,
@@ -76,19 +77,17 @@ export default function CreateProduct() {
             Alert.alert("Vui lòng điền đầy đủ thông tin!");
             return;
         }
-        console.log(JSON.stringify({
-            ...formData,
-            attributes: JSON.stringify(attributes)
-        }))
 
         const data = new FormData();
-        data.append("name", name)
-        data.append("category_id",category_id)
-        data.append("sku", sku)
-        data.append("price", price)
-        data.append("quantity", quantity)
+        data.append('name', name)
+        data.append('category_id', category_id)
+        data.append('sku', sku)
+        data.append('price', price)
+        data.append('quantity', quantity)
         data.append("description", description)
-        data.append("attributes", JSON.stringify(attributes))
+        data.append('status', formData.status)
+
+        data.append('attributes', JSON.stringify(attributes))
 
         images.forEach((uri, index) => {
             const fileName = uri.split('/').pop();
@@ -99,9 +98,9 @@ export default function CreateProduct() {
                 type: `image/${fileType}`,
             });
         });
+        console.log(data);
         
         try {
-            setIsLoaded(false)
             const response = await axios.post(API_URL + "/api/v1/product/create", data, {
                 headers: {
                     "Content-Type": "multipart/form-data",
@@ -110,18 +109,18 @@ export default function CreateProduct() {
             Alert.alert("Thành công", `Server phản hồi: ${response.data.message}`)
             setIsLoaded(true)
             
-            setFormData({
-                name: "",
-                category_id: 0,
-                sku: "",
-                price: 0,
-                quantity: 0,
-                description: "",
-                images: [],
-                status: true,
-            })
-            setAttributes([])
-            setAttributeInputCount(1)
+            // setFormData({
+            //     name: "",
+            //     category_id: 0,
+            //     sku: "",
+            //     price: 0,
+            //     quantity: 0,
+            //     description: "",
+            //     images: [],
+            //     status: true,
+            // })
+            // setAttributes([])
+            // setAttributeInputCount(1)
 
         } catch (error) {
             console.error("Lỗi khi tải lên:", error)

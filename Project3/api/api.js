@@ -1,5 +1,5 @@
 import axios from "axios"
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
 export const API_URL = "http://192.168.1.18:8000"
 
 const api = axios.create({
@@ -12,7 +12,7 @@ const api = axios.create({
 
 // Interceptor xử lý request (thêm token nếu cần)
 api.interceptors.request.use(config => {
-        const token = localStorage.getItem('token'); // Lấy token từ localStorage
+        const token = AsyncStorage.getItem('token'); // Lấy token từ localStorage
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
         }
@@ -29,7 +29,7 @@ api.interceptors.response.use((response) => response,
         if (error.response && error.response.status === 401) {
             // Ví dụ: Logout nếu token hết hạn
             console.error('Unauthorized! Logging out...');
-            localStorage.removeItem('token');
+            AsyncStorage.removeItem('token');
             // window.location.href = '/login';
         }
         return Promise.reject(error);

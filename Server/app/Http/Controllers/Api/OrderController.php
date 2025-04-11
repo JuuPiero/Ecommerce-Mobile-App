@@ -27,36 +27,40 @@ class OrderController extends Controller {
             'orderStatus' => $orderStatus,
             'statusFilter' => $status
         ]);
+    }
 
-
-        return view('admin.order.index')->with([
-            'orders' => $orders,
-            'orderStatus' => $orderStatus,
-            'statusFilter' => $status
+    public function create(Request $request) {
+        $this->orderRepository->create($request);
+        
+        return response()->json([
+            'message' => 'Created order successfully',
         ]);
     }
 
     public function detail($id) {
         $order = Order::with('user')->with('order_items')->findOrFail($id);
-        $orderItems = OrderItem::where('order_id', $id)->get();
+        //$orderItems = OrderItem::where('order_id', $id)->get();
         $orderStatus = OrderStatus::getStatus();
-        return view('admin.order.detail')->with([
+
+        return response()->json([
             'order' => $order,
-            'orderItems' => $orderItems,
+            //'orderItems' => $orderItems,
             'orderStatus' => $orderStatus,
         ]);
+        // return view('admin.order.detail')->with([
+        //     'order' => $order,
+        //     //'orderItems' => $orderItems,
+        //     'orderStatus' => $orderStatus,
+        // ]);
     }
 
     public function update($id, Request $request) {
         $data = $request->all();
         $order = Order::findOrFail($id);
         $order->update($data);
-
         return redirect()->back()->with([
             'message' => 'đã cập nhật trạng thái đơn hàng'
         ]);
-
     }
-
 
 }

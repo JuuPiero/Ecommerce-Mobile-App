@@ -36,7 +36,7 @@ class ProductRepository implements IRepository {
 
     public function create($request) {
         $data = $request->all();
-        $data['status'] = $data ? 1 : 0;
+        $data['status'] = $data['status'] == 'true' ? 1 : 0;
         $product = Product::create($data);
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
@@ -48,7 +48,8 @@ class ProductRepository implements IRepository {
                 ]);
             }
         }
-        if($data['attributes']) {
+
+        if(isset($data['attributes'])) {
             foreach (json_decode($data['attributes']) as $attribute) {
                 ProductAttribute::create([
                     'product_id' => $product->id,
@@ -62,9 +63,9 @@ class ProductRepository implements IRepository {
 
     public function update($id, $request) {
         $product = Product::findOrFail($id);
-        $data = $request->product;
+        $data = $request->all();
 
-        $data['status'] = $data ? 1 : 0;
+        $data['status'] = $data['status'] == 'true' ? 1 : 0;
         if($request->hasFile('images')) {
             foreach ($product->images as $image) {
                 Storage::disk('public')->delete($image);
@@ -81,38 +82,42 @@ class ProductRepository implements IRepository {
         }
 
         // Handle attributes
-        {
+        if(is_string($data['attributes'])) {
             $existingAttributes = $product->attributes()->pluck('value', 'name')->toArray();
             $newAttributes = json_decode($data['attributes'], true);
-
             // Update or create new attributes
-            foreach ($newAttributes as $name => $value) {
-                $attribute = $product->attributes()->firstOrNew(['name' => $name]);
-                $attribute->value = $value;
+            foreach ($newAttributes as $attr) {
+                $attribute = $product->attributes()->firstOrNew(['name' => $attr['name']]);
+                $attribute->value = $attr['value'];
                 $attribute->save();
             }
-
+            $newAttributeNames = array_map(fn($attr) => $attr['name'], $newAttributes);
             // Delete removed attributes
             foreach ($existingAttributes as $name => $value) {
-                if (!array_key_exists($name, $newAttributes)) {
-                    ProductAttribute::where(['product_id' => $id, 'name' => $name])->delete();
+                if (!in_array($name, $newAttributeNames)) {
+                    ProductAttribute::where([
+                        'product_id' => $product->id,
+                        'name' => $name
+                    ])->delete();
                 }
             }
         }
-
         $product->update($data);
+        return $this->find($product->id);
     }
 
     public function delete($id) {
-        $product = Product::find($id);
+        $product = $this->find($id);
            
         // Xóa tất cả hình ảnh liên kết với các sản phẩm 
         $images = ProductImage::where('product_id', $id)->get();
         foreach ($images as $image) {
-            Storage::disk('public')->delete($image);
+            Storage::disk('public')->delete($image->name);
         }
         // Xóa sản phẩm
-        $product->delete();
+        Product::destroy($id);
+        // $product->delete();
+        return $product;
     }
 
     public function search($keywords) {

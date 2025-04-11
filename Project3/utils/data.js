@@ -1,13 +1,3 @@
-import { useNavigation } from "@react-navigation/native";
-import { Dimensions, FlatList, Image, StyleSheet, View } from "react-native"
-import { Button, Text } from "react-native-paper"
-import ProductItem from "../../components/customer/ProductItem";
-import DefaultLayout from "../../layouts/customer/DefaultLayout";
-import CategoryItem from "../../components/customer/CategoryItem";
-import CategorySlider from "../../components/customer/CategorySlider";
-
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useEffect } from "react";
 
 const products = [
     {
@@ -16,7 +6,7 @@ const products = [
       name: "Laptop Gaming",
       sku: "LAP001",
       description: "Laptop gaming mạnh mẽ với RTX 4060.",
-      price: "200000000000000.00",
+      price: "1299.99",
       quantity: 5,
       status: 1,
       created_at: "2025-04-04T10:00:00Z",
@@ -44,7 +34,8 @@ const products = [
       created_at: "2025-04-04T11:00:00Z",
       updated_at: "2025-04-04T11:00:00Z",
       images: [
-        { id: 103, name: "https://hanoicomputercdn.com/media/product/71738_ban_phim_co_gaming_lecoo_gk302_blue_switch_led_rgb_4.jpg" },
+        { id: 103, name: "https://picsum.photos/300/200?random=3" },
+        { id: 104, name: "https://picsum.photos/300/200?random=4" }
       ],
       attributes: [
         { name: "Switch", value: "Gateron Brown" },
@@ -63,7 +54,8 @@ const products = [
       created_at: "2025-04-04T12:00:00Z",
       updated_at: "2025-04-04T12:00:00Z",
       images: [
-        { id: 105, name: "https://cdnv2.tgdd.vn/mwg-static/tgdd/Products/Images/54/330710/tai-nghe-bluetooth-true-wireless-ava-freego-pt52-081024-050122-178-600x600.jpg" },
+        { id: 105, name: "https://picsum.photos/300/200?random=5" },
+        { id: 106, name: "https://picsum.photos/300/200?random=6" }
       ],
       attributes: [
         { name: "Pin", value: "40 giờ" },
@@ -82,8 +74,8 @@ const products = [
       created_at: "2025-04-04T13:00:00Z",
       updated_at: "2025-04-04T13:00:00Z",
       images: [
-        { id: 107, name: "https://www.tncstore.vn/media/product/250-8824-razer-basilisk-v3---rz01-04000100-r3m1-1.jpg" },
-        { id: 108, name: "https://www.tncstore.vn/media/product/250-8819-razer-basilisk-v3-x-hyperspeed---rz01-04870100-r3a1-1.jpg" }
+        { id: 107, name: "https://picsum.photos/300/200?random=7" },
+        { id: 108, name: "https://picsum.photos/300/200?random=8" }
       ],
       attributes: [
         { name: "DPI", value: "16000" },
@@ -102,55 +94,17 @@ const products = [
       created_at: "2025-04-04T14:00:00Z",
       updated_at: "2025-04-04T14:00:00Z",
       images: [
-        { id: 109, name: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR2yRPBxILaXSHVWMSW0yPHw_v46i_MyUr6BQ&s" },
-        { id: 110, name: "https://hoanghamobile.com/tin-tuc/wp-content/uploads/2023/11/man-hinh-4k.jpg" }
+        { id: 109, name: "https://picsum.photos/300/200?random=9" },
+        { id: 110, name: "https://picsum.photos/300/200?random=10" }
       ],
       attributes: [
         { name: "Tần số quét", value: "144Hz" },
         { name: "Độ phân giải", value: "4K" }
       ]
     }
-  ];
-  
+];
 
-export default function Home() {
-    const navigation = useNavigation();
-    
-    
-
-
-    // useEffect(() => {
-        
-    // }, [])
-
-    return (
-        <DefaultLayout>
-            <CategorySlider />
-
-            <View style={{
-                display: 'flex',
-                flexDirection: 'row',
-                flexWrap: 'wrap',
-                justifyContent: 'space-around',
-                gap: 10
-            }}>
-                {
-                    products.map(product =>  <ProductItem key={product.id} product={product} />)
-                }
-
-
-                {/* <ProductItem />
-                <ProductItem />
-                <ProductItem />
-                <ProductItem />
-                <ProductItem />
-                <ProductItem />
-                <ProductItem /> */}
-            </View>
-          
-            <Button mode="contained" onPress={() => {
-                navigation.replace("Admin");
-            }}>Test chuyển sang admin</Button>
-        </DefaultLayout>
-    )
+export {
+    products
 }
+  

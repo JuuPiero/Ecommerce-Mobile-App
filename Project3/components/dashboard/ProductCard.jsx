@@ -2,9 +2,16 @@ import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { Button } from 'react-native-paper';
 import { API_URL } from '../../api/api';
+import { useNavigation } from '@react-navigation/native';
 
 
 function ProductCard({product}) {
+    const navigation = useNavigation()
+
+    const editProduct = () => {
+        navigation.navigate("EditProduct", {id: product.id, product})
+    } 
+
     return (
         <View style={styles.productCard}>
             <Image
@@ -14,9 +21,9 @@ function ProductCard({product}) {
             />
             <View>
                 <Text style={{ fontWeight: 'bold' }}>{product.name}</Text>
-                <Text>{product.price}$ * 10 in stocks</Text>
+                <Text>{product.price}đ * 10 in stocks</Text>
             </View>
-            <Button onPress={() => { alert('edit') }}>Edit</Button>
+            <Button onPress={editProduct}>Edit</Button>
         </View>
     )
 }

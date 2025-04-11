@@ -2,12 +2,17 @@ import React, { useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { Button, TextInput } from 'react-native-paper'
 
-export default function NewAtributeInput({ id, setNewAttribute }) {
-    const [attribute, setAttribute] = useState({
-        name: "",
-        value: ""
+export default function NewAtributeInput({ id, setNewAttribute, attr = null }) {
+    const [attribute, setAttribute] = useState(() => {
+        if(attr) {
+            return  {
+                name: attr.name, 
+                value: attr.value
+            }
+        }
+        return { name: "", value: ""}
     });
-
+    
     const handleChange = (key, value) => {
         const updatedAttribute = { ...attribute, [key]: value };
         setAttribute(updatedAttribute);
@@ -47,5 +52,4 @@ const styles = StyleSheet.create({
     attributeInput: {
         width: '48%'
     }
-    
 })

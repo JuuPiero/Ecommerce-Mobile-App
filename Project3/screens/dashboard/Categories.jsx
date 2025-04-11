@@ -11,9 +11,9 @@ import { decodeEntities } from "../../utils/utils";
 
 export default function Categories({onReset}) {
     const navigation = useNavigation();
-
-    const [categories, setCategories] = useState([])
     const [refreshing, setRefreshing] = useState(false);
+    
+    const [categories, setCategories] = useState([])
     const [currentPage, setCurrentPage] = useState(1)
     const [pages, setPages] = useState([])
     // const t = {}

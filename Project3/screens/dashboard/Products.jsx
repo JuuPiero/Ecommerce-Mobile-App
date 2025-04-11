@@ -1,4 +1,4 @@
-import { Image, ScrollView, View } from 'react-native';
+import { Image, ScrollView, StyleSheet, View } from 'react-native';
 import { Button, Text } from 'react-native-paper';
 import Table from '../../components/dashboard/Table';
 import ProductCard from '../../components/dashboard/ProductCard';
@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { API_URL } from '../../api/api';
 import Loading from '../../components/Loading';
+import { decodeEntities } from '../../utils/utils';
 const data = [
   { id: 1, name: "Sản phẩm A", price: 100000, quantity: 10 },
   { id: 2, name: "Sản phẩm B", price: 150000, quantity: 5 },
@@ -31,9 +32,10 @@ export default function Products() {
 
 
     const getProducts = async () => {
-      const response = await axios.get(API_URL + "/api/v1/products")
-      console.log(response.data.data);
+      const response = await axios.get(API_URL + "/api/v1/products?category_id=null&page=" + currentPage)
       setProducts(response.data.data)
+      setPages(response.data.links)
+      
       setRefreshing(false)
     }
     useEffect(() => {
@@ -52,23 +54,28 @@ export default function Products() {
               navigation.navigate('CreateProduct')
             }}>New Products</Button>        
           </View>
-          {
-            products.map(product => <ProductCard product={product} key={product.id} />)
-          }
-
-          {
-            data.map(product => <ProductCard product={product} key={product.id} />)
-          }
+          {products.map(product => 
+            <ProductCard product={product} key={product.id} />)}
        
-          <View style={{ padding: 20, display: 'flex', justifyContent: 'center', flexDirection: 'row' }}>
-            {/* <Button mode='contained'>First</Button>  */}
-            <Button mode='text'>1</Button>
-            <Button mode='text' textColor='gray'>2</Button>
-            <Button mode='text' textColor='gray'>10</Button> 
-            {/* <Button mode='contained'>Next</Button>         */}
-          </View>
+          <View style={{
+                flexDirection: "row",
+                justifyContent: 'center'
+            }}>
+                {
+                  pages.map((page, index) => <Button textColor={page.active ? 'red' : ''} style={page.active ? styles.active : {}} onPress={e => {
+                      setCurrentPage(parseInt(page.label.substr(page.label.length - 1)))
+                  }} key={index}>{decodeEntities(page.label)}</Button>)
+                }
+            </View>
+
           {/* <Table /> */}
         </ScrollView>
       </DefaultLayout>
     )     
 }
+const styles = StyleSheet.create({
+    active: {
+        fontSize: 10,
+        fontWeight: 'bold'
+    }
+})

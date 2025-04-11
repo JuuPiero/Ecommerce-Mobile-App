@@ -15,12 +15,12 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('category_id')->nullable();
             $table->string('name');
-            $table->string('sku')->unique()->nullable();
+            $table->string('sku')->nullable();
+            // ->unique();
             $table->longText('description')->nullable();
             $table->decimal('price', 10, 2);
             $table->integer('quantity')->default(0);
             $table->boolean('status')->default(true);
-
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('set null');
             $table->timestamps();
         });

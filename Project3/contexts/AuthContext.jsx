@@ -3,19 +3,23 @@ import axios from 'axios';
 import { Text } from "react-native-paper";
 import api, { API_URL } from "../api/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useNavigation } from "@react-navigation/native";
 
 export const AuthContext = createContext();
 
 
 const AuthProvider = ({ children }) => {
+    const navigation = useNavigation()
+    
     const [user, setUser] = useState(null);
     const [token, setToken] = useState(AsyncStorage.getItem('token') || null);
     const [role, setRole] = useState(null);
     const [loading, setLoading] = useState(true);
 
+
     const login = async (email, password) => {
         try {
-            const response = await axios.post(API_URL + '/api/login', { email, password });
+            const response = await axios.post(API_URL + '/api/v1/login', { email, password });
             const { token, user } = response.data;
             setToken(token);
             setUser(user);
@@ -24,12 +28,13 @@ const AuthProvider = ({ children }) => {
             if(!token && !user) {
                 alert("back to login")
                 // return <Navigate to="/login" />
-
+                navigation.navigate('Login')
             }
             
         } catch (error) {
             // console.error('Login failed:', error.response.data.message);
             alert('Login failed', error);
+            navigation.navigate('Login')
             // return <Navigate to="/login" />
         }
     }
@@ -43,8 +48,7 @@ const AuthProvider = ({ children }) => {
         setUser(null);
         setRole(null);
         await AsyncStorage.removeItem('token');
-        navigate('/login');
-        // return <Navigate to="/login" />
+        navigation.navigate('Login')
     };
 
     // Kiểm tra token khi load lại trang
@@ -71,12 +75,13 @@ const AuthProvider = ({ children }) => {
 
     return (
         <AuthContext.Provider value={{ 
-        user, 
-        token, 
-        role, 
-        login, 
-        logout, hasRole, 
-        loading }}>
+            user, 
+            token, 
+            role, 
+            login, 
+            logout, hasRole, 
+            loading 
+        }}>
             {loading ? ( <Text>Loading</Text>) : children}
         </AuthContext.Provider>
     );

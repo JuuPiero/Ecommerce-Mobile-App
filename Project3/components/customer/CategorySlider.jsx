@@ -2,9 +2,9 @@ import React, { useState } from 'react'
 import { FlatList, StyleSheet, View } from 'react-native'
 import CategoryItem from './CategoryItem'
 const data = [
-    { id: '1', name: 'Danh mục test', color: '#FF5733', image: 'https://woodentwist.com/cdn/shop/products/91pjix_sL5L._SL1500.jpg' },
-    { id: '2', name: 'Card 2', color: '#33C1FF', image: 'https://woodenbazar.com/cdn/shop/files/new-handicrafts-wooden-hand-carved-royal-look-chair-518.webp?v=1729347126' },
-    { id: '3', name: 'Card 3', color: '#8D33FF', image: null },
+    { id: '1', name: 'Danh mục test', color: '#FF5733', image: 'https://www.hacom.vn/media/lib/chutchigame.jpg' },
+    { id: '2', name: 'Gear', color: '#33C1FF', image: 'https://tiki.vn/blog/wp-content/uploads/2023/03/tai-nghe-bluetooth.jpg' },
+    { id: '3', name: 'Card 3', color: '#8D33FF', image: 'https://file.hstatic.net/200000722513/file/gearvn-ban-phim-co-gia-re_86a245a2897147088bb9e5fe71aa29e2_1024x1024.png' },
 ]
 
 export default function CategorySlider() {
