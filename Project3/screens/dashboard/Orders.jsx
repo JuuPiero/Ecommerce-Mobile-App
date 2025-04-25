@@ -9,6 +9,7 @@ import { API_URL } from "../../api/api";
 import Loading from "../../components/Loading";
 import { decodeEntities } from "../../utils/utils";
 import { Picker } from "@react-native-picker/picker"
+import OrderCard from "../../components/dashboard/OrderCard";
 
 export default function Orders({onReset}) {
     const navigation = useNavigation();
@@ -57,15 +58,14 @@ export default function Orders({onReset}) {
                 }} placeholder="Trạng thái" style={styles.dropdown}>
                     <Picker.Item label="Trạng thái"  />
                     {
-                        status.map((status, index) => <Picker.Item key={status.index} label={status} value={status} />)
+                        status.map((status, index) => <Picker.Item key={index} label={status} value={status} />)
                     }
                 </Picker>
-              
             </View>
-            
-            {/* {
-                orders.map(category => <CategoryCard key={category.id} category={category} />)
-            } */}
+
+            {orders.map(order => 
+                <OrderCard status={status} order={order} key={order.id} />)}
+
 
             <View style={{
                 flexDirection: "row",

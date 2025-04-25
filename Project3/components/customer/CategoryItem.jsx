@@ -1,18 +1,18 @@
-import React from 'react'
-import { Alert, Dimensions, ImageBackground, StyleSheet, Text, View } from 'react-native'
+import { useNavigation } from '@react-navigation/native';
+import { Alert, Dimensions, ImageBackground, Pressable, StyleSheet, Text, View } from 'react-native'
 const { width } = Dimensions.get('window');
-export default function CategoryItem({item}) {
+export default function CategoryItem({category = null}) {
+    const navigation = useNavigation()   
     
     return (
-     
         <ImageBackground 
-            source={{ uri: item.image ?? "https://www.countrysideamishfurniture.com/media/made/uploads/newark-side-chair_-_28de80_-_0bf4bdb70864a2154eec6001390467db2752640e.jpg" }} 
+            source={{ uri: category?.image ? category.image : "https://www.countrysideamishfurniture.com/media/made/uploads/newark-side-chair_-_28de80_-_0bf4bdb70864a2154eec6001390467db2752640e.jpg" }} 
+            style={[styles.card]}
             onTouchEnd={e=> {
-            Alert.alert("go to cateogry")
-        }}  style={[styles.card]}>
-                <Text style={styles.title}>{item.name}</Text>
+                navigation.navigate('CategoryDetail', {category : category})
+            }} >
+                <Text style={styles.title}>{category?.name ?? "test"}</Text>
         </ImageBackground>
-
     )
 }
 

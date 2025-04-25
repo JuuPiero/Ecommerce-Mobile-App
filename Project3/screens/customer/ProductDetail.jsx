@@ -1,9 +1,11 @@
 import { Alert, Dimensions, FlatList, ImageBackground, ScrollView, StyleSheet, Text, View } from "react-native";
 import DefaultLayout from "../../layouts/customer/DefaultLayout";
 import { useState } from "react";
-import {Button, Title } from "react-native-paper";
+import {Button, TextInput, Title } from "react-native-paper";
 import { useRoute } from "@react-navigation/native";
 import CartManager from "../../utils/CartManager";
+import { Picker } from "@react-native-picker/picker";
+import ReviewItem from "../../components/customer/ReviewItem";
 const { width } = Dimensions.get('window');
 const data = [
     { id: '1', image: 'https://woodentwist.com/cdn/shop/products/91pjix_sL5L._SL1500.jpg' },
@@ -109,14 +111,62 @@ export default function ProductDetail() {
                     }}>{attr.name}</Text>: {attr.value}</Text>)
                 }
 
-            <View stickyHeaderIndices={[0]}></View>
+            {/* <View stickyHeaderIndices={[0]}></View> */}
             </View>
             <Text style={{
                 fontWeight: 'bold',
-                fontSize: 20
+                fontSize: 20,
+                marginVertical: 15
             }}>Đánh giá</Text>
-            <ScrollView>
-            </ScrollView>
+            <View style={{
+                gap: 10,
+                marginVertical: 10
+            }}>
+                <ScrollView style={{
+                    maxHeight: 300,
+                    overflow: 'scroll',
+                    gap: 20
+                }}>
+                    <ReviewItem />
+                    <ReviewItem />
+                    <ReviewItem />
+                    <ReviewItem />
+                </ScrollView>
+                
+                
+                <View style={{
+                    marginTop: 30,
+                    gap: 10
+                }}>
+                    <View style={{
+                            borderWidth: 1,
+                           
+                        }}>
+                        <Picker onValueChange={rate => {
+                        }} placeholder="Trạng thái">
+                            <Picker.Item label="Rate" value="1" />
+                            <Picker.Item label="🌟" value="1" />
+                            <Picker.Item label="🌟🌟" value="2"/>
+                            <Picker.Item label="🌟🌟🌟" value="3" />
+                            <Picker.Item label="🌟🌟🌟🌟" value="4" />
+                            <Picker.Item label="🌟🌟🌟🌟🌟" value="5" />
+                        </Picker>
+                    </View>
+                    <TextInput
+                        style={{
+                            minHeight: 100
+                        }}
+                        // onChangeText={text => {
+                        //     setFormData({...formData, description: text})
+                        // }}
+                        placeholder="Địa chỉ"
+                        multiline={true} 
+                        numberOfLines={100} 
+                        mode="outlined"/>
+                    <Button mode="contained">Submit</Button>
+                </View>
+            </View>
+            
         </DefaultLayout>
     )
 }

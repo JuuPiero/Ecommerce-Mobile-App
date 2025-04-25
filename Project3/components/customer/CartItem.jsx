@@ -80,7 +80,6 @@ export default function CartItem({cartIem}) {
                     <Text style={styles.productPrice}>{cartIem.product.price}đ</Text>
 
                     <View style={{
-                        // width: '60%',
                         flex: 1,
                         flexDirection: 'row',
                         justifyContent: 'flex-end',

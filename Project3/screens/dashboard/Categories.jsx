@@ -5,7 +5,7 @@ import DefaultLayout from "../../layouts/dashboard/DefaultLayout";
 import { useNavigation } from "@react-navigation/native";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { API_URL } from "../../api/api";
+import api, { API_URL } from "../../api/api";
 import Loading from "../../components/Loading";
 import { decodeEntities } from "../../utils/utils";
 
@@ -25,7 +25,7 @@ export default function Categories({onReset}) {
 
     async function getCategories() {
         try {
-            const response = await axios.get(API_URL + "/api/v1/categories?page=" + currentPage)
+            const response = await api.get("api/v1/categories?page=" + currentPage)
             setPages(response.data.links)
             setCategories(response.data.data)
             setRefreshing(false);

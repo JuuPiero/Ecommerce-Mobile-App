@@ -1,3 +1,5 @@
+import { API_URL } from "../api/api";
+
 const htmlEntities = {
     "&laquo;": "«",
     "&raquo;": "»",
@@ -11,7 +13,8 @@ const decodeEntities = (str) =>
 
 
 function imageUrl(link) {
-    return link.includes('https') ? link : API_URL + '/strorage/' + link
+    const realLink = link.includes('https') ? link : API_URL + '/storage/' + link
+    return realLink
 }
 const reloadPage = (navigation) => {
     const currentRoute = navigation.getState().routes[navigation.getState().index];

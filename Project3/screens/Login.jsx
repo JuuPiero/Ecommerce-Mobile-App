@@ -1,71 +1,95 @@
 import { useNavigation } from "@react-navigation/native";
-import React, { useState } from "react";
-import { View, StyleSheet, SafeAreaView } from "react-native";
-import { TextInput, Button, Card, Title, Paragraph, Text } from "react-native-paper";
+import React, { useContext, useEffect, useState } from "react";
+import { View, StyleSheet, SafeAreaView, Alert, BackHandler, ImageBackground, Text } from "react-native";
+import { TextInput, Button, Card, Title, Paragraph } from "react-native-paper";
+import { AuthContext } from "../contexts/AuthContext";
 
 const Login = () => {
+    useEffect(() => {
+        const backHandler = BackHandler.addEventListener(
+            'hardwareBackPress',
+            () => true // return true để chặn back
+        );
+        return () => backHandler.remove(); // cleanup khi unmount
+    }, []);  
+
     const navigation = useNavigation()
     const [formData, setFormData] = useState({
         email: "",
         pasword: "",
     });
 
+    const {login} = useContext(AuthContext)
+
     const handleChange = (name, value) => {
         setFormData({ ...formData, [name]: value });
     };
 
-    const handleSubmit = () => {
-      navigation.navigate('Admin')
-
+    const handleSubmit = async () => {
+      //navigation.navigate('Admin')
+      const {email, pasword} = formData
+      if(!email || !pasword) {
+        Alert.alert('Nhập thiếu thông tin')
+        return
+      }
+      
       try {
-        
+        const user = await login(email, pasword)
+        if(user.role == 'admin') {
+          navigation.navigate('Admin')
+        }
+        else {
+          navigation.navigate('Customer')
+        }
       } catch (error) {
-        
+        Alert.alert(error.message)
       }
 
     };
     return (
-        <SafeAreaView style={{
-          margin: 10,
+        <ImageBackground style={{
           position: 'absolute',
+          top: 0,
+          bottom: 0,
           left: 0,
           right: 0,
-          top: '20%',
-        }}>
-
-          <Text style={styles.title}>Login</Text>
-
-
-          <TextInput
-              label="Email"
-              value={formData.email}
-              onChangeText={(text) => handleChange("email", text)}
-              keyboardType="email-address"
-              style={styles.input}
-              mode="outlined"
-          />
-          <TextInput
-              label="Mật khẩu"
-              value={formData.pasword}
-              onChangeText={(text) => handleChange("pasword", text)}
-              keyboardType="phone-pad"
-              style={styles.input}
-              mode="outlined"
-          />
-
-          <Button mode="contained" onPress={handleSubmit} style={styles.button}>
-            Login
-          </Button>
-          <Button style={{
-            marginTop: 20
-          }}>Create new Account</Button>
-        </SafeAreaView>
+          justifyContent: 'center'
+          // alignItems: 'center'
+        }} source={{
+          uri: 'https://img.freepik.com/free-psd/shopping-vertical-background_23-2150409471.jpg'
+          }} resizeMode="cover">
+          <View style={{paddingHorizontal: 15}}>
+            <Text style={styles.title}>Login</Text>
+            <TextInput
+                label="Email"
+                value={formData.email}
+                onChangeText={(text) => handleChange("email", text)}
+                keyboardType="email-address"
+                style={styles.input}
+                // mode="outlined"
+            />
+            <TextInput
+                value={formData.pasword}
+                // mode="outlined"
+                label="Password"
+                secureTextEntry
+                onChangeText={(text) => handleChange("pasword", text)}
+                right={<TextInput.Icon icon="eye" />}
+              />
+            <Button mode="contained" onPress={handleSubmit} style={styles.button}>
+              Login
+            </Button>
+            <Button style={{
+              marginTop: 20
+            }}>Create new Account</Button>
+          </View>
+        </ImageBackground>
     );
 };
 
 const styles = StyleSheet.create({
   title : {
-    fontSize: 30,
+    fontSize: 40,
     fontWeight: 'bold',
     textAlign: 'center',
 

@@ -4,72 +4,83 @@ import { Text } from "react-native-paper";
 import api, { API_URL } from "../api/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
+import { Alert } from "react-native";
 
 export const AuthContext = createContext();
 
 
 const AuthProvider = ({ children }) => {
-    const navigation = useNavigation()
+    // const navigation = useNavigation()
     
     const [user, setUser] = useState(null);
-    const [token, setToken] = useState(AsyncStorage.getItem('token') || null);
+    const [token, setToken] = useState(null);
     const [role, setRole] = useState(null);
     const [loading, setLoading] = useState(true);
 
 
     const login = async (email, password) => {
         try {
-            const response = await axios.post(API_URL + '/api/v1/login', { email, password });
+            const response = await axios.post(API_URL + '/api/v1/login', { email, password }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
             const { token, user } = response.data;
-            setToken(token);
-            setUser(user);
-            setRole(user.role); 
+            setToken(response.data.token);
+            setUser(response.data.user);
+            setRole(response.data.user.role); 
+            
             await AsyncStorage.setItem("token", token);
             if(!token && !user) {
-                alert("back to login")
-                // return <Navigate to="/login" />
-                navigation.navigate('Login')
+                Alert.alert("back to login")
+                // navigation.navigate('Login')
             }
-            
+            return user
         } catch (error) {
-            // console.error('Login failed:', error.response.data.message);
-            alert('Login failed', error);
-            navigation.navigate('Login')
-            // return <Navigate to="/login" />
+            console.log(error);
+            Alert.alert('Login failed');
+            // navigation.navigate('Login')
         }
     }
 
     const logout = async () => {
-        // const response = await axios.post(API_URL + '/api/login', { email, password });
-        api.post('/api/logout').then(response => {
-            console.log(response.data)
-        })
+        try {
+            const response = await api.post('/api/logout'); // nếu cần gọi
+        } catch (err) {
+            console.log("Logout error", err);
+        }
         setToken(null);
-        setUser(null);
+        // setUser(null);
         setRole(null);
         await AsyncStorage.removeItem('token');
-        navigation.navigate('Login')
+        // navigation.navigate('Login')
     };
 
     // Kiểm tra token khi load lại trang
     useEffect(() => {
         const checkAuth = async () => {
-            if (token) {
-                try {
-                    const response = await axios.get( API_URL + '/api/me', {
-                        headers: { Authorization: `Bearer ${token}` },
+            try {
+                const storedToken = await AsyncStorage.getItem('token');
+                if (storedToken) {
+                    setToken(storedToken);
+                    const response = await axios.get(API_URL + '/api/me', {
+                        headers: { Authorization: `Bearer ${storedToken}` },
                     });
                     setUser(response.data);
                     setRole(response.data.role);
-                } catch (error) {
-                    console.error('Token invalid or expired');
-                    await logout();
                 }
+            } catch (error) {
+                console.log("Auth check failed", error);
+                await AsyncStorage.removeItem('token');
+                setToken(null);
+                setUser(null);
+                setRole(null);
+            } finally {
+                setLoading(false);
             }
-            setLoading(false);
         };
         checkAuth();
-    }, [token]);
+    }, []);
 
     const hasRole = (requiredRole) => role === requiredRole;
 

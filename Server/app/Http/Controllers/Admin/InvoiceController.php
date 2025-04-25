@@ -25,15 +25,14 @@ class InvoiceController extends Controller {
 
     public function create($id) {
         $order = Order::findOrFail($id);
-        $orderItems = OrderItem::where('order_id', $id)->get();
+        $orderItems = OrderItem::with('product')->where('order_id', $id)->get();
 
-        Pdf::setOption(['defaultFont' => 'sans-serif']);
+        Pdf::setOption(['defaultFont' => 'DejaVu Sans']);
         $invoice = Pdf::loadView('admin.invoice.index', [
             'order' => $order,
             'orderItems' => $orderItems
         ]);
 
         return $invoice->download('invoice_' . $order->id . '.pdf');
-        
     }
 }

@@ -25,14 +25,14 @@ Route::prefix('v1')->group(function () {
     Route::post('login', [AuthController::class, 'login']);
     Route::post('signup', [AuthController::class, 'signup']);
     Route::middleware('jwt.auth')->group(function () {
-        // Route::post('/logout', [AuthController::class, 'logout']);
+        Route::post('/logout', [AuthController::class, 'logout']);
         Route::get('me', [AuthController::class, 'me']);
         //__________________DANH MỤC__________________
         // Route::get('/statistical', [UserController::class, 'statistical']);
-    
+        Route::get('categories', [CategoryController::class, 'index']);
+
     });
 
-    Route::get('categories', [CategoryController::class, 'index']);
     Route::get('category/all', [CategoryController::class, 'all']);
     Route::get('category/get/{id}', [CategoryController::class, 'get']);
     Route::post('category/create', [CategoryController::class, 'create']);
@@ -48,8 +48,7 @@ Route::prefix('v1')->group(function () {
 
 
     Route::get('orders', [OrderController::class, 'index']);
-
-
+    Route::get('order/detail/{id}', [OrderController::class, 'detail']);
 });
 
 

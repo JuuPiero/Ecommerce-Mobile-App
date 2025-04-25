@@ -125,10 +125,7 @@ Route::prefix('admin')->group(function () {
             Route::post('update/{id}', [OrderController::class, 'update'])->name('admin.order.update');
         });
 
-        Route::prefix('invoice')->group(function() {
-            Route::get('show/{id}', [InvoiceController::class, 'show'])->name('admin.invoice.show');
-            Route::get('create/{id}', [InvoiceController::class, 'create'])->name('admin.invoice.create');
-        });
+      
 
         Route::prefix('ratings')->group(function() {
             Route::get('', [RatingController::class, 'index'])->name('admin.rating');
@@ -137,4 +134,7 @@ Route::prefix('admin')->group(function () {
         Route::get('transactions', [TransactionController::class, 'index'])->name('admin.transaction');
     });
 });
-
+Route::prefix('invoice')->group(function() {
+    Route::get('show/{id}', [InvoiceController::class, 'show'])->name('admin.invoice.show');
+    Route::get('create/{id}', [InvoiceController::class, 'create'])->name('admin.invoice.create');
+});

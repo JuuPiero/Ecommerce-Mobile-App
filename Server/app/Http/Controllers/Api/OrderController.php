@@ -38,20 +38,14 @@ class OrderController extends Controller {
     }
 
     public function detail($id) {
-        $order = Order::with('user')->with('order_items')->findOrFail($id);
-        //$orderItems = OrderItem::where('order_id', $id)->get();
+        $order = Order::with(['user', 'order_items.product', 'order_items.product.images'])->findOrFail($id);
         $orderStatus = OrderStatus::getStatus();
 
         return response()->json([
             'order' => $order,
-            //'orderItems' => $orderItems,
+            'invoice_link' => request()->root() . route('admin.invoice.create', $order->id, false),
             'orderStatus' => $orderStatus,
         ]);
-        // return view('admin.order.detail')->with([
-        //     'order' => $order,
-        //     //'orderItems' => $orderItems,
-        //     'orderStatus' => $orderStatus,
-        // ]);
     }
 
     public function update($id, Request $request) {

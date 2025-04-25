@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head> 
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Order Details</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: "DejaVu Sans", sans-serif;
             line-height: 1.6;
             background-color: #f8f9fa;
             color: #343a40;

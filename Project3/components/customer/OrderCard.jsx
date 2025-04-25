@@ -38,13 +38,12 @@ const styles = StyleSheet.create({
     }
 })
 
-function OrderCard({order, status}) {
+function OrderCard({order}) {
     const navigation = useNavigation()
     
     return (
         <Pressable onPress={() => {
-            navigation.navigate('OrderDetail', {order, status})
-            // Alert.alert("test")
+            navigation.navigate('OrderDetail', {order})
         }} style={styles.orderContainer}>
             <View style={{
                 flexDirection: 'row',
@@ -54,9 +53,8 @@ function OrderCard({order, status}) {
                     fontWeight: 'bold',
                     fontSize: 20,
                     borderRadius: 15
-                }}>Order ID: #00{order.id}</Text>
-                <Text style={styles.pending}>{order?.status}</Text>
-
+                }}>Order ID: #01232</Text>
+                <Text style={styles.pending}>{order?.status ?? 'Cancelled'}</Text>
             </View>
             <Text>Order at 6:35PM</Text>
         </Pressable>

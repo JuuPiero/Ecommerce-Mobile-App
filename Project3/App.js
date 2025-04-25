@@ -14,16 +14,18 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     <PaperProvider theme={theme}>
-      {/* <AuthProvider> */}
         <NavigationContainer >
-          <Stack.Navigator screenOptions={{ headerShown: false }}>
-            {/* <Stack.Screen name="Login" component={Login} /> */}
-            <Stack.Screen name="Customer" component={CustomerTab} />
-            <Stack.Screen name="Admin" component={DashboardTab} />
-            <Stack.Screen name="Login" component={Login} />
-          </Stack.Navigator>
+          <AuthProvider>
+            <Stack.Navigator screenOptions={{ headerShown: false }}>
+              <Stack.Screen name="Customer" component={CustomerTab} />
+              <Stack.Screen name="Admin" component={DashboardTab} />
+              <Stack.Screen name="Login" component={Login}  options={{
+                gestureEnabled: false,
+                headerLeft: () => null, 
+              }}/>
+            </Stack.Navigator>
+          </AuthProvider>
         </NavigationContainer>
-      {/* </AuthProvider> */}
     </PaperProvider>
   );
 }

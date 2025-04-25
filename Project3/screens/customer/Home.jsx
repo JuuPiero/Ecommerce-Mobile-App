@@ -3,11 +3,10 @@ import { Dimensions, FlatList, Image, StyleSheet, View } from "react-native"
 import { Button, Text } from "react-native-paper"
 import ProductItem from "../../components/customer/ProductItem";
 import DefaultLayout from "../../layouts/customer/DefaultLayout";
-import CategoryItem from "../../components/customer/CategoryItem";
 import CategorySlider from "../../components/customer/CategorySlider";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const products = [
     {
@@ -115,18 +114,20 @@ const products = [
 
 export default function Home() {
     const navigation = useNavigation();
+    const [refreshing, setRefreshing] = useState(true);
     
-    
+    const onRefresh = async () => {
+        // 
+        setRefreshing(false)
+    };
+    useEffect(() => {
+        onRefresh()
+    }, [])
 
-
-    // useEffect(() => {
-        
-    // }, [])
 
     return (
-        <DefaultLayout>
+        <DefaultLayout onRefresh={onRefresh} refreshing={refreshing}>
             <CategorySlider />
-
             <View style={{
                 display: 'flex',
                 flexDirection: 'row',

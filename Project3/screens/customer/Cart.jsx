@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import CartManager from '../../utils/CartManager';
 import Loading from '../../components/Loading';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { reloadPage } from '../../utils/utils';
 
 const styles = StyleSheet.create({
     cartButton: {
@@ -26,6 +27,7 @@ export default function Cart() {
     }
 
     const onRefresh = async () => {
+
         await loadCart()
         setRefreshing(false)
     };
@@ -62,7 +64,13 @@ export default function Cart() {
              
             </View>
             
-            <Button style={styles.cartButton} mode="contained" onPress={goToCheckout}>Go to Checkout</Button>
+            {
+                cart.length > 0 ? <Button style={styles.cartButton} mode="contained" onPress={goToCheckout}>Go to Checkout</Button> : <Title style={{
+                        textAlign: 'center',
+                        fontSize: 25,
+                        marginVertical: 20
+                }}>Your cart is Empty</Title>
+            }
 
             <Button style={styles.cartButton} mode="outlined" onPress={() => {
                 navigation.navigate("Home");

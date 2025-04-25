@@ -1,13 +1,15 @@
 import { Image, Pressable, StyleSheet, Text, Touchable, View } from 'react-native'
 import { Button, Title } from 'react-native-paper';
+import DefaultLayout from '../../layouts/customer/DefaultLayout';
+import CartItem from '../../components/customer/CartItem';
 import { useNavigation } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import CartManager from '../../utils/CartManager';
 import Loading from '../../components/Loading';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import DefaultLayout from '../../layouts/dashboard/DefaultLayout';
 
-export default function Users() {
+
+export default function SampleScreen() {
     const navigation = useNavigation()
     const [refreshing, setRefreshing] = useState(true);
    
@@ -19,6 +21,7 @@ export default function Users() {
         onRefresh()
     }, [])
 
+  
 
     if(refreshing) return <Loading />
 
