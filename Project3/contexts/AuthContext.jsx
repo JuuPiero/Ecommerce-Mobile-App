@@ -50,10 +50,9 @@ const AuthProvider = ({ children }) => {
             console.log("Logout error", err);
         }
         setToken(null);
-        // setUser(null);
         setRole(null);
+        setUser(null);
         await AsyncStorage.removeItem('token');
-        // navigation.navigate('Login')
     };
 
     // Kiểm tra token khi load lại trang
@@ -68,6 +67,9 @@ const AuthProvider = ({ children }) => {
                     });
                     setUser(response.data);
                     setRole(response.data.role);
+                }
+                else {
+                    setToken(null);
                 }
             } catch (error) {
                 console.log("Auth check failed", error);
@@ -96,7 +98,6 @@ const AuthProvider = ({ children }) => {
             {loading ? ( <Text>Loading</Text>) : children}
         </AuthContext.Provider>
     );
-
 }
 
 export default AuthProvider;

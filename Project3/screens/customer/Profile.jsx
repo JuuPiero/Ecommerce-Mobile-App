@@ -1,14 +1,12 @@
 import { Image, Pressable, StyleSheet, Text, Touchable, View } from 'react-native'
 import { Button, TextInput, Title } from 'react-native-paper';
 import DefaultLayout from '../../layouts/customer/DefaultLayout';
-import CartItem from '../../components/customer/CartItem';
 import { useNavigation } from '@react-navigation/native';
 import { useContext, useEffect, useState } from 'react';
-import CartManager from '../../utils/CartManager';
 import Loading from '../../components/Loading';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AuthContext } from '../../contexts/AuthContext';
-
+import { Ionicons } from '@expo/vector-icons'; 
 
 export default function Profile() {
     const navigation = useNavigation()
@@ -24,23 +22,35 @@ export default function Profile() {
         onRefresh()
     }, [])
 
-  
-
     if(refreshing) return <Loading />
 
     return (
         <DefaultLayout onRefresh={onRefresh} refreshing={refreshing}>
-            <Title style={{
-                fontWeight: 'bold',
-                textAlign: 'center',
-                fontSize: 25,
-                marginVertical: 20,
-                alignItems: 'center'
-            }}>Profile</Title>
-            <Button onPress={async () => {
-                await logout()
-                navigation.replace('Login')
-            }} mode='contained' style={{backgroundColor: 'red', width: '50%'}}>Logout</Button>
+            <View>
+                <Title style={{
+                    fontWeight: 'bold',
+                    textAlign: 'center',
+                    fontSize: 25,
+                    marginVertical: 20,
+                    alignItems: 'center'
+                }}>Profile</Title>
+                <Button onPress={async () => {
+                        await logout()
+                        navigation.replace('Login')
+                }} mode='contained' style={{backgroundColor: 'red', width: '30%', position: 'absolute', right: 0, bottom: 0}}>Logout</Button>
+            </View>
+            <View style={{
+                alignSelf: 'center',
+                flex: 1,
+            }}>
+                <Ionicons style={{
+                    padding: 30,
+                    borderWidth: 3,
+                    borderRadius: 100
+                }} size={50} name="person" />
+               
+            </View>
+       
             <View style={{
                 gap: 10,
                 marginTop: 50

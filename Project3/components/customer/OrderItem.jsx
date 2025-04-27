@@ -46,6 +46,5 @@ const styles = StyleSheet.create({
         borderColor: '#ccc',
         borderRadius: 5
     }
-
 })
 export default OrderItem;

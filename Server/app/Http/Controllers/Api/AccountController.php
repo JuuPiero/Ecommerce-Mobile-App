@@ -9,12 +9,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class AccountController extends Controller {
-    public function accounts() {
-        $admins = Admin::paginate(5);
+    public function index() {
         $users = User::paginate(15);
         return response()->json([
-            'users' =>$users,
-            'admins' =>$admins,
+            'users' => $users,
+            // 'admins' =>$admins,
         ]);
     }
 
@@ -31,16 +30,15 @@ class AccountController extends Controller {
             'message' => 'xóa thành công user'
         ]);
     }
-    // public function updateAccount($id, Request $request) {
-    //     $user = User::find($id);
-    //     $data = $request->all();
-    //     $data['password'] = Hash::make($data['new_password']);
-    //     $user->update($data);
-       
-    //     return redirect()->back()->with([
-    //         'message' => 'Cập nhật thành công'
-    //     ]);
-    // }
+    public function updateAccount($id, Request $request) {
+        $user = User::find($id);
+        $data = $request->all();
+        $data['password'] = Hash::make($data['new_password']);
+        $user->update($data);
+        return redirect()->back()->with([
+            'message' => 'Cập nhật thành công'
+        ]);
+    }
 
 
     public function createAdmin() {

@@ -3,9 +3,16 @@ import React, { useContext, useEffect, useState } from "react";
 import { View, StyleSheet, SafeAreaView, Alert, BackHandler, ImageBackground, Text } from "react-native";
 import { TextInput, Button, Card, Title, Paragraph } from "react-native-paper";
 import { AuthContext } from "../contexts/AuthContext";
+import Loading from "../components/Loading";
 
 const Login = () => {
-    useEffect(() => {
+  const navigation = useNavigation()
+  const {token, login} = useContext(AuthContext)
+  const [isLoaded, setIsLoaded] = useState(true)
+  useEffect(() => {
+        if(token) {
+          navigation.navigate('Customer')
+        }
         const backHandler = BackHandler.addEventListener(
             'hardwareBackPress',
             () => true // return true để chặn back
@@ -13,20 +20,16 @@ const Login = () => {
         return () => backHandler.remove(); // cleanup khi unmount
     }, []);  
 
-    const navigation = useNavigation()
     const [formData, setFormData] = useState({
         email: "",
         pasword: "",
     });
-
-    const {login} = useContext(AuthContext)
 
     const handleChange = (name, value) => {
         setFormData({ ...formData, [name]: value });
     };
 
     const handleSubmit = async () => {
-      //navigation.navigate('Admin')
       const {email, pasword} = formData
       if(!email || !pasword) {
         Alert.alert('Nhập thiếu thông tin')
@@ -34,8 +37,9 @@ const Login = () => {
       }
       
       try {
+        setIsLoaded(false)
         const user = await login(email, pasword)
-        if(user.role == 'admin') {
+        if(user?.role == 'admin') {
           navigation.navigate('Admin')
         }
         else {
@@ -46,6 +50,11 @@ const Login = () => {
       }
 
     };
+
+    if(!isLoaded) {
+      return <Loading />
+    }
+
     return (
         <ImageBackground style={{
           position: 'absolute',

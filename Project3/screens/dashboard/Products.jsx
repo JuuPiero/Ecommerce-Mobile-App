@@ -9,13 +9,8 @@ import axios from 'axios';
 import { API_URL } from '../../api/api';
 import Loading from '../../components/Loading';
 import { decodeEntities } from '../../utils/utils';
-const data = [
-  { id: 1, name: "Sản phẩm A", price: 100000, quantity: 10 },
-  { id: 2, name: "Sản phẩm B", price: 150000, quantity: 5 },
-  { id: 3, name: "Sản phẩm C", price: 200000, quantity: 20 },
-  { id: 4, name: "Sản phẩm D", price: 50000, quantity: 15 },
-  { id: 5, name: "Sản phẩm E", price: 75000, quantity: 8 },
-];
+import { Ionicons } from '@expo/vector-icons'; 
+
 
 export default function Products() {
     const navigation = useNavigation()
@@ -50,12 +45,11 @@ export default function Products() {
         <ScrollView >
           <View style={{ padding: 10, display: 'flex', justifyContent: 'space-between', flexDirection: 'row' }}>
             <Text role='heading' style={{fontSize: 30}} >Products</Text>
-            <Button mode='contained' onPress={e => {
+            <Button style={{borderWidth: 2}} mode='contained' onPress={e => {
               navigation.navigate('CreateProduct')
-            }}>New Products</Button>        
+            }}>New Product</Button>        
           </View>
-          {products.map(product => 
-            <ProductCard product={product} key={product.id} />)}
+          {products.map(product => <ProductCard product={product} key={product.id} />)}
        
           <View style={{
                 flexDirection: "row",
@@ -66,9 +60,8 @@ export default function Products() {
                       setCurrentPage(parseInt(page.label.substr(page.label.length - 1)))
                   }} key={index}>{decodeEntities(page.label)}</Button>)
                 }
-            </View>
-
-          {/* <Table /> */}
+          </View>
+       
         </ScrollView>
       </DefaultLayout>
     )     

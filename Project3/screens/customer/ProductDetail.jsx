@@ -140,10 +140,10 @@ export default function ProductDetail() {
                 }}>
                     <View style={{
                             borderWidth: 1,
-                           
+                            borderRadius: 5
                         }}>
                         <Picker onValueChange={rate => {
-                        }} placeholder="Trạng thái">
+                        }} placeholder="Rate">
                             <Picker.Item label="Rate" value="1" />
                             <Picker.Item label="🌟" value="1" />
                             <Picker.Item label="🌟🌟" value="2"/>
@@ -154,7 +154,7 @@ export default function ProductDetail() {
                     </View>
                     <TextInput
                         style={{
-                            minHeight: 100
+                            minHeight: 100,
                         }}
                         // onChangeText={text => {
                         //     setFormData({...formData, description: text})

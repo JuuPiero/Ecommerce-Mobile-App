@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AccountController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\OrderController;
@@ -30,6 +31,11 @@ Route::prefix('v1')->group(function () {
         //__________________DANH MỤC__________________
         // Route::get('/statistical', [UserController::class, 'statistical']);
         Route::get('categories', [CategoryController::class, 'index']);
+
+
+
+        // __________________ACCOUNT__________________
+        Route::get('users', [AccountController::class, 'index']);
 
     });
 

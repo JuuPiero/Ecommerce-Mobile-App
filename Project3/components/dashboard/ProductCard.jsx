@@ -21,7 +21,7 @@ function ProductCard({product}) {
             />
             <View style={{flex: 1, paddingHorizontal: 15}}>
                 <Text style={{ fontWeight: 'bold' }}>{product.name}</Text>
-                <Text> {product.price}đ * 10 in stocks</Text>
+                <Text>{product.price}đ * 10 in stocks</Text>
             </View>
             <Button onPress={editProduct}>Edit</Button>
         </View>
@@ -37,11 +37,12 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         marginBottom: 10,
         borderRadius: 15,
+        gap: 10
     },
     cardImage: {
         width: 50,
         height: 50,
-        objectFit: 'contain'
+        objectFit: 'cover'
     }
 
 })
