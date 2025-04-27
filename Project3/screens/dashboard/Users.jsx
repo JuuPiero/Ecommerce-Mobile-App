@@ -46,24 +46,20 @@ export default function Users() {
         <DefaultLayout onRefresh={onRefresh} refreshing={refreshing} style={{
             backgroundColor: '#eee',
         }}>
-            <ScrollView>
+            {
+                users.map(user => <ProfileCard key={user.id} user={user} />)
+            }
 
+            <View style={{
+                flexDirection: "row",
+                justifyContent: 'center'
+            }}>
                 {
-                    users.map(user => <ProfileCard key={user.id} user={user} />)
+                pages.map((page, index) => <Button textColor={page.active ? 'red' : ''} style={page.active ? styles.active : {}} onPress={e => {
+                    // setCurrentPage(parseInt(page.label.substr(page.label.length - 1)))
+                }} key={index}>{decodeEntities(page.label)}</Button>)
                 }
-
-                <View style={{
-                    flexDirection: "row",
-                    justifyContent: 'center'
-                }}>
-                    {
-                    pages.map((page, index) => <Button textColor={page.active ? 'red' : ''} style={page.active ? styles.active : {}} onPress={e => {
-                        // setCurrentPage(parseInt(page.label.substr(page.label.length - 1)))
-                    }} key={index}>{decodeEntities(page.label)}</Button>)
-                    }
-                </View>
-            </ScrollView>
-
+            </View>
         </DefaultLayout>
     )
 }

@@ -111,7 +111,9 @@ export default function OrderDetail() {
             </View>
             <View style={{borderWidth: 1, borderRadius: 10, marginVertical: 15}}>
                 <Picker selectedValue={order.status}  onValueChange={status => {
-
+                    setOrder(prev => {
+                        return {...prev, status}
+                    })
                 }} placeholder="Trạng thái" style={styles.dropdown}>
                     {
                         status.map((status, index) => <Picker.Item key={index} label={status} value={status} />)

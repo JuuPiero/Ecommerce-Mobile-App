@@ -1,15 +1,17 @@
-import { Text, View } from 'react-native'
+import { ActivityIndicator, StyleSheet, Text, View } from 'react-native'
 
-export default function Loading() {
+export default function Loading({ size = 'large', color = '#0000ff' }) {
     return (
-        <Text style={{
-            color: 'red',
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform : 'translateX(-50%)',
-            fontSize: 25,
-            fontWeight: 'bold'
-        }}>Loading ...</Text>
-    )
+        <View style={styles.container}>
+          <ActivityIndicator size={size} color={color} />
+        </View>
+      );
 }
+
+const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+  });
