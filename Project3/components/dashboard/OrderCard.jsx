@@ -10,7 +10,8 @@ const styles = StyleSheet.create({
         backgroundColor: 'white', 
         marginBottom: 10, 
         borderRadius: 15,
-        minHeight: 100
+        minHeight: 100,
+        boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px'
     },
     pending: {
         backgroundColor: '#fff4da',
@@ -28,7 +29,7 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         padding: 10        
     },
-    cancel: {
+    cancelled: {
         backgroundColor: '#fff4da',
         color: 'red',
         alignItems: 'center',
@@ -40,6 +41,18 @@ const styles = StyleSheet.create({
 
 function OrderCard({order, status}) {
     const navigation = useNavigation()
+    
+        const orderStatus = (status) => {
+            switch (status) {
+                case 'Pending':
+                    return styles.pending
+                case 'Completed':
+                    return styles.completed
+                default:
+                    break;
+            }
+    
+        }
     
     return (
         <Pressable onPress={() => {

@@ -1,5 +1,6 @@
+import { useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Alert, StyleSheet, View } from 'react-native';
 import { Searchbar } from 'react-native-paper';
 
 const styles = StyleSheet.create({
@@ -11,14 +12,21 @@ const styles = StyleSheet.create({
 })
 
 const SearchHeader = () => {
-  const [searchQuery, setSearchQuery] = useState('');
+  const navigation = useNavigation()
+  const [keywords, setKeywords] = useState('');
 
   return (
     <View style={styles.searchContainer}>
-      <Searchbar 
+      <Searchbar
+        onSubmitEditing={e => {
+          navigation.navigate('Dashboard', {
+            screen: 'Search',
+            params: { keywords },
+          })
+        }}
         placeholder="Tìm kiếm..." 
-        value={searchQuery} 
-        onChangeText={setSearchQuery} 
+        value={keywords} 
+        onChangeText={text => setKeywords(text)} 
         style={{ borderRadius: 8 }}
       />
     </View>

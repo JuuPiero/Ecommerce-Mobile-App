@@ -24,10 +24,12 @@ class ProductRepository implements IRepository {
                     ->paginate($perPage);
         }
         
-        return Product::with('images')
+        return Product::
+        with('category')
+        ->with('images')
         ->with('attributes')
         ->orderByDesc('updated_at')
-        ->paginate($perPage);;
+        ->paginate($perPage);
     }
 
     public function find($id) {
@@ -85,8 +87,10 @@ class ProductRepository implements IRepository {
         if(is_string($data['attributes'])) {
             $existingAttributes = $product->attributes()->pluck('value', 'name')->toArray();
             $newAttributes = json_decode($data['attributes'], true);
+
             // Update or create new attributes
             foreach ($newAttributes as $attr) {
+                if(!$attr['value'] || !$attr['name']) continue;
                 $attribute = $product->attributes()->firstOrNew(['name' => $attr['name']]);
                 $attribute->value = $attr['value'];
                 $attribute->save();
@@ -138,7 +142,7 @@ class ProductRepository implements IRepository {
     }
 
     public function searchPrivate($keyword) {
-        return Product::
+        return Product::with('images')->
         where('name', 'LIKE', '%' . $keyword . '%')
         ->orWhere('id', $keyword)
         ->orderByDesc('updated_at')

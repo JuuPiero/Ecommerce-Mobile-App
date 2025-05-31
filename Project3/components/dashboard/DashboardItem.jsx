@@ -22,7 +22,6 @@ export default function DashboardItem({title, icon, quantity}) {
 const styles = StyleSheet.create({
   card: {
     width: '48%',
-    backgroundColor: '#ddd',
     paddingHorizontal: 15,
     paddingVertical: 15,
     borderRadius: 10,
@@ -30,6 +29,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     alignItems: 'center',
     gap: 10,
+    boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px',
   },
   cardIcon: {
     width: 50,
@@ -39,5 +39,4 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     padding: 10
   }
-
 })

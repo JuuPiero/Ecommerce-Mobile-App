@@ -4,22 +4,21 @@ import { View, StyleSheet, SafeAreaView, Alert, BackHandler, ImageBackground, Te
 import { TextInput, Button, Card, Title, Paragraph } from "react-native-paper";
 import { AuthContext } from "../contexts/AuthContext";
 import Loading from "../components/Loading";
+import api from "../api/api";
 
-const Login = () => {
-  const navigation = useNavigation()
-  const {token, login} = useContext(AuthContext)
-  const [isLoaded, setIsLoaded] = useState(true)
-  // useEffect(() => {
-  //   const backHandler = BackHandler.addEventListener(
-  //       'hardwareBackPress',
-  //       () => true // return true để chặn back
-  //   );
-  //   return () => backHandler.remove(); // cleanup khi unmount
-  // }, []);  
+const Signup = () => {
+    const navigation = useNavigation()
+    const [isLoaded, setIsLoaded] = useState(true)
+    useEffect(() => {
+        
+    }, []);  
 
     const [formData, setFormData] = useState({
         email: "",
         pasword: "",
+        full_name: "",
+        phone_number: "",
+        address: ""
     });
 
     const handleChange = (name, value) => {
@@ -27,30 +26,30 @@ const Login = () => {
     };
 
     const handleSubmit = async () => {
-      const {email, pasword} = formData
-      if(!email || !pasword) {
+      const {email, pasword, phone_number, full_name} = formData
+      if(!email || !pasword || !phone_number || !full_name) {
         Alert.alert('Nhập thiếu thông tin')
         return
       }
       
       try {
         setIsLoaded(false)
-        const user = await login(email, pasword)
+        const response = await api.post('api/v1/signup', {
+            ...formData
+        })
+        if(response.success) {
+            navigation.navigate('Login')
+        }
         setIsLoaded(true)
-        // if(user?.role == 'admin') {
-        //   navigation.navigate('Admin', {
-        //     screen: 'Dashboard'
-        //   })
-        //   return
-        // }
-        navigation.replace('Customer')
-        // return
+
       } catch (error) {
         Alert.alert(error.message)
       }
     };
 
-    if(!isLoaded) return <Loading />
+    if(!isLoaded) {
+      return <Loading />
+    }
 
     return (
         <ImageBackground style={{
@@ -60,12 +59,27 @@ const Login = () => {
           left: 0,
           right: 0,
           justifyContent: 'center'
-          // alignItems: 'center'
         }} source={{
           uri: 'https://img.freepik.com/free-psd/shopping-vertical-background_23-2150409471.jpg'
           }} resizeMode="cover">
           <View style={{paddingHorizontal: 15}}>
-            <Text style={styles.title}>Login</Text>
+            <Text style={styles.title}>Signup</Text>
+
+            <TextInput
+                label="Họ và Tên"
+                value={formData.full_name}
+                onChangeText={(text) => handleChange("full_name", text)}
+                style={styles.input}
+                // mode="outlined"
+            />
+            <TextInput
+                label="Số điện thoại"
+                value={formData.phone_number}
+                onChangeText={(text) => handleChange("phone_number", text)}
+                keyboardType="phone-pad"
+                style={styles.input}
+                // mode="outlined"
+            />
             <TextInput
                 label="Email"
                 value={formData.email}
@@ -76,19 +90,33 @@ const Login = () => {
             />
             <TextInput
                 value={formData.pasword}
+                // mode="outlined"
                 label="Password"
                 secureTextEntry
                 onChangeText={(text) => handleChange("pasword", text)}
                 right={<TextInput.Icon icon="eye" />}
-              />
+            />
+
+            <TextInput
+                style={{
+                    minHeight: 100,
+                    marginTop: 15
+                }}
+                value={formData.address}
+                // mode="outlined"
+                multiline={true}
+                label="Địa chỉ"
+                secureTextEntry
+                onChangeText={(text) => handleChange("address", text)}
+            />
             <Button mode="contained" onPress={handleSubmit} style={styles.button}>
-              Login
+              Signup
             </Button>
             <Button onPress={e => {
-              navigation.navigate('Signup')
+                navigation.navigate('Login')
             }} style={{
               marginTop: 20
-            }}>Create new Account</Button>
+            }}>Go to Login</Button>
           </View>
         </ImageBackground>
     );
@@ -99,7 +127,6 @@ const styles = StyleSheet.create({
     fontSize: 40,
     fontWeight: 'bold',
     textAlign: 'center',
-
   },
   container: {
     flex: 1,
@@ -135,4 +162,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Login;
+export default Signup;

@@ -11,7 +11,9 @@ import { Ionicons } from '@expo/vector-icons';
 export default function Profile() {
     const navigation = useNavigation()
     const {user, logout} = useContext(AuthContext)
-    
+
+    const [userData, setUser] = useState(user)
+
     const [refreshing, setRefreshing] = useState(true);
    
     const onRefresh = async () => {
@@ -35,10 +37,12 @@ export default function Profile() {
                     alignItems: 'center'
                 }}>Profile</Title>
                 <Button onPress={async () => {
-                        await logout()
-                        navigation.replace('Login')
+                    await logout()
+                    navigation.replace('Login')
                 }} mode='contained' style={{backgroundColor: 'red', width: '30%', position: 'absolute', right: 0, bottom: 0}}>Logout</Button>
+               
             </View>
+         
             <View style={{
                 alignSelf: 'center',
                 flex: 1,
@@ -49,12 +53,22 @@ export default function Profile() {
                     borderRadius: 100
                 }} size={50} name="person" />
                
+               
             </View>
-       
+          
             <View style={{
                 gap: 10,
-                marginTop: 50
+                marginTop: 50,
+                justifyContent: 'center',
             }}>
+                    {/* user?.role == 'admin' ? : null */}
+
+                {
+                     
+                    <Button style={{width: '50%'}} onPress={async () => {
+                        navigation.navigate('Admin')
+                    }} mode='contained' >Go to dashboard</Button>
+                }
                 <TextInput
                     // onChangeText={text => {
                     //     setFormData({...formData, description: text})
@@ -80,7 +94,7 @@ export default function Profile() {
                     // }}
                     placeholder="Số điện thoại"
                     mode="outlined"
-                    value={user.phone_number}
+                    value={user?.phone_number}
 
                 />
                 <TextInput

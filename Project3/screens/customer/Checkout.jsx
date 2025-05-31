@@ -67,27 +67,12 @@ export default function Checkout() {
         data.append("quantity", quantity)
         data.append("description", description)
 
-        images.forEach((uri, index) => {
-            const fileName = uri.split('/').pop();
-            const fileType = fileName.split('.').pop();
-            data.append('images[]', {
-                uri,
-                name: `image_${index}.${fileType}`,
-                type: `image/${fileType}`,
-            });
-        });
         
         try {
-            const response = await axios.post(API_URL + "/api/v1/product/create", data, {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                },
-            })
-            Alert.alert("Thành công", `Server phản hồi: ${response.data}`)
+            
            
         } catch (error) {
-            console.error("Lỗi khi tải lên:", error)
-            Alert.alert("Lỗi", "Không thể tải dữ liệu lên")
+        
         }
     }
     if(!cart) return <Loading />

@@ -8,7 +8,7 @@ const Stack = createNativeStackNavigator();
 export default function PurchaseStack() {
     return (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="Purchase" component={Purchase} />
+            <Stack.Screen name="PurchaseScreen" component={Purchase} />
             <Stack.Screen name="OrderDetail" component={OrderDetail} />
         </Stack.Navigator>
     );

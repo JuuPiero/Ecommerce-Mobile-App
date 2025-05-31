@@ -6,14 +6,14 @@ import { useNavigation } from "@react-navigation/native";
 
 const styles = StyleSheet.create({
     cartItemContainer: {
-
         padding: 10,
         backgroundColor: '#fff',
         borderRadius: 10,
         flexDirection: 'row',
         gap: 15,
         alignItems: 'center',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px',
     },
     productName: {
         fontSize: 20,
@@ -26,10 +26,17 @@ const styles = StyleSheet.create({
         color: '#ccc',
         maxWidth: 110
     },
-
-
+    action: {
+        width: 30,
+        height: 30,
+        backgroundColor: '#0865fe',
+        fontSize: 20,
+        textAlign: 'center',
+        verticalAlign: 'middle',
+        color: 'white',
+        borderRadius: 5        
+    }
 })
-
 
 export default function CartItem({cartIem}) {
     const navigation = useNavigation()
@@ -86,20 +93,20 @@ export default function CartItem({cartIem}) {
                         alignItems: 'center',
                         gap: 10
                     }}>
-                        <Button title="-" onPress={e => {
+                        <Text style={styles.action} onPress={e => {
                             setQuantity(prev => {
                                 const quanity = prev === 1 ? 1 : (prev - 1)
                                 cartIem.quantity = quanity
                                 return quanity
                             })
-                        }} />
+                        }} >-</Text>
                         <Text>{quantity}</Text>
-                        <Button title="+" onPress={e => {
+                        <Text style={styles.action} title="+" onPress={e => {
                             setQuantity(prev => {
                                 cartIem.quantity = (prev + 1)
                                 return cartIem.quantity
                             })
-                        }}/>
+                        }}>+</Text>
                     </View>
                 </View>
             </View>

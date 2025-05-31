@@ -17,10 +17,10 @@ class AccountController extends Controller {
         ]);
     }
 
-    public function userDetail($id) {
-        $user = User::find($id);
-        return view('admin.account.detail')->with([
-            'account' => $user
+    public function detail($id) {
+        $user = User::with('orders')->with('ratings')->find($id);
+        return response()->json([
+            'user' => $user
         ]);
     }
 
@@ -30,13 +30,13 @@ class AccountController extends Controller {
             'message' => 'xóa thành công user'
         ]);
     }
-    public function updateAccount($id, Request $request) {
+    public function update($id, Request $request) {
         $user = User::find($id);
         $data = $request->all();
         $data['password'] = Hash::make($data['new_password']);
         $user->update($data);
-        return redirect()->back()->with([
-            'message' => 'Cập nhật thành công'
+        return response()->json([
+            'message' => "Updated successfully"
         ]);
     }
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Alert, Image, Linking, Pressable, StyleSheet, View } from 'react-native';
-import { Button, Text, Title } from 'react-native-paper';
+import { Button, Text, TextInput, Title } from 'react-native-paper';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import DefaultLayout from '../../layouts/dashboard/DefaultLayout';
 import {products} from '../../utils/data'
@@ -43,7 +43,7 @@ export default function OrderDetail() {
             setInvoice(response.data.invoice_link)
             
         } catch (error) {
-            
+            console.log(error);
         }
     }
 
@@ -53,9 +53,14 @@ export default function OrderDetail() {
         setRefreshing(false)
         
     };
-    useEffect(() => {
-        onRefresh()
-    }, [])
+    // useEffect(() => {
+    //     onRefresh()
+    // }, [])
+
+    const onSaveOrder = async() => {
+        
+    }
+
     
    if(refreshing || !status || !order) return <Loading />
 
@@ -65,48 +70,46 @@ export default function OrderDetail() {
         }}>
             <Button onPress={ ()=>{ Linking.openURL(invoice)}} style={{marginBottom: 15, width: '50%'}} mode='contained'>Print invoice</Button>
           
-            <View style={{
-                flexDirection: 'column',
-                gap: 10,
-            }}>
-                <View style={styles.orderContainer}>
-                    <View style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between'
-                    }}>
-                        <Text style={{ 
-                            fontWeight: 'bold',
-                            fontSize: 20,
-                            borderRadius: 15
-                        }}>Order ID: #01232</Text>
-                        <Text style={styles.pending}>{order?.status}</Text>
+            <View style={styles.orderContainer}>
+                <View style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between'
+                }}>
+                    <Text style={{ 
+                        fontWeight: 'bold',
+                        fontSize: 20,
+                        borderRadius: 15
+                    }}>Order ID: #01232</Text>
+                    <Text style={styles.pending}>{order?.status}</Text>
+                </View>
+                <Text>Order at 6:35PM</Text>
+                <View style={{marginVertical: 15, gap: 10}}>
+                    <View style={{flexDirection: 'row'}}>
+                        <Text style={{fontWeight: 'bold', fontSize: 16}}>Customer: </Text>
+                        <Text>{order.name}</Text>
                     </View>
-                    <Text>Order at 6:35PM</Text>
-                    <View style={{marginVertical: 15, gap: 10}}>
-                        <View style={{flexDirection: 'row'}}>
-                            <Text style={{fontWeight: 'bold', fontSize: 16}}>Customer: </Text>
-                            <Text>{order.name}</Text>
-                        </View>
-                        <View style={{flexDirection: 'row'}}>
-                            <Text style={{fontWeight: 'bold', fontSize: 16}}>Phone Number: </Text>
-                            <Text>{order.phone_number}</Text>
-                        </View>
-                        <View style={{flexDirection: 'row'}}>
-                            <Text style={{fontWeight: 'bold', fontSize: 16}}>Address: </Text>
-                            <Text>{order.address}</Text>
-                        </View>
+                    <View style={{flexDirection: 'row'}}>
+                        <Text style={{fontWeight: 'bold', fontSize: 16}}>Phone Number: </Text>
+                        <Text>{order.phone_number}</Text>
                     </View>
-                    <View>
-                        {
-                            order.order_items.map(item => <OrderItem orderItem={item}/>)
-                        }
+                    <View style={{flexDirection: 'row'}}>
+                        <Text style={{fontWeight: 'bold', fontSize: 16}}>Address: </Text>
+                        <Text>{order.address}</Text>
                     </View>
-                    <View>
-                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                            <Text style={{fontSize: 18}}>Total Amount: </Text>
-                            <Text style={{ fontWeight: 'bold', fontSize: 24}}>{order.total_amount}đ</Text>
-                        </View>
-                    </View>
+                </View>
+                <View>
+                    {
+                        order.order_items.map(item => <OrderItem key={item.id} orderItem={item}/>)
+                    }
+                </View>
+                <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
+                    <Text style={{fontSize: 18}}>Amount:</Text>
+                    <TextInput style={{ fontWeight: 'bold', fontSize: 24, maxWidth: 200}} keyboardType='numeric' onChangeText={text => {
+                        setOrder(prev => {
+                            return {...prev, total_amount: text}
+                        })
+                    }} mode='outlined' value={order.total_amount}/>
+                    <Text style={{ fontWeight: 'bold', fontSize: 24}}>đ</Text>
                 </View>
             </View>
             <View style={{borderWidth: 1, borderRadius: 10, marginVertical: 15}}>
@@ -120,7 +123,9 @@ export default function OrderDetail() {
                     }
                 </Picker>
             </View>
-            <Button mode='contained' >Update</Button>
+            <Button mode='contained' onPress={e => {
+                Alert.alert('Save')
+            }} >Save</Button>
         </DefaultLayout>
     )
 }

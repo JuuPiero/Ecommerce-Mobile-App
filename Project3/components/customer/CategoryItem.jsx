@@ -27,7 +27,9 @@ const styles = StyleSheet.create({
         shadowColor: '#000',
         shadowOpacity: 0.2,
         shadowRadius: 5,
-        overflow: 'hidden'
+        overflow: 'hidden',
+        // boxShadow: "rgba(17, 12, 46, 0.15) 0px 48px 100px 0px",
+        
     },
     title: { color: '#fff', fontSize: 24, fontWeight: 'bold' },
 })

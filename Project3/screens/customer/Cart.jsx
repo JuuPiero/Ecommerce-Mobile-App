@@ -12,7 +12,7 @@ import { reloadPage } from '../../utils/utils';
 const styles = StyleSheet.create({
     cartButton: {
         borderRadius: 15,
-        paddingVertical: 10,
+        paddingVertical: 8,
         marginVertical: 10,
     }
 })
@@ -27,33 +27,33 @@ export default function Cart() {
     }
 
     const onRefresh = async () => {
-
         await loadCart()
         setRefreshing(false)
     };
     useEffect(() => {
         onRefresh()
     }, [])
-
    
 
     async function goToCheckout() {
-        console.log(cart);
         await CartManager.save(cart)
-        navigation.navigate("Checkout");
+        navigation.navigate('Cart', {
+            screen: 'Checkout'
+        });
+        return
     }
 
     if(refreshing) return <Loading />
 
     return (
         <DefaultLayout onRefresh={onRefresh} refreshing={refreshing} style={{
-            backgroundColor: '#eee',
+            // backgroundColor: '#eee',
         }}>
             <Title style={{
-                    fontWeight: 'bold',
-                    textAlign: 'center',
-                    fontSize: 25,
-                    marginVertical: 20
+                fontWeight: 'bold',
+                textAlign: 'center',
+                fontSize: 25,
+                marginVertical: 20
             }}>My cart</Title>
             <View style={{
                 flexDirection: 'column',
@@ -66,14 +66,16 @@ export default function Cart() {
             
             {
                 cart.length > 0 ? <Button style={styles.cartButton} mode="contained" onPress={goToCheckout}>Go to Checkout</Button> : <Title style={{
-                        textAlign: 'center',
-                        fontSize: 25,
-                        marginVertical: 20
+                    textAlign: 'center',
+                    fontSize: 25,
+                    marginVertical: 15
                 }}>Your cart is Empty</Title>
             }
 
             <Button style={styles.cartButton} mode="outlined" onPress={() => {
-                navigation.navigate("Home");
+                navigation.navigate('Home', {
+                    screen: 'HomeScreen'
+                });
             }}>Continue Shopping</Button>
         </DefaultLayout>
     )

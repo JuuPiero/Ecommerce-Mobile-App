@@ -58,31 +58,26 @@ export default function OrderDetail({order}) {
                     fontSize: 25,
                     marginVertical: 20
             }}>Order Detail</Title>
-            <View style={{
-                flexDirection: 'column',
-                gap: 10,
-            }}>
-                <View style={styles.orderContainer}>
-                    <View style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between'
-                    }}>
-                        <Text style={{ 
-                            fontWeight: 'bold',
-                            fontSize: 20,
-                            borderRadius: 15
-                        }}>Order ID: #01232</Text>
-                        <Text style={styles.pending}>Pending</Text>
-                    </View>
-                    <Text>Order at 6:35PM</Text>
-
-                    <View>
-                        {/* foreach */}
-                        <OrderItem  orderItem={orderItems[0]}/>
-                        <OrderItem  orderItem={orderItems[2]}/>
-                        <OrderItem  orderItem={orderItems[1]}/>
-                        <OrderItem  orderItem={orderItems[3]}/>
-                    </View>
+          
+            <View style={styles.orderContainer}>
+                <View style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between'
+                }}>
+                    <Text style={{ 
+                        fontWeight: 'bold',
+                        fontSize: 20,
+                        borderRadius: 15
+                    }}>Order ID: #01232</Text>
+                    <Text style={styles.pending}>Pending</Text>
+                </View>
+                <Text>Order at 6:35PM</Text>
+                <View>
+                    {/* foreach */}
+                    <OrderItem  orderItem={orderItems[0]}/>
+                    <OrderItem  orderItem={orderItems[2]}/>
+                    <OrderItem  orderItem={orderItems[1]}/>
+                    <OrderItem  orderItem={orderItems[3]}/>
                 </View>
             </View>
             {/* {

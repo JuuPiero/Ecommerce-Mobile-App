@@ -25,13 +25,12 @@ export default function Search() {
         onRefresh()
     }, [])
 
-  
 
     if(refreshing) return <Loading />
 
     return (
         <DefaultLayout onRefresh={onRefresh} refreshing={refreshing} style={{
-            backgroundColor: '#eee',
+            // backgroundColor: '#eee',
         }}>
             <SearchHeader />
             <View style={{

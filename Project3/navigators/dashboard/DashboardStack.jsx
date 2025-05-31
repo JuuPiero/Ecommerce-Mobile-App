@@ -2,15 +2,15 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Categories from "../../screens/dashboard/Categories";
 import CreateCategory from "../../screens/dashboard/CreateCategory";
 import EditCategory from "../../screens/dashboard/EditCategory";
-import Orders from "../../screens/dashboard/Orders";
-import OrderDetail from "../../screens/dashboard/OrderDetail";
+import Dashboard from "../../screens/dashboard/Dashboard";
+import Search from "../../screens/dashboard/Search";
 
 const Stack = createNativeStackNavigator();
-export default function OrderStack() {
+export default function DashboardStack() {
     return (
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="OrdersScreen" component={Orders} />
-        <Stack.Screen name="OrderDetail" component={OrderDetail} />
+        <Stack.Screen name="DashboardScreen" component={Dashboard} />
+        <Stack.Screen name="Search" component={Search} />
       </Stack.Navigator>
     );
   }

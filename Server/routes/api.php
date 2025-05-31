@@ -1,10 +1,12 @@
 <?php
 
 use App\Http\Controllers\Api\AccountController;
+use App\Http\Controllers\Api\AdminController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\StatisticalController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,19 +27,18 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('v1')->group(function () {
     Route::post('login', [AuthController::class, 'login']);
     Route::post('signup', [AuthController::class, 'signup']);
-    Route::middleware('jwt.auth')->group(function () {
-        Route::post('/logout', [AuthController::class, 'logout']);
+    // Route::middleware('jwt.auth')->group(function () {
+        Route::post('logout', [AuthController::class, 'logout']);
         Route::get('me', [AuthController::class, 'me']);
         //__________________DANH MỤC__________________
         // Route::get('/statistical', [UserController::class, 'statistical']);
         Route::get('categories', [CategoryController::class, 'index']);
 
-
-
         // __________________ACCOUNT__________________
         Route::get('users', [AccountController::class, 'index']);
-
-    });
+        Route::get('user/detail/{id}', [AccountController::class, 'detail']);
+        Route::put('user/update/{id}', [AccountController::class, 'update']);
+    // });
 
     Route::get('category/all', [CategoryController::class, 'all']);
     Route::get('category/get/{id}', [CategoryController::class, 'get']);
@@ -55,6 +56,11 @@ Route::prefix('v1')->group(function () {
 
     Route::get('orders', [OrderController::class, 'index']);
     Route::get('order/detail/{id}', [OrderController::class, 'detail']);
+
+    Route::get('revenue', [StatisticalController::class, 'revenue']);
+    Route::get('search', [AdminController::class, 'search']);
+
+
 });
 
 

@@ -19,7 +19,7 @@ class ProductController extends Controller
     }
 
     public function index() {
-        $products = $this->productRepository->paginate(10, false);
+        $products = $this->productRepository->paginate(1, false);
         return view('admin.product.index', compact('products'));
     }
     public function create() {

@@ -5,6 +5,7 @@ import api, { API_URL } from "../api/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { Alert } from "react-native";
+import Loading from "../components/Loading";
 
 export const AuthContext = createContext();
 
@@ -29,23 +30,24 @@ const AuthProvider = ({ children }) => {
             setToken(response.data.token);
             setUser(response.data.user);
             setRole(response.data.user.role); 
-            
             await AsyncStorage.setItem("token", token);
-            if(!token && !user) {
-                Alert.alert("back to login")
-                // navigation.navigate('Login')
-            }
+            // await AsyncStorage.setItem("user", user);
+
+            // if(!token && !user) {
+            //     Alert.alert("login")
+            // }
             return user
         } catch (error) {
             console.log(error);
             Alert.alert('Login failed');
-            // navigation.navigate('Login')
+            return null
         }
     }
 
     const logout = async () => {
         try {
-            const response = await api.post('/api/logout'); // nếu cần gọi
+            const response = await api.post('api/v1/logout'); // nếu cần gọi
+            Alert.alert(response.data.message)
         } catch (err) {
             console.log("Logout error", err);
         }
@@ -62,7 +64,7 @@ const AuthProvider = ({ children }) => {
                 const storedToken = await AsyncStorage.getItem('token');
                 if (storedToken) {
                     setToken(storedToken);
-                    const response = await axios.get(API_URL + '/api/me', {
+                    const response = await axios.get(API_URL + '/api/v1/me', {
                         headers: { Authorization: `Bearer ${storedToken}` },
                     });
                     setUser(response.data);
@@ -75,8 +77,7 @@ const AuthProvider = ({ children }) => {
                 console.log("Auth check failed", error);
                 await AsyncStorage.removeItem('token');
                 setToken(null);
-                setUser(null);
-                setRole(null);
+                // setUser(null);
             } finally {
                 setLoading(false);
             }
@@ -95,7 +96,7 @@ const AuthProvider = ({ children }) => {
             logout, hasRole, 
             loading 
         }}>
-            {loading ? ( <Text>Loading</Text>) : children}
+            {loading ? ( <Loading />) : children}
         </AuthContext.Provider>
     );
 }

@@ -7,7 +7,7 @@ const Stack = createNativeStackNavigator();
 export default function ProfileStack() {
     return (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="Profile" component={Profile} />
+            <Stack.Screen name="ProfileScreen" component={Profile} />
         </Stack.Navigator>
     );
 }

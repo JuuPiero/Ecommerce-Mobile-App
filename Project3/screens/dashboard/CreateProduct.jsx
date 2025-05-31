@@ -98,9 +98,8 @@ export default function CreateProduct() {
                 type: `image/${fileType}`,
             });
         });
-        console.log(data);
-        
         try {
+            setIsLoaded(false)
             const response = await axios.post(API_URL + "/api/v1/product/create", data, {
                 headers: {
                     "Content-Type": "multipart/form-data",
@@ -123,7 +122,7 @@ export default function CreateProduct() {
             // setAttributeInputCount(1)
 
         } catch (error) {
-            console.error("Lỗi khi tải lên:", error)
+            setIsLoaded(true)
             Alert.alert("Lỗi", "Không thể tải dữ liệu lên")
         }
     }

@@ -9,6 +9,7 @@ import CategoryStack from "./dashboard/CategoryStack";
 import ProductStack from "./dashboard/ProductStack";
 import OrderStack from "./dashboard/OrderStack";
 import UserStack from "./dashboard/UserStack";
+import DashboardStack from "./dashboard/DashboardStack";
 
 const Tab = createBottomTabNavigator();
 
@@ -28,10 +29,9 @@ export default function DashboardTab() {
         },
       })}
     >
-      <Tab.Screen name="Dashboard" component={Dashboard} />
+      <Tab.Screen name="Dashboard" component={DashboardStack} />
       <Tab.Screen name="Category" component={CategoryStack} />
       <Tab.Screen name="Product" component={ProductStack} />
-
       <Tab.Screen name="Orders" component={OrderStack} />
       <Tab.Screen name="Account" component={UserStack} />
 

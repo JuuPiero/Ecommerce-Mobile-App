@@ -28,7 +28,7 @@ export default function CustomerTab() {
       })}
     >
     
-      <Tab.Screen name="Home" component={HomeStack} />
+      <Tab.Screen  name="Home" component={HomeStack} />
       <Tab.Screen name="Cart" component={CartStack} />
       <Tab.Screen name="Search" component={Search} />
       <Tab.Screen name="Purchase" component={PurchaseStack} />

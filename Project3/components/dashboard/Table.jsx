@@ -12,19 +12,23 @@ const Table = () => {
   return (
       <DataTable style={{backgroundColor: 'white', borderRadius: 20}}>
         <DataTable.Header>
-          <DataTable.Title>No</DataTable.Title>
-          <DataTable.Title>Name</DataTable.Title>
+          <DataTable.Title>Id đơn</DataTable.Title>
+          <DataTable.Title>Ngày</DataTable.Title>
           <DataTable.Title>Giá</DataTable.Title>
+          <DataTable.Title>Trạng thái</DataTable.Title>
           <DataTable.Title>Action</DataTable.Title>
         </DataTable.Header>
 
         {products.map((product) => (
           <DataTable.Row key={product.id}>
-            <DataTable.Cell >{product.id}</DataTable.Cell>
+            <DataTable.Cell >#{product.id}</DataTable.Cell>
             <DataTable.Cell >{product.name}</DataTable.Cell>
             <DataTable.Cell >{product.price}</DataTable.Cell>
             <DataTable.Cell>
-              <Button mode='text' onPress={() => {alert('edit')}}>Edit</Button>
+              Đã hủy
+            </DataTable.Cell>
+            <DataTable.Cell>
+              <Text mode='contained' background={'red'}>Xóa</Text>
             </DataTable.Cell>
           </DataTable.Row>
         ))}

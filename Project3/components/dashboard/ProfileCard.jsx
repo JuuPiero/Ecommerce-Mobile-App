@@ -10,13 +10,13 @@ function ProfileCard({user}) {
 
     return (
         <Pressable onPress={e => {
-            navigation.navigate('UserDetail', {user})
-        }} style={styles.profileCard}>
+            navigation.navigate('UserDetail', {userData: user})
+        }} style={[styles.profileCard]}>
             <Text style={styles.role}>Role: {user.role}</Text>
             <Text>{user.id}</Text>
             {
                 user.role == 'user' ? <Ionicons style={styles.profileIcon} size={30} name="person" /> :
-                <Ionicons style={styles.profileIcon} size={30} name='logo-ionitron' />
+                <Ionicons style={[styles.profileIcon, {borderColor: user.role == 'admin' ?  'red' : 'blue'}]} size={30} name='logo-ionitron' />
             }
             <View style={{flex: 1, gap: 5}}>
                 <Text style={{
@@ -42,6 +42,7 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         borderRadius: 15,
         gap: 10,
+        boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px',
     },
     profileIcon: {
         padding: 15,
@@ -56,7 +57,6 @@ const styles = StyleSheet.create({
         top: 0,
         paddingVertical: 8,
         paddingHorizontal: 10,
-        // backgroundColor: 'red'
     }
 
 

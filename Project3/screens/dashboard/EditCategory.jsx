@@ -29,8 +29,6 @@ export default function EditCategory() {
         const getCategory = async (id) => {
             const response = await axios.get(API_URL + "/api/v1/category/get/" + id)
             setCategory(response.data.category)
-            console.log(response.data.category);
-            
         } 
         getCategory(id)
 
@@ -43,7 +41,7 @@ export default function EditCategory() {
                 navigation.navigate('Categories')
             }             
         } catch (error) {
-            console.log(error)
+          
             Alert.alert("Xóa thất bại")
         }
     }

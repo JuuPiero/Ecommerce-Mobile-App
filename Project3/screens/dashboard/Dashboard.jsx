@@ -1,29 +1,34 @@
 import { useNavigation } from '@react-navigation/native';
-import { useContext, useEffect, useState } from 'react';
-import { Image, ScrollView, StyleSheet, View } from 'react-native';
-import { Card, Button, Text, Title } from 'react-native-paper';
-import { AuthContext } from '../../contexts/AuthContext';
+import { useEffect, useState } from 'react';
+import { Alert, View } from 'react-native';
+import {Button} from 'react-native-paper';
 import DefaultLayout from '../../layouts/dashboard/DefaultLayout';
 import Loading from '../../components/Loading';
 import { Ionicons } from '@expo/vector-icons'; 
 import DashboardItem from '../../components/dashboard/DashboardItem';
 import { Dimensions } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
+import api from '../../api/api';
 const screenWidth = Dimensions.get("window").width;
-const data = {
-  labels: ["January", "February", "March", "April", "May"],
-  datasets: [
-    {
-      data: [20, 45, 28, 80, 99]
-    }
-  ]
-};
+
 export default function Dashboard() {
   const navigation = useNavigation()
-  const {user} = useContext(AuthContext)
   const [refreshing, setRefreshing] = useState(false);
+  const [data, setData] = useState(null)
+ 
+  const getData = async () => {
+     try {
+        setRefreshing(true)
+        const response = await api.get('api/v1/revenue')
+        setData(response.data)
+      } catch (error) {
+        Alert.alert(error.message)
+      }
+  }
+
   const onRefresh = async () => {
-  
+    await getData();
+    setRefreshing(false)
   }
   useEffect(() => {
       onRefresh()
@@ -31,7 +36,7 @@ export default function Dashboard() {
 
 
   
-  if(refreshing || !user) return <Loading />
+  if(refreshing) return <Loading />
   return (
     <DefaultLayout  onRefresh={onRefresh} refreshing={refreshing}>
       <View style={{
@@ -43,13 +48,23 @@ export default function Dashboard() {
         rowGap: 15
       }}>
         <View style={{
-          width: '100%'
+          width: '100%',
+          flexDirection: 'row',
+          justifyContent: 'space-between'
         }}>
           <Button style={{
             width: 100,
           }} mode='contained' onPress={e => {
-            navigation.navigate('Customer')
+            navigation.replace('Customer', {
+              screen: 'Home'
+            })
           }}><Ionicons size={20} name={'home-outline'} /></Button>
+
+          <Button style={{
+            
+          }} mode='contained' onPress={e => {
+           
+          }}>Export Revanue</Button>
         </View>
 
         <DashboardItem icon={'people-outline'} title={'Account'} quantity={855}/>
@@ -58,9 +73,9 @@ export default function Dashboard() {
         <DashboardItem icon={'chatbox-ellipses-outline'} title={'Rating'} quantity={10}/>
 
 
-        <LineChart
+        {/* <LineChart
           data={data}
-          width={screenWidth - 20} // from react-native
+          width={screenWidth - 20} 
           height={220}
           chartConfig={{
             backgroundColor: '#e26a00',
@@ -77,7 +92,7 @@ export default function Dashboard() {
             marginVertical: 8,
             borderRadius: 16
           }}
-        />
+        /> */}
       </View>
     </DefaultLayout>
   );

@@ -9,7 +9,12 @@ function ProductCard({product}) {
     const navigation = useNavigation()
 
     const editProduct = () => {
-        navigation.navigate("EditProduct", {id: product.id, product})
+        // navigation.navigate("EditProduct", {id: product.id, product})
+        navigation.navigate('Product', {
+            screen: 'EditProduct',
+            params: {id: product.id, product}
+        })
+
     } 
 
     return (
@@ -37,7 +42,8 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         marginBottom: 10,
         borderRadius: 15,
-        gap: 10
+        gap: 10,
+        boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px'
     },
     cardImage: {
         width: 50,

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Chi tiết người dùng</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0; padding: 0;
+      background: #f4f6f8;
+    }
+    .container {
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.05);
+    }
+    h2 {
+      margin-top: 0;
+    }
+    .section {
+      margin-bottom: 30px;
+    }
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid #eee;
+    }
+    .info-row label {
+      font-weight: bold;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    th, td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    .status-active {
+      color: green;
+      font-weight: bold;
+    }
+    .status-banned {
+      color: red;
+      font-weight: bold;
+    }
+    .actions button {
+      padding: 10px 14px;
+      margin-right: 10px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .ban { background: #e74c3c; color: white; }
+    .reset { background: #f39c12; color: white; }
+    .role { background: #3498db; color: white; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Chi tiết người dùng: Nguyễn Văn A</h2>
+
+    <!-- Thông tin cá nhân -->
+    <div class="section">
+      <h3>Thông tin cá nhân</h3>
+      <div class="info-row"><label>ID:</label><div>#1023</div></div>
+      <div class="info-row"><label>Email:</label><div>nguyenvana@example.com</div></div>
+      <div class="info-row"><label>Số điện thoại:</label><div>0912345678</div></div>
+      <div class="info-row"><label>Ngày tạo:</label><div>12/03/2024</div></div>
+      <div class="info-row"><label>Trạng thái:</label><div class="status-active">Đang hoạt động</div></div>
+    </div>
+
+    <!-- Số dư & phí -->
+    <div class="section">
+      <h3>Thông tin ví</h3>
+      <div class="info-row"><label>Số dư hiện tại:</label><div>1.200.000đ</div></div>
+      <div class="info-row"><label>Phí đã trả:</label><div>150.000đ</div></div>
+    </div>
+
+    <!-- Đơn hàng gần đây -->
+    <div class="section">
+      <h3>Đơn hàng gần đây</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>ID đơn</th>
+            <th>Ngày</th>
+            <th>Tổng tiền</th>
+            <th>Trạng thái</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>#20201</td>
+            <td>01/05/2025</td>
+            <td>550.000đ</td>
+            <td>Đã giao</td>
+          </tr>
+          <tr>
+            <td>#20202</td>
+            <td>15/05/2025</td>
+            <td>1.000.000đ</td>
+            <td>Đã hủy</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Hành động quản trị -->
+    <div class="section actions">
+      <h3>Hành động quản lý</h3>
+      <button class="ban">Khóa tài khoản</button>
+      <button class="reset">Đặt lại mật khẩu</button>
+      <button class="role">Cập nhật vai trò</button>
+    </div>
+  </div>
+</body>
+</html>

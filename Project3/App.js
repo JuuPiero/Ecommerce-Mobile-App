@@ -8,7 +8,7 @@ import AuthProvider from './contexts/AuthContext';
 import Login from './screens/Login';
 import { PaperProvider, Button } from "react-native-paper";
 import theme from './theme';
-// const Tab = createBottomTabNavigator();
+import Signup from './screens/Signup';
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -17,12 +17,13 @@ export default function App() {
         <NavigationContainer >
           <AuthProvider>
             <Stack.Navigator screenOptions={{ headerShown: false }}>
-              <Stack.Screen name="Customer" component={CustomerTab} />
-              <Stack.Screen name="Admin" component={DashboardTab} />
               <Stack.Screen name="Login" component={Login}  options={{
                 gestureEnabled: false,
                 headerLeft: () => null, 
               }}/>
+              <Stack.Screen name="Signup" component={Signup}/>
+              <Stack.Screen name="Admin" component={DashboardTab} />
+              <Stack.Screen name="Customer" component={CustomerTab} />
             </Stack.Navigator>
           </AuthProvider>
         </NavigationContainer>

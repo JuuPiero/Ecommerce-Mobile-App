@@ -10,6 +10,7 @@ import Loading from "../../components/Loading";
 import { decodeEntities } from "../../utils/utils";
 import { Picker } from "@react-native-picker/picker"
 import OrderCard from "../../components/dashboard/OrderCard";
+import Pagination from "../../components/Pagination";
 
 export default function Orders({onReset}) {
     const navigation = useNavigation();
@@ -25,11 +26,11 @@ export default function Orders({onReset}) {
 
     async function getOrdes() {
         try {
-            const response = await axios.get(API_URL + "/api/v1/orders?page=" + currentPage + (statusFilter != null ? ('?status=' + statusFilter) : ''))
-
+            const response = await axios.get(API_URL + "/api/v1/orders?page=" + currentPage)
             setOrders(response.data.orders.data)
             setStatus(Object.values(response.data.orderStatus))
             setPages(response.data.orders.links)
+            console.log(orders);
             
             setRefreshing(false);
             
@@ -45,7 +46,12 @@ export default function Orders({onReset}) {
         onRefresh()
     }, [currentPage])
 
+
     if(refreshing) return <Loading />
+
+    const filteredOrders = statusFilter
+    ? orders.filter(order => order.status == statusFilter)
+    : orders;
 
     return (
         <DefaultLayout onRefresh={onRefresh} refreshing={refreshing}>
@@ -63,36 +69,20 @@ export default function Orders({onReset}) {
                 </Picker>
             </View>
 
-            {orders.map(order => 
+            {filteredOrders.map(order => 
                 <OrderCard status={status} order={order} key={order.id} />)}
-
-
-            <View style={{
-                flexDirection: "row",
-                justifyContent: 'center'
-            }}>
-                {
-                    pages.map((page, index) => <Button key={index} textColor={page.active ? 'red' : ''} style={page.active ? styles.active : {}} onPress={e => {
-                        setCurrentPage(parseInt(page.label.substr(page.label.length - 1)))
-                    }} >{decodeEntities(page.label)}</Button>)
-                }
-            </View>
+           
+            <Pagination links={pages} onPageChange={setCurrentPage}  />
+            
         </DefaultLayout>
     )
 }
 
 const styles = StyleSheet.create({
-    active: {
-        fontSize: 10,
-        // color: '#000',
-        fontWeight: 'bold'
-    },
-
     dropdown: {
         borderWidth: 1,
         borderRadius: 5,
         borderStyle: 'solid',
         width: '50%'
     },
-   
 })

@@ -1,13 +1,12 @@
-import { ScrollView, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { Button, Text } from "react-native-paper";
 import CategoryCard from "../../components/dashboard/CategoryCard";
 import DefaultLayout from "../../layouts/dashboard/DefaultLayout";
 import { useNavigation } from "@react-navigation/native";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import api, { API_URL } from "../../api/api";
 import Loading from "../../components/Loading";
-import { decodeEntities } from "../../utils/utils";
+import Pagination from "../../components/Pagination";
 
 export default function Categories({onReset}) {
     const navigation = useNavigation();
@@ -16,11 +15,11 @@ export default function Categories({onReset}) {
     const [categories, setCategories] = useState([])
     const [currentPage, setCurrentPage] = useState(1)
     const [pages, setPages] = useState([])
-    // const t = {}
-    
+  
     const onRefresh = async () => {
         setRefreshing(true);
-        getCategories()
+        await getCategories()
+        setRefreshing(false);
     };
 
     async function getCategories() {
@@ -28,7 +27,6 @@ export default function Categories({onReset}) {
             const response = await api.get("api/v1/categories?page=" + currentPage)
             setPages(response.data.links)
             setCategories(response.data.data)
-            setRefreshing(false);
             
         } catch (error) {
             console.log(error)
@@ -42,8 +40,7 @@ export default function Categories({onReset}) {
     if(refreshing) return <Loading />
 
     return (
-        <DefaultLayout onRefresh={onRefresh} refreshing={refreshing}>
-            {/* <Button mode="contained" onPress={getCategories}>Reset</Button> */}
+        <DefaultLayout refreshing={refreshing}>
             <View style={{ padding: 10, display: 'flex', justifyContent: 'space-between', flexDirection: 'row' }}>
                 <Text role='heading' style={{fontSize: 30}} >Categories</Text>
                 <Button mode='contained' onPress={e => {
@@ -54,25 +51,7 @@ export default function Categories({onReset}) {
             {
                 categories.map(category => <CategoryCard key={category.id} category={category} />)
             }
-
-            <View style={{
-                flexDirection: "row",
-                justifyContent: 'center'
-            }}>
-                {
-                    pages.map((page, index) => <Button textColor={page.active ? 'red' : ''} style={page.active ? styles.active : {}} onPress={e => {
-                        setCurrentPage(parseInt(page.label.substr(page.label.length - 1)))
-                    }} key={index}>{decodeEntities(page.label)}</Button>)
-                }
-            </View>
+            <Pagination links={pages} onPageChange={setCurrentPage} />
         </DefaultLayout>
     )
 }
-
-const styles = StyleSheet.create({
-    active: {
-        fontSize: 10,
-        // color: '#000',
-        fontWeight: 'bold'
-    }
-})

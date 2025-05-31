@@ -38,6 +38,7 @@ class AuthController extends Controller
 
     public function logout() {
         Auth::logout();
+        // JWTAuth::logout();
         return response()->json(['message' => 'Successfully logged out']);
     }
 

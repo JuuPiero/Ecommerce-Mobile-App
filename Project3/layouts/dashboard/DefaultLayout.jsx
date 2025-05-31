@@ -5,22 +5,26 @@ import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { AuthContext } from "../../contexts/AuthContext";
 
 
-
-export default function DefaultLayout({ children, refreshing, onRefresh }) {
+export default function DefaultLayout({ children, refreshing, onRefresh, style }) {
     const navigation = useNavigation()
-    const {user, token} = useContext(AuthContext)
+    const {token} = useContext(AuthContext)
    
     useEffect(() => {
-        if (!token || !user) {
-            navigation.navigate('Login');
+        if (!token) {
+            navigation.replace('Login');
         }
-    }, [token]);  // Khi token thay đổi thì mới navigate
+        // if(onRefresh) {
+        //     onRefresh()
+        // }
+    }, [token]);  
     return (
-        <ScrollView  refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
+        <ScrollView style={[{
+            backgroundColor: '#fff'
+        }, style]} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
             <SafeAreaView style={{
                 padding: 10, 
                 marginBottom: 60,
-                marginTop: 25
+                marginTop: 30,
             }}>
                 <SearchHeader />
                 {children}

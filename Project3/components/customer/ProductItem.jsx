@@ -7,8 +7,14 @@ export default function ProductItem({product}) {
  
     
     return (
-        <Pressable onPress={e => {
-            navigation.navigate('ProductDetail', {id: product.id, product})
+        <Pressable onPress={() => {
+            navigation.navigate('Home', {
+                screen: 'ProductDetail',
+                params: {
+                    product,
+                    id: product.id
+                }
+            })
         }} style={styles.productItem}>
             <Image
                 style={styles.productImage}
@@ -24,19 +30,25 @@ export default function ProductItem({product}) {
 const styles = StyleSheet.create({
     productItem: {
         width: '48%',
-        gap: 8
+        gap: 8,
+        boxShadow: "rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px",
+        padding: 15,
+        borderRadius: 15,
     },
     productImage: {
         width: '100%',
         height: 150,
-        borderRadius: 8
+        borderRadius: 8,
     },
     productPrice: {
         fontWeight: 'bold',
-        fontSize: 20
+        fontSize: 16,
+        // textShadowColor: 'rgba(0, 0, 0, 1)',
+        // textShadowOffset: {width: -1, height: 1},
+        // textShadowRadius: 10
     },
     productName: {
-        fontSize: 18
+        fontSize: 14,
     }
 
 })

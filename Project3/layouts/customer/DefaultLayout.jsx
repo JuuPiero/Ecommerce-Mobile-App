@@ -8,19 +8,22 @@ import { useNavigation } from "@react-navigation/native";
 
 export default function DefaultLayout({ children, style, refreshing, onRefresh }) {
     const navigation = useNavigation()
-    const {user, token} = useContext(AuthContext)
+    const {token} = useContext(AuthContext)
 
     useEffect(() => {
-        if (!token || !user) {
+        if (!token) {
             navigation.replace('Login');
         }
     }, [token]);  // Khi token thay đổi thì mới navigate
 
     return (
-        <ScrollView style={style} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
+        <ScrollView style={[{
+            backgroundColor: '#fff'
+        }, style]} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
             <SafeAreaView style={{
                 margin: 15,
-                marginTop: 40,
+                marginTop: 30,
+
             }}>
                 {children}
             </SafeAreaView>
