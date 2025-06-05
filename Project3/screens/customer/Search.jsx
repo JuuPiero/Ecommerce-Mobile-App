@@ -38,7 +38,8 @@ export default function Search() {
                 flexDirection: 'row',
                 flexWrap: 'wrap',
                 justifyContent: 'space-around',
-                gap: 10
+                gap: 10,
+                marginTop: 30
             }}>
                 {
                     products.map(product => <ProductItem key={product.id} product={product} />)

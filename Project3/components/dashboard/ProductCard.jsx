@@ -3,6 +3,7 @@ import { Image, StyleSheet, Text, View } from 'react-native';
 import { Button } from 'react-native-paper';
 import { API_URL } from '../../api/api';
 import { useNavigation } from '@react-navigation/native';
+import { formatMoneyVN } from '../../utils/utils';
 
 
 function ProductCard({product}) {
@@ -14,7 +15,6 @@ function ProductCard({product}) {
             screen: 'EditProduct',
             params: {id: product.id, product}
         })
-
     } 
 
     return (
@@ -26,7 +26,7 @@ function ProductCard({product}) {
             />
             <View style={{flex: 1, paddingHorizontal: 15}}>
                 <Text style={{ fontWeight: 'bold' }}>{product.name}</Text>
-                <Text>{product.price}đ * 10 in stocks</Text>
+                <Text>{formatMoneyVN(product.price)}đ * {product.quantity} instocks</Text>
             </View>
             <Button onPress={editProduct}>Edit</Button>
         </View>

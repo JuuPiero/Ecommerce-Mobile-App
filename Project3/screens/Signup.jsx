@@ -2,20 +2,16 @@ import { useNavigation } from "@react-navigation/native";
 import React, { useContext, useEffect, useState } from "react";
 import { View, StyleSheet, SafeAreaView, Alert, BackHandler, ImageBackground, Text } from "react-native";
 import { TextInput, Button, Card, Title, Paragraph } from "react-native-paper";
-import { AuthContext } from "../contexts/AuthContext";
 import Loading from "../components/Loading";
 import api from "../api/api";
 
 const Signup = () => {
     const navigation = useNavigation()
     const [isLoaded, setIsLoaded] = useState(true)
-    useEffect(() => {
-        
-    }, []);  
 
     const [formData, setFormData] = useState({
         email: "",
-        pasword: "",
+        password: "",
         full_name: "",
         phone_number: "",
         address: ""
@@ -26,30 +22,26 @@ const Signup = () => {
     };
 
     const handleSubmit = async () => {
-      const {email, pasword, phone_number, full_name} = formData
-      if(!email || !pasword || !phone_number || !full_name) {
+      const {email, password, phone_number, full_name} = formData
+      if(!email || !password || !phone_number || !full_name) {
         Alert.alert('Nhập thiếu thông tin')
         return
       }
-      
       try {
         setIsLoaded(false)
-        const response = await api.post('api/v1/signup', {
-            ...formData
-        })
-        if(response.success) {
+        const response = await api.post('api/v1/signup', formData)
+        if(response.data.success) {
             navigation.navigate('Login')
         }
         setIsLoaded(true)
 
       } catch (error) {
+        setIsLoaded(true)
         Alert.alert(error.message)
       }
     };
 
-    if(!isLoaded) {
-      return <Loading />
-    }
+    if(!isLoaded) return <Loading />
 
     return (
         <ImageBackground style={{
@@ -89,11 +81,11 @@ const Signup = () => {
                 // mode="outlined"
             />
             <TextInput
-                value={formData.pasword}
+                value={formData.password}
                 // mode="outlined"
                 label="Password"
                 secureTextEntry
-                onChangeText={(text) => handleChange("pasword", text)}
+                onChangeText={(text) => handleChange("password", text)}
                 right={<TextInput.Icon icon="eye" />}
             />
 

@@ -50,22 +50,12 @@ export default function Checkout() {
 
     const onCheckout = async () => {
         console.log(formData);
-        
-
         return
         const { name, payment_method, phone_number, address } = formData;
         if (!name || !payment_method || !phone_number || !address ) {
             Alert.alert("Vui lòng điền đầy đủ thông tin!");
             return;
         }
-
-        const data = new FormData();
-        data.append("name", name)
-        data.append("category_id",category_id)
-        data.append("sku", sku)
-        data.append("price", price)
-        data.append("quantity", quantity)
-        data.append("description", description)
 
         
         try {

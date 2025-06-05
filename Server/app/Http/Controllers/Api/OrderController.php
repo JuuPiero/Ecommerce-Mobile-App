@@ -52,7 +52,7 @@ class OrderController extends Controller {
         $data = $request->all();
         $order = Order::findOrFail($id);
         $order->update($data);
-        return redirect()->back()->with([
+        return response()->json([
             'message' => 'đã cập nhật trạng thái đơn hàng'
         ]);
     }

@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
-import { Alert, View } from 'react-native';
+import { Alert, Linking, View } from 'react-native';
 import {Button} from 'react-native-paper';
 import DefaultLayout from '../../layouts/dashboard/DefaultLayout';
 import Loading from '../../components/Loading';
@@ -36,7 +36,7 @@ export default function Dashboard() {
 
 
   
-  if(refreshing) return <Loading />
+  if(refreshing || !data) return <Loading />
   return (
     <DefaultLayout  onRefresh={onRefresh} refreshing={refreshing}>
       <View style={{
@@ -62,15 +62,13 @@ export default function Dashboard() {
 
           <Button style={{
             
-          }} mode='contained' onPress={e => {
-           
-          }}>Export Revanue</Button>
+          }} mode='contained' onPress={ ()=>{ Linking.openURL(data.revanue)}}>Export Revanue</Button>
         </View>
 
-        <DashboardItem icon={'people-outline'} title={'Account'} quantity={855}/>
-        <DashboardItem icon={'cube-outline'} title={'Orders'} quantity={855}/>
-        <DashboardItem icon={'logo-dropbox'} title={'Product'} quantity={2}/>
-        <DashboardItem icon={'chatbox-ellipses-outline'} title={'Rating'} quantity={10}/>
+        <DashboardItem icon={'people-outline'} title={'Account'} quantity={data?.quantity.user}/>
+        <DashboardItem icon={'cube-outline'} title={'Orders'} quantity={data?.quantity.order}/>
+        <DashboardItem icon={'logo-dropbox'} title={'Product'} quantity={data?.quantity.product}/>
+        <DashboardItem icon={'chatbox-ellipses-outline'} title={'Rating'} quantity={data?.quantity.rate}/>
 
 
         {/* <LineChart
@@ -79,20 +77,15 @@ export default function Dashboard() {
           height={220}
           chartConfig={{
             backgroundColor: '#e26a00',
-            // backgroundGradientFrom: '#fb8c00',
-            // backgroundGradientTo: '#ffdd00',
             decimalPlaces: 2, // optional, defaults to 2
             color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
             labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-            style: {
-              borderRadius: 16
-            }
           }}
           style={{
             marginVertical: 8,
             borderRadius: 16
           }}
-        /> */}
+        />  */}
       </View>
     </DefaultLayout>
   );

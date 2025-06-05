@@ -30,13 +30,16 @@ class AccountController extends Controller {
             'message' => 'xóa thành công user'
         ]);
     }
-    public function update($id, Request $request) {
+    public function update($id) {
         $user = User::find($id);
-        $data = $request->all();
-        $data['password'] = Hash::make($data['new_password']);
+        $data = request()->all();
+        if(isset($data['password'])) {
+            $data['password'] = Hash::make($data['password']);
+        }
         $user->update($data);
         return response()->json([
-            'message' => "Updated successfully"
+            'message' => "Updated successfully",
+            'user' => $user
         ]);
     }
 

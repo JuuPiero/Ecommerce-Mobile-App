@@ -61,10 +61,10 @@ export default function Profile() {
                 marginTop: 50,
                 justifyContent: 'center',
             }}>
-                    {/* user?.role == 'admin' ? : null */}
+                    
 
                 {
-                     
+                    user?.role !== 'admin' ? null :
                     <Button style={{width: '50%'}} onPress={async () => {
                         navigation.navigate('Admin')
                     }} mode='contained' >Go to dashboard</Button>

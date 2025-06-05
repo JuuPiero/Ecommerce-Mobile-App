@@ -1,5 +1,6 @@
 <?php
 
+use App\Exports\RevenueReportExport;
 use App\Http\Controllers\Admin\AccountController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\CategoryController;
@@ -14,6 +15,7 @@ use App\Http\Controllers\Client\CheckoutController;
 use App\Http\Controllers\Client\HomeController;
 use App\Http\Controllers\Client\UserController;
 use Illuminate\Support\Facades\Route;
+use Maatwebsite\Excel\Facades\Excel;
 
 /*
 |--------------------------------------------------------------------------
@@ -138,3 +140,11 @@ Route::prefix('invoice')->group(function() {
     Route::get('show/{id}', [InvoiceController::class, 'show'])->name('admin.invoice.show');
     Route::get('create/{id}', [InvoiceController::class, 'create'])->name('admin.invoice.create');
 });
+
+
+Route::get('export-revenue', function () {
+    $from = request()->query('from', now()->startOfMonth()->toDateString());
+    $to = request()->query('to', now()->endOfMonth()->toDateString());
+
+    return Excel::download(new RevenueReportExport($from, $to), 'revenue_report.xlsx');
+})->name('export.revenue');

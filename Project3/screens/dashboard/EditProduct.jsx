@@ -33,7 +33,7 @@ export default function EditProduct() {
             setCategories(response.data.categories)
 
         } catch (error) {
-            console.log(error)
+            Alert.alert(error.message)
         }
     }
 
@@ -44,7 +44,7 @@ export default function EditProduct() {
             setAttributeInputCount(response.data.product.attributes.length)
             setAttributes(response.data.product.attributes)
         } catch (error) {
-            console.log(error)
+            Alert.alert(error.message)
         }
     }
 
@@ -126,7 +126,6 @@ export default function EditProduct() {
                 type: `image/${fileType}`,
             });
         });
-    // console.log(data);  
         try {
             const response = await axios.post(API_URL + "/api/v1/product/update/" + id, data, {
                 headers: {
@@ -251,6 +250,6 @@ const styles = StyleSheet.create({
     deleteBtn: {
         width: '50%',
         backgroundColor: 'red',
-        marginBottom: 15,
+        marginVertical: 20
     }
 })

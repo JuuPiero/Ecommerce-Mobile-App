@@ -38,8 +38,7 @@ const AuthProvider = ({ children }) => {
             // }
             return user
         } catch (error) {
-            console.log(error);
-            Alert.alert('Login failed');
+            Alert.alert(error.message);
             return null
         }
     }
@@ -49,7 +48,7 @@ const AuthProvider = ({ children }) => {
             const response = await api.post('api/v1/logout'); // nếu cần gọi
             Alert.alert(response.data.message)
         } catch (err) {
-            console.log("Logout error", err);
+            Alert.alert(err.message);
         }
         setToken(null);
         setRole(null);
@@ -74,7 +73,7 @@ const AuthProvider = ({ children }) => {
                     setToken(null);
                 }
             } catch (error) {
-                console.log("Auth check failed", error);
+                Alert.alert(error.message);
                 await AsyncStorage.removeItem('token');
                 setToken(null);
                 // setUser(null);

@@ -13,9 +13,10 @@ const decodeEntities = (str) =>
 
 
 function imageUrl(link) {
-    const realLink = link.includes('https') ? link : API_URL + '/storage/' + link
+    const realLink = link?.includes('https') ? link : API_URL + '/storage/' + link
     return realLink
 }
+
 const reloadPage = (navigation) => {
     const currentRoute = navigation.getState().routes[navigation.getState().index];
     navigation.replace(currentRoute.name, currentRoute.params);
@@ -28,9 +29,14 @@ function dateFormat(isoDate) {
     const formatted = date.toLocaleDateString('vi-VN'); // "18/04/2025"
     return formatted
 }
+
+const formatMoneyVN = (amount) => {
+  return Math.round(amount).toLocaleString('vi-VN');
+};
 export {
     decodeEntities,
     imageUrl,
     reloadPage,
-    dateFormat
+    dateFormat,
+    formatMoneyVN
 }

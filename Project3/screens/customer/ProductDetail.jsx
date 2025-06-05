@@ -4,31 +4,43 @@ import { useEffect, useState } from "react";
 import {Button, TextInput} from "react-native-paper";
 import CartManager from "../../utils/CartManager";
 import ReviewItem from "../../components/customer/ReviewItem";
-import { products } from "../../utils/data";
-import ProductItem from "../../components/customer/ProductItem";
-import ProductImage from "../../components/customer/ProductImage";
 import { Picker } from "@react-native-picker/picker"
 import { useRoute } from "@react-navigation/native";
-import { API_URL } from "../../api/api";
+import api, { API_URL } from "../../api/api";
+import { formatMoneyVN, imageUrl } from "../../utils/utils";
 const { width } = Dimensions.get('window');
 
 export default function ProductDetail() {
     const route = useRoute()
-    const {product} = route.params
-
-    if (!product) {
-        return <Text>Sản phẩm không tồn tại</Text>;
-    }
-
+    const [product, setProduct] = useState(route.params.product)
     const [refreshing, setRefreshing] = useState(false);
     const [quanity, setQuantity] = useState(1)
+
+    const getProduct = async () => {
+        try {
+            setRefreshing(true)
+            const response = await api.get('/api/v1/product/get/' + product.id)
+            setProduct(response.data.product)
+            setRefreshing(false)
+
+        } catch (error) {
+            Alert.alert(error.message)
+          
+        }
+    }
+
+
+   
     const onRefresh = async () => {
-    
+        await getProduct()
     }
     useEffect(() => {
         onRefresh()
     }, [])
 
+    if (!product) {
+        return <Text>Sản phẩm không tồn tại</Text>;
+    }
 
 
     const addToCart = async () => {
@@ -44,17 +56,19 @@ export default function ProductDetail() {
         <DefaultLayout onRefresh={onRefresh} refreshing={refreshing}>
 
             <View style={styles.imagesContainer}>
-             
-                <FlatList
-                    data={product.images}
-                    horizontal
-                    pagingEnabled
-                    showsHorizontalScrollIndicator={false}
-                   keyExtractor={(item, index) => item?.id ?? index}
-                    renderItem={({ item }) => <Image style={styles.image}
-                    source={{uri: (item.name.includes('https') ? item.name : (API_URL + '/strorage/' + item.name)) }}
-                    resizeMode={'cover'}  /> }
-                />
+                <ScrollView horizontal pagingEnabled>
+                    {Array.isArray(product?.images) &&
+                        product.images.map((item, index) => (
+                        item?.name ? (
+                            <Image
+                            key={item?.id ?? index}
+                            style={styles.image}
+                            source={{ uri: imageUrl(item.name) }}
+                            resizeMode="cover"
+                            />
+                        ) : null
+                        ))}
+                </ScrollView>
             </View>
             <View style={{
                 flexDirection: 'column',
@@ -67,7 +81,7 @@ export default function ProductDetail() {
                     justifyContent:'space-between',
                     gap: 10
                 }}>
-                    <Text style={styles.productPrice}>{product.price}đ</Text>
+                    <Text style={styles.productPrice}>{formatMoneyVN(product.price)}đ</Text>
                     <View style={styles.actionContainer}>
                         <Text style={styles.action} onPress={() => {
                             setQuantity(prev => {
@@ -83,25 +97,40 @@ export default function ProductDetail() {
                 <Button style={{
                     paddingVertical: 5,
                 }} mode="contained" onPress={addToCart} >Add To Cart</Button>      
-                <Text style={{
-                    fontWeight: 'bold',
-                    fontSize: 20,
-                }}>Description</Text>
-
-                <Text>{product.description}</Text>
-                <Text style={{
-                    fontWeight: 'bold',
-                    fontSize: 20,
-                }}>Thông số</Text>
-
-                {
-                    product.attributes.map(attr =>  <Text key={attr.name}><Text style={{
+                <View style={{
+                    boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px',
+                    padding: 8,
+                    borderRadius: 8,
+                    gap: 10
+                }}>
+                    <Text style={{
                         fontWeight: 'bold',
-                        fontSize: 15,
-                    }}>{attr.name}</Text>: {attr.value}</Text>)
-                }
+                        fontSize: 20,
+                    }}>Description</Text>
+
+                    <Text>{product.description}</Text>
+                </View>
+                
+                <View style={{
+                    boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px',
+                    padding: 8,
+                    borderRadius: 8,
+                    gap: 10
+                }}>
+                    <Text style={{
+                        fontWeight: 'bold',
+                        fontSize: 20,
+                    }}>Thông số</Text>
+
+                    {
+                        product.attributes.map(attr =>  <Text key={attr.name}><Text style={{
+                            fontWeight: 'bold',
+                            fontSize: 15,
+                        }}>{attr.name}</Text>: {attr.value}</Text>)
+                    }
+                </View>
             </View>
-  
+
             <View style={{
                 marginVertical: 20,
             }}>
@@ -118,9 +147,9 @@ export default function ProductDetail() {
                 
                 <View style={styles.ratingForm}>
                     <View style={{
-                            borderWidth: 1,
-                            borderRadius: 5
-                        }}>
+                        borderWidth: 1,
+                        borderRadius: 5
+                    }}>
                         <Picker onValueChange={rate => {
 
                         }} placeholder="Rate">
@@ -154,9 +183,9 @@ export default function ProductDetail() {
                         justifyContent: 'space-between',
                         gap: 10
                     }}>
-                        {
+                        {/* {
                             products.map(product => <ProductItem key={product.id} product={product} />)
-                        }
+                        } */}
                     </View>
                 </View>
             </View>
@@ -182,11 +211,11 @@ const styles = StyleSheet.create({
     },
     productName: {
         fontWeight: 'bold',
-        fontSize: 22,
+        fontSize: 24,
     },
     productPrice: {
         fontWeight: 'bold',
-        fontSize: 24,
+        fontSize: 22,
         maxWidth: '45%'
     },
     quanity: {

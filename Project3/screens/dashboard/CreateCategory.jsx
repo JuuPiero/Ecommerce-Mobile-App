@@ -30,7 +30,7 @@ const CreateCategory = () => {
     }
 
     const handleSubmit = async () => {
-        // console.log("Submitted Data:", formData) 
+      
         if (!formData.name || !formData.description || !formData.image) {
             Alert.alert("Lỗi", "Vui lòng điền đầy đủ thông tin!")
             return
@@ -66,7 +66,7 @@ const CreateCategory = () => {
     return (
         <DefaultLayout >
             <Card style={{
-               
+                marginVertical: 20
             }}>
                 <Card.Content>
                     <Title style={styles.title}>Thêm danh mục</Title>

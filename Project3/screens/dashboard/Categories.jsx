@@ -1,4 +1,4 @@
-import { StyleSheet, View } from "react-native";
+import { Alert, StyleSheet, View } from "react-native";
 import { Button, Text } from "react-native-paper";
 import CategoryCard from "../../components/dashboard/CategoryCard";
 import DefaultLayout from "../../layouts/dashboard/DefaultLayout";
@@ -29,7 +29,7 @@ export default function Categories({onReset}) {
             setCategories(response.data.data)
             
         } catch (error) {
-            console.log(error)
+            Alert.alert(error.message)
         }
     }
 
@@ -40,9 +40,9 @@ export default function Categories({onReset}) {
     if(refreshing) return <Loading />
 
     return (
-        <DefaultLayout refreshing={refreshing}>
+        <DefaultLayout refreshing={refreshing} onRefresh={onRefresh}>
             <View style={{ padding: 10, display: 'flex', justifyContent: 'space-between', flexDirection: 'row' }}>
-                <Text role='heading' style={{fontSize: 30}} >Categories</Text>
+                <Text role='heading' style={{fontSize: 30}} >Danh mục</Text>
                 <Button mode='contained' onPress={e => {
                     navigation.navigate('CreateCategory')
                 }}>New Category</Button>        

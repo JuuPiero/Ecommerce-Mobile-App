@@ -14,6 +14,7 @@ export default function EditCategory() {
     const { id } = route.params; // Lấy id từ params
     const [category, setCategory] = useState(null)
     const [image, setImage] = useState(null)
+    const [refreshing, setRefreshing] = useState(false);
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -66,25 +67,30 @@ export default function EditCategory() {
                 type: `image/${fileType}`,
             })
         }
-        console.log(data);
+        
         try {
+            setRefreshing(true)
             const response = await axios.post(API_URL + "/api/v1/category/update/" + id, data, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
             })
+            setRefreshing(false)
             Alert.alert("Thành công", `Server phản hồi: ${response.data.message}`)
         } catch (error) {
-            console.error("Lỗi khi tải lên:", error)
-            Alert.alert("Lỗi", "Không thể tải dữ liệu lên")
+            setRefreshing(false)
+            Alert.alert(error.message)
+
         }
     }
 
     if(!category) return <Loading />
 
     return (
-        <DefaultLayout>
-            <View >
+        <DefaultLayout refreshing={refreshing}>
+            <View style={{
+                marginVertical: 20
+            }}>
                 <Card>
                     <Card.Content>
                         <Button textColor="#fff" onPress={handleDelete} style={{backgroundColor: 'red', marginBottom: 20, width: '50%'}}>Delete</Button>

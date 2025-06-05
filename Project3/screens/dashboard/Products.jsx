@@ -1,4 +1,4 @@
-import { Image, ScrollView, StyleSheet, View } from 'react-native';
+import { Alert, Image, ScrollView, StyleSheet, View } from 'react-native';
 import { Button, Text } from 'react-native-paper';
 import Table from '../../components/dashboard/Table';
 import ProductCard from '../../components/dashboard/ProductCard';
@@ -38,7 +38,7 @@ export default function Products() {
         setPages(response.data.links)
         
       } catch (error) {
-        console.log(error);
+        Alert.alert(error.message)
       }
     }
     const getCategories = async () => {
@@ -47,7 +47,8 @@ export default function Products() {
         setCategories(response.data.categories)
         
       } catch (error) {
-        // console.log(error);
+        Alert.alert(error.message)
+        
       }
     }
     useEffect(() => {
@@ -64,7 +65,7 @@ export default function Products() {
       <DefaultLayout onRefresh={onRefresh} refreshing={refreshing}>
         <View>
           <View style={{ padding: 10, display: 'flex', justifyContent: 'space-between', flexDirection: 'row' }}>
-            <Text role='heading' style={{fontSize: 30}} >Products</Text>
+            <Text role='heading' style={{fontSize: 30}} >Sản phẩm</Text>
             <Button style={{borderWidth: 2}} mode='contained' onPress={e => {
               navigation.navigate('CreateProduct')
             }}>New Product</Button>        

@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Order;
+use App\Models\Product;
+use App\Models\Rating;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -27,12 +30,26 @@ class StatisticalController {
         for ($i = 1; $i <= 12; $i++) {
             $data[] = isset($revenues[$i]) ? (float) $revenues[$i]->total : 0;
         }
+        {
+            $userCount = User::all()->count();
+            $orderCount = Order::all()->count();
+            $ratingCount = Rating::all()->count();
+            $productCount = Product::all()->count();
+
+        }
 
         return response()->json([
             'labels' => $labels,
             'datasets' => [
                 ['data' => $data]
-            ]
+            ],
+            'quantity' => [
+                'user' => $userCount,
+                'order' => $orderCount,
+                'rate' => $ratingCount,
+                'product' => $productCount
+            ],
+            "revanue" => request()->root() . route("export.revenue", [], false)
         ]);
     }
 }

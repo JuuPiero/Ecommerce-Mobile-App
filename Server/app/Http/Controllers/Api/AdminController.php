@@ -37,10 +37,10 @@ class AdminController extends Controller {
     }
 
     public function search(Request $request) {
-        $categories = $this->categoryRepository->searchPrivate($request->keyword);
-        $products = $this->productRepository->searchPrivate($request->keyword);
-        $users = User::where('full_name', 'LIKE', '%' . $request->keyword . '%')
-        ->orWhere('email', 'LIKE', '%' . $request->keyword . '%')
+        $categories = $this->categoryRepository->searchPrivate($request->keywords);
+        $products = $this->productRepository->searchPrivate($request->keywords);
+        $users = User::where('full_name', 'LIKE', '%' . $request->keywords . '%')
+        ->orWhere('email', 'LIKE', '%' . $request->keywords . '%')
         ->paginate(15);
 
         return response()->json([

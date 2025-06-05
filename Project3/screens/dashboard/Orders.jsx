@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, View } from "react-native";
+import { Alert, ScrollView, StyleSheet, View } from "react-native";
 import { Button, Text } from "react-native-paper";
 import CategoryCard from "../../components/dashboard/CategoryCard";
 import DefaultLayout from "../../layouts/dashboard/DefaultLayout";
@@ -30,12 +30,10 @@ export default function Orders({onReset}) {
             setOrders(response.data.orders.data)
             setStatus(Object.values(response.data.orderStatus))
             setPages(response.data.orders.links)
-            console.log(orders);
-            
             setRefreshing(false);
             
         } catch (error) {
-            console.log(error)
+            Alert.alert(error.message)
         }
     }
     const onRefresh = async () => {
@@ -62,7 +60,7 @@ export default function Orders({onReset}) {
                 <Picker onValueChange={status => {
                     setStatusFilter(status)
                 }} placeholder="Trạng thái" style={styles.dropdown}>
-                    <Picker.Item label="Trạng thái"  />
+                    <Picker.Item label="Trạng thái" value={null} />
                     {
                         status.map((status, index) => <Picker.Item key={index} label={status} value={status} />)
                     }

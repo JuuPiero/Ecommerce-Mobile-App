@@ -1,12 +1,13 @@
 import { useNavigation } from '@react-navigation/native';
 import { Alert, Dimensions, ImageBackground, Pressable, StyleSheet, Text, View } from 'react-native'
+import { imageUrl } from '../../utils/utils';
 const { width } = Dimensions.get('window');
-export default function CategoryItem({category = null}) {
+export default function CategoryItem({category}) {
     const navigation = useNavigation()   
     
     return (
         <ImageBackground 
-            source={{ uri: category?.image ? category.image : "https://www.countrysideamishfurniture.com/media/made/uploads/newark-side-chair_-_28de80_-_0bf4bdb70864a2154eec6001390467db2752640e.jpg" }} 
+            source={{ uri: imageUrl(category.image) }} 
             style={[styles.card]}
             onTouchEnd={e=> {
                 navigation.navigate('CategoryDetail', {category : category})
@@ -28,8 +29,13 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.2,
         shadowRadius: 5,
         overflow: 'hidden',
-        // boxShadow: "rgba(17, 12, 46, 0.15) 0px 48px 100px 0px",
-        
     },
-    title: { color: '#fff', fontSize: 24, fontWeight: 'bold' },
+    title: { 
+        color: '#fff', 
+        fontSize: 32,
+        fontWeight: 'bold',
+        textShadowColor: 'black',
+        textShadowOffset: { width: 2, height: 2 },
+        textShadowRadius: 2,
+    },
 })

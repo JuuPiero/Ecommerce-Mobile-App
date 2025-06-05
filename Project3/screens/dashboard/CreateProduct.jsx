@@ -20,7 +20,7 @@ export default function CreateProduct() {
                 setCategories(response.data.categories)
                 setIsLoaded(true)
             } catch (error) {
-                console.log(error)
+                Alert.alert(error.message)
             }
         }
         getCategories()
@@ -98,6 +98,8 @@ export default function CreateProduct() {
                 type: `image/${fileType}`,
             });
         });
+
+       
         try {
             setIsLoaded(false)
             const response = await axios.post(API_URL + "/api/v1/product/create", data, {
@@ -130,7 +132,9 @@ export default function CreateProduct() {
 
     return (
         <DefaultLayout>
-            <Card>
+            <Card style={{
+                marginVertical: 20
+            }}>
                 <Card.Content>
                     <Title style={styles.title}>Thêm Sản phẩm</Title>
                     <View style={styles.formContainer}>

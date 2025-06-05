@@ -37,7 +37,7 @@ Route::prefix('v1')->group(function () {
         // __________________ACCOUNT__________________
         Route::get('users', [AccountController::class, 'index']);
         Route::get('user/detail/{id}', [AccountController::class, 'detail']);
-        Route::put('user/update/{id}', [AccountController::class, 'update']);
+        Route::post('user/update/{id}', [AccountController::class, 'update']);
     // });
 
     Route::get('category/all', [CategoryController::class, 'all']);
@@ -56,6 +56,8 @@ Route::prefix('v1')->group(function () {
 
     Route::get('orders', [OrderController::class, 'index']);
     Route::get('order/detail/{id}', [OrderController::class, 'detail']);
+    Route::post('order/update/{id}', [OrderController::class, 'update']);
+
 
     Route::get('revenue', [StatisticalController::class, 'revenue']);
     Route::get('search', [AdminController::class, 'search']);

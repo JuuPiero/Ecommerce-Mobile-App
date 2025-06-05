@@ -43,7 +43,7 @@ export default function Users() {
     return (
         <DefaultLayout onRefresh={onRefresh} refreshing={refreshing} >
             <View style={{ padding: 10, display: 'flex', justifyContent: 'space-between', flexDirection: 'row' }}>
-                <Text role='heading' style={{fontSize: 30}} >Accounts</Text>
+                <Text role='heading' style={{fontSize: 30}} >Tài khoản</Text>
             </View>
             {
                 users.map(user => <ProfileCard key={user.id} user={user} />)

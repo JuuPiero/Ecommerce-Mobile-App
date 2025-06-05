@@ -18,7 +18,6 @@ export default function DashboardItem({title, icon, quantity}) {
 }
 
 
-
 const styles = StyleSheet.create({
   card: {
     width: '48%',

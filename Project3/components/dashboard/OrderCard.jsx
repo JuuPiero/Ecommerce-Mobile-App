@@ -2,6 +2,7 @@ import React from 'react';
 import { Alert, Image, Pressable, StyleSheet, View } from 'react-native';
 import { Button, Text } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
+import { getStatusStyle } from '../../utils/orderStatus';
 
 const styles = StyleSheet.create({
     orderContainer: {
@@ -68,7 +69,7 @@ function OrderCard({order, status}) {
                     fontSize: 20,
                     borderRadius: 15
                 }}>Order ID: #00{order.id}</Text>
-                <Text style={styles.pending}>{order?.status}</Text>
+                <Text style={getStatusStyle(order?.status)}>{order?.status}</Text>
 
             </View>
             <Text>Order at 6:35PM</Text>

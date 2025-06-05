@@ -44,7 +44,7 @@ const Login = () => {
         //   return
         // }
         navigation.replace('Customer')
-        // return
+        return
       } catch (error) {
         Alert.alert(error.message)
       }

@@ -34,5 +34,4 @@ $(".btn-addto-cart").click(e => {
     else {
         addToCart(productId)
     }
-    console.log(productId);
 })

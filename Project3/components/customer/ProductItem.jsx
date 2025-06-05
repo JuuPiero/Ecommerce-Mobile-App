@@ -1,10 +1,11 @@
 import { useNavigation } from "@react-navigation/native";
 import { Alert, Button, Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { API_URL } from "../../api/api";
+import { formatMoneyVN, imageUrl } from "../../utils/utils";
 
 export default function ProductItem({product}) {
     const navigation = useNavigation()
- 
+    
     
     return (
         <Pressable onPress={() => {
@@ -18,11 +19,11 @@ export default function ProductItem({product}) {
         }} style={styles.productItem}>
             <Image
                 style={styles.productImage}
-                source={{uri: product.images[0].name.includes('https') ? product.images[0].name : API_URL + '/strorage/' + product.images[0].name }}
+                source={{uri: imageUrl(product.images[0].name) }}
                 resizeMode={'cover'} 
             />
             <Text style={styles.productName}>{product.name}</Text>
-            <Text style={styles.productPrice}>{product.price}đ</Text>
+            <Text style={styles.productPrice}>{formatMoneyVN(product.price)}đ</Text>
         </Pressable>
     )
 }

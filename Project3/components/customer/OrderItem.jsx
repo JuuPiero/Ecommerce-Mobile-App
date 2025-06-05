@@ -20,8 +20,8 @@ function OrderItem({orderItem}) {
                 resizeMode={'contain'} // cover or contain its upto you view look
             />
             <View>
-                <Text style={{ fontWeight: 'bold' }}>{orderItem.product.name ?? orderItem.product_name}</Text>
-                <Text>{orderItem.product.price ?? orderItem.product_price}đ</Text>
+                <Text style={{ fontWeight: 'bold' }}>{orderItem.product_name}</Text>
+                <Text>{orderItem.product_price}đ</Text>
                 <Text style={{marginTop: 10}}>Quantity: x{orderItem.quantity}</Text>
             </View>
         </View>

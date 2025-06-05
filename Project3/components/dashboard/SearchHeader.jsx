@@ -7,7 +7,9 @@ const styles = StyleSheet.create({
   searchContainer: {
     backgroundColor: 'transparent',
     // marginTop: 20,
-    paddingBottom: 10
+    // paddingBottom: 10,
+    borderRadius: 8,
+    boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px',
   }
 })
 
